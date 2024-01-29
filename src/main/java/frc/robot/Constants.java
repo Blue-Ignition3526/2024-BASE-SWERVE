@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
@@ -10,17 +12,20 @@ import lib.team3526.SwerveChassis;
 import lib.team3526.SwerveModuleOptions;
 import static edu.wpi.first.units.Units.*;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 public final class Constants {
     public static final class SwerveDrive {
+        public static final double kJoystickDeadband = 0.05;
         //! Physical model of the robot
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
             public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(20);
-            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond) / 2);
+            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond) / 4);
 
             //! MAX ROTATIONAL SPEED (and acceleration)
             public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(2 * Math.PI);
-            public static final Measure<Velocity<Velocity<Angle>>> kMaxAngularAcceleration = RadiansPerSecond.per(Second).of(kMaxAngularSpeed.in(RadiansPerSecond) / 2);
+            public static final Measure<Velocity<Velocity<Angle>>> kMaxAngularAcceleration = RadiansPerSecond.per(Second).of(kMaxAngularSpeed.in(RadiansPerSecond) / 4);
 
             // Drive wheel diameter
             public static final Measure<Distance> kWheelDiameter = Inches.of(4);
@@ -43,13 +48,16 @@ public final class Constants {
     
             // Create a kinematics instance with the positions of the swerve modules
             public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(SwerveChassis.sizeToModulePositions(kTrackWidth.in(Meters), kWheelBase.in(Meters)));
+
+            // Rotation lock PIDF Constants
+            public static final PIDFConstants kHeadingControllerPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
         }
 
         //! Swerve modules configuration
         public static final class SwerveModules {
             //! PIDs (turn and drive motors)
-            public static final PIDFConstants kDrivePIDConstants = new PIDFConstants(0.175, 0.0000000005, 0, 0.0000000005);
-            public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5, 0, 0.0000000005, 0.0000000005);
+            public static final PIDFConstants kDrivePIDConstants = new PIDFConstants(0.175);
+            public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
                 .setOffsetDeg(72.686)
@@ -91,5 +99,17 @@ public final class Constants {
                 .setTurningMotorInverted(true)
                 .setName("Back Right");
         }
+
+        //! AUTONOMOUS 
+        public static final class Autonomous {
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(0.1, 0.0, 0.0);
+            public static final PIDConstants kRotatePIDConstants = new PIDConstants(0.1, 0.0, 0.0);
+            public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
+        }
+    }
+
+    //! VISION
+    public static final class Vision {
+        AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     }
 }

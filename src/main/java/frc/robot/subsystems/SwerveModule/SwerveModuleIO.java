@@ -13,6 +13,8 @@ public interface SwerveModuleIO {
 
         public double targetSpeed;
         public double targetAngle;
+
+        public double distance;
     }
 
     void setState(SwerveModuleState state);
@@ -21,6 +23,7 @@ public interface SwerveModuleIO {
     SwerveModulePosition getPosition();
     SwerveModuleState getRealState();
     SwerveModuleState getState();
+    String getName();
 
     void updateInputs(SwerveModuleIOInputs inputs);
     default void periodic() {};

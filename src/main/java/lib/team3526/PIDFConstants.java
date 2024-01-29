@@ -2,6 +2,8 @@ package lib.team3526;
 
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class PIDFConstants {
     public double kP;
     public double kI;
@@ -61,6 +63,10 @@ public class PIDFConstants {
 
     public double getF() {
         return kF;
+    }
+
+    public PIDController toPIDController() {
+        return new PIDController(kP, kI, kD);
     }
 
     public static SparkPIDController applyToSparkPIDController(SparkPIDController controller, PIDFConstants constants) {

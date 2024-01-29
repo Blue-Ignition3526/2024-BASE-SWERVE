@@ -134,11 +134,17 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         );
     }
 
+    public String getName() {
+        return this.options.name;
+    }
+
     public void updateInputs(SwerveModuleIOInputs inputs) {
         inputs.angle = this.getAngle().in(Radians);
         inputs.speed = this.driveEncoder.getVelocity();
 
         inputs.targetAngle = this.state.angle.getRadians();
         inputs.targetSpeed = this.state.speedMetersPerSecond;
+
+        inputs.distance = this.driveEncoder.getPosition();
     }
 }
