@@ -7,9 +7,10 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
-import lib.team3526.PIDFConstants;
-import lib.team3526.SwerveChassis;
-import lib.team3526.SwerveModuleOptions;
+import lib.team3526.constants.PIDFConstants;
+import lib.team3526.utils.SwerveChassis;
+import lib.team3526.utils.SwerveModuleOptions;
+
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.util.PIDConstants;

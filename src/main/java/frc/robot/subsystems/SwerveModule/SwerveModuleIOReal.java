@@ -15,9 +15,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import frc.robot.Constants;
-import lib.team3526.PIDFConstants;
-import lib.team3526.SwerveModuleOptions;
+import lib.team3526.constants.PIDFConstants;
 import lib.team3526.control.LazyCANSparkMax;
+import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 

@@ -111,6 +111,15 @@ public class SwerveDrive extends SubsystemBase {
     io.driveRobotRelative(speeds);
   }
 
+  /**
+   * Set the swerve module states to an X pattern.
+   * Makes the robot hard to move
+   * @param states
+   */
+  public void xFormation() {
+    io.xFormation();
+  }
+
   @Override
   public void periodic() {
     io.periodic();

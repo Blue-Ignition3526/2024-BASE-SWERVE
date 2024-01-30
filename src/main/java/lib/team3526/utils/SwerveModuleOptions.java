@@ -1,4 +1,4 @@
-package lib.team3526;
+package lib.team3526.utils;
 
 public class SwerveModuleOptions {
     public double offsetRad;

@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import lib.team3526.SwerveModuleOptions;
+import lib.team3526.utils.SwerveModuleOptions;
 
 public class SwerveModuleIOSim implements SwerveModuleIO {
     // Swerve module name

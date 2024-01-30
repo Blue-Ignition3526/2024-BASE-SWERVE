@@ -1,4 +1,4 @@
-package lib.team3526;
+package lib.team3526.utils;
 
 import edu.wpi.first.math.geometry.Translation2d;
 

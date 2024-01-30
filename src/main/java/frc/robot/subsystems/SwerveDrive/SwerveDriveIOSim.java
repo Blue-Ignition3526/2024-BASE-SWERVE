@@ -241,10 +241,10 @@ public class SwerveDriveIOSim implements SwerveDriveIO {
     }
 
     public void xFormation() {
-        this.frontLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        this.frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-        this.backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-        this.backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        this.frontLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
+        this.frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
+        this.backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
+        this.backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
     }
 
     public void periodic() {
