@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.Gyro;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase {
@@ -98,7 +100,11 @@ public class Gyro extends SubsystemBase {
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
     io.periodic();
+    io.updateInputs(inputs);
+
+    Logger.recordOutput("Gyro/Pitch", getPitch());
+    Logger.recordOutput("Gyro/Yaw", getYaw());
+    Logger.recordOutput("Gyro/Roll", getRoll());
   }
 }

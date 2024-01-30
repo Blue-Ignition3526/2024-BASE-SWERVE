@@ -22,11 +22,11 @@ public final class Constants {
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
             public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(20);
-            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond) / 4);
+            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond));
 
             //! MAX ROTATIONAL SPEED (and acceleration)
-            public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(2 * Math.PI);
-            public static final Measure<Velocity<Velocity<Angle>>> kMaxAngularAcceleration = RadiansPerSecond.per(Second).of(kMaxAngularSpeed.in(RadiansPerSecond) / 4);
+            public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(3 * (2 * Math.PI));
+            public static final Measure<Velocity<Velocity<Angle>>> kMaxAngularAcceleration = RadiansPerSecond.per(Second).of(kMaxAngularSpeed.in(RadiansPerSecond));
 
             // Drive wheel diameter
             public static final Measure<Distance> kWheelDiameter = Inches.of(4);
@@ -58,6 +58,9 @@ public final class Constants {
         public static final class SwerveModules {
             //! PID
             public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
+
+            //! Global offset
+            public static final Measure<Angle> kGlobalOffset = Degrees.of(-180);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
                 .setOffsetDeg(72.686)

@@ -16,7 +16,7 @@ public interface SwerveModuleIO {
 
         public double distance;
     }
-
+    
     void setState(SwerveModuleState state, boolean force);
     void setState(SwerveModuleState state);
     void stop();
@@ -26,6 +26,6 @@ public interface SwerveModuleIO {
     SwerveModuleState getState();
     String getName();
 
-    void updateInputs(SwerveModuleIOInputs inputs);
+    default void updateInputs(SwerveModuleIOInputs inputs) {};
     default void periodic() {};
 }

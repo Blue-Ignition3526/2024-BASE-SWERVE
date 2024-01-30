@@ -4,6 +4,7 @@
 
 package frc.robot.commands.SwerveDrive;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Second;
@@ -56,6 +57,10 @@ public class DriveSwerve extends Command {
     x = xLimiter.calculate(x);
     y = yLimiter.calculate(y);
     rot = rotLimiter.calculate(rot);
+
+    x *= Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond);
+    y *= Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond);
+    rot *= Constants.SwerveDrive.PhysicalModel.kMaxAngularSpeed.in(RadiansPerSecond);
     
     if (this.fieldRelative.get()) {
       swerveDrive.driveFieldRelative(x, y, rot);

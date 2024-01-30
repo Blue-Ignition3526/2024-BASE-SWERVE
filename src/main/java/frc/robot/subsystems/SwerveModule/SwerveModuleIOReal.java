@@ -21,6 +21,8 @@ import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.littletonrobotics.junction.Logger;
+
 public class SwerveModuleIOReal implements SwerveModuleIO {
     private SwerveModuleOptions options;
 
@@ -64,7 +66,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         this.absoluteEncoder = new CANcoder(options.absoluteEncoderID);
         this.absoluteEncoder.getConfigurator().apply(
             new MagnetSensorConfigs()
-            .withMagnetOffset(this.options.getOffsetRad()  / (2 * Math.PI))
+            .withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
             .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
         );
         this.absoluteEncoderSignal = this.absoluteEncoder.getPosition();
@@ -74,7 +76,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     }
 
     public Measure<Angle> getAbsoluteEncoderPosition() {
-        return Radians.of((this.absoluteEncoderSignal.getValue() * 2 * Math.PI) % (2 * Math.PI));
+        return Radians.of((absoluteEncoder.getPosition().refresh().getValue() * 2 * Math.PI) % (2 * Math.PI) * (this.options.absoluteEncoderInverted ? -1.0 : 1.0));
     }
 
     public void resetDriveEncoder() {
@@ -147,5 +149,10 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         inputs.targetSpeed = this.state.speedMetersPerSecond;
 
         inputs.distance = this.driveEncoder.getPosition();
+    }
+
+    public void periodic() {
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
     }
 }

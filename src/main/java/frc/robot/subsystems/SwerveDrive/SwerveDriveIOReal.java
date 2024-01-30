@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -20,6 +21,8 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import org.littletonrobotics.junction.Logger;
 
 public class SwerveDriveIOReal implements SwerveDriveIO {
     SwerveModule frontLeft;
@@ -170,6 +173,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public void setModuleStates(SwerveModuleState[] states) {
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond));
         frontLeft.setState(states[0]);
         frontRight.setState(states[1]);
         backLeft.setState(states[2]);
@@ -221,5 +225,17 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         inputs.rotSpeed = speeds.omegaRadiansPerSecond;
         inputs.xSpeed = speeds.vxMetersPerSecond;
         inputs.ySpeed = speeds.vyMetersPerSecond;
+    }
+
+    public void periodic() {
+        Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());
+        Logger.recordOutput("SwerveDrive/RobotHeadingDeg", this.getHeading().getDegrees());
+        
+        Logger.recordOutput("SwerveDrive/RobotPose", this.getPose());
+
+        Logger.recordOutput("SwerveDrive/RobotRelative", this.drivingRobotRelative);
+        Logger.recordOutput("SwerveDrive/RobotSpeeds", this.getRobotRelativeChassisSpeeds());
+        
+        Logger.recordOutput("SwerveDrive/SwerveModuleStates", this.getModuleStates());
     }
 }

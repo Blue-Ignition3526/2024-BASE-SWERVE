@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
@@ -20,16 +16,15 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
-
 public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(0);
 
-  SwerveModule m_frontLeft;
-  SwerveModule m_frontRight;
-  SwerveModule m_backLeft;
-  SwerveModule m_backRight;
+  private final SwerveModule m_frontLeft;
+  private final SwerveModule m_frontRight;
+  private final SwerveModule m_backLeft;
+  private final SwerveModule m_backRight;
   
-  SwerveDrive m_swerveDrive;
+  private final SwerveDrive m_swerveDrive;
 
   public RobotContainer() {
     if (Robot.isReal()) {

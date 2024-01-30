@@ -59,13 +59,7 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     }
 
     public void periodic() {
-        // Show the target state speed and rotation in radians and degrees on the dashboard
-        Logger.recordOutput("SwerveDrive/" + m_name + "/TargetSpeed", state.speedMetersPerSecond);
-        Logger.recordOutput("SwerveDrive/" + m_name + "/TargetRotationRad", state.angle.getRadians());
-        Logger.recordOutput("SwerveDrive/" + m_name + "/TargetRotationDeg", state.angle.getDegrees());
-
-        // Log the state and position of the swerve module
-        Logger.recordOutput("SwerveDrive/" + m_name + "/State", state);
-        Logger.recordOutput("SwerveDrive/" + m_name + "/Position", getPosition());
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
     }
 }
