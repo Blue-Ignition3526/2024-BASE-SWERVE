@@ -17,18 +17,19 @@ import edu.wpi.first.units.Measure;
 import frc.robot.Constants;
 import lib.team3526.PIDFConstants;
 import lib.team3526.SwerveModuleOptions;
+import lib.team3526.control.LazyCANSparkMax;
+
 import static edu.wpi.first.units.Units.*;
 
-public class SwerveModuleIOSparkMax implements SwerveModuleIO {
+public class SwerveModuleIOReal implements SwerveModuleIO {
     private SwerveModuleOptions options;
 
-    private final CANSparkMax driveMotor;
+    private final LazyCANSparkMax driveMotor;
     private final CANSparkMax turningMotor;
 
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turningEncoder;
 
-    private final SparkPIDController drivePID;
     private final SparkPIDController turningPID;
 
     private final CANcoder absoluteEncoder;
@@ -36,12 +37,12 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
     private SwerveModuleState state = new SwerveModuleState();
 
-    public SwerveModuleIOSparkMax(SwerveModuleOptions options) {
+    public SwerveModuleIOReal(SwerveModuleOptions options) {
         // Store the options
         this.options = options;
 
         // Create the motors
-        this.driveMotor = new CANSparkMax(options.driveMotorID, MotorType.kBrushless);
+        this.driveMotor = new LazyCANSparkMax(options.driveMotorID, MotorType.kBrushless);
         this.turningMotor = new CANSparkMax(options.turningMotorID, MotorType.kBrushless);
 
         // Get and configure the encoders
@@ -52,10 +53,6 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
         this.turningEncoder = this.turningMotor.getEncoder();
         this.turningEncoder.setPositionConversionFactor(Constants.SwerveDrive.PhysicalModel.kTurningEncoder_RotationToRadian); 
         this.turningEncoder.setVelocityConversionFactor(Constants.SwerveDrive.PhysicalModel.kTurningEncoder_RPMToRadianPerSecond);
-
-        // Configure the PID controllers
-        this.drivePID = this.driveMotor.getPIDController();
-        PIDFConstants.applyToSparkPIDController(this.drivePID, Constants.SwerveDrive.SwerveModules.kDrivePIDConstants);
 
         this.turningPID = this.turningMotor.getPIDController();
         PIDFConstants.applyToSparkPIDController(this.turningPID, Constants.SwerveDrive.SwerveModules.kTurningPIDConstants);
@@ -98,7 +95,11 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public void setState(SwerveModuleState state) {
-        if (Math.abs(state.speedMetersPerSecond) < 0.001) {
+        setState(state, false);
+    }
+
+    public void setState(SwerveModuleState state, boolean force) {
+        if (Math.abs(state.speedMetersPerSecond) < 0.001 || force) {
             stop();
             return;
         }
@@ -107,13 +108,13 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
         this.state = state;
 
-        drivePID.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+        driveMotor.set(state.speedMetersPerSecond / Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond));
         turningPID.setReference(state.angle.getRadians(), ControlType.kPosition);
     }
 
     public void stop() {
-        drivePID.setReference(0, ControlType.kVelocity);
-        turningPID.setReference(0, ControlType.kVelocity);
+        driveMotor.set(0);
+        turningMotor.set(0);
     }
 
     public SwerveModuleState getState() {

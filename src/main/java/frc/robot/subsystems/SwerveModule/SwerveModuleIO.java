@@ -17,6 +17,7 @@ public interface SwerveModuleIO {
         public double distance;
     }
 
+    void setState(SwerveModuleState state, boolean force);
     void setState(SwerveModuleState state);
     void stop();
 

@@ -14,9 +14,10 @@ import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
+import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
-import frc.robot.subsystems.SwerveModule.SwerveModuleIOSparkMax;
+import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
 
 public class RobotContainer {
@@ -32,30 +33,24 @@ public class RobotContainer {
   public RobotContainer() {
     if (Robot.isReal()) {
       // Create all swerve modules and initialize
-      this.m_frontLeft = new SwerveModule(new SwerveModuleIOSparkMax(Constants.SwerveDrive.SwerveModules.kFrontLeftOptions));
-      this.m_frontRight = new SwerveModule(new SwerveModuleIOSparkMax(Constants.SwerveDrive.SwerveModules.kFrontRightOptions));
-      this.m_backLeft = new SwerveModule(new SwerveModuleIOSparkMax(Constants.SwerveDrive.SwerveModules.kBackLeftOptions));
-      this.m_backRight = new SwerveModule(new SwerveModuleIOSparkMax(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
+      this.m_frontLeft = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kFrontLeftOptions));
+      this.m_frontRight = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kFrontRightOptions));
+      this.m_backLeft = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kBackLeftOptions));
+      this.m_backRight = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
       // Create the swerve drive and initialize
-      this.m_swerveDrive = new SwerveDrive(
-        new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight,
-        new Gyro(new GyroIOPigeon(34)))
-      );
+      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, new Gyro(new GyroIOPigeon(34))));
 
       Logger.recordMetadata("Robot", "Real");
     } else {
       // Create all swerve modules and initialize
-      // this.m_frontLeft = new SwerveModule(new SwerveModuleIOSim(Constants.Swerve.Motors.kFrontLeftVars));
-      // this.m_frontRight = new SwerveModule(new SwerveModuleIOSim(Constants.Swerve.Motors.kFrontRightVars));
-      // this.m_backLeft = new SwerveModule(new SwerveModuleIOSim(Constants.Swerve.Motors.kBackLeftVars));
-      // this.m_backRight = new SwerveModule(new SwerveModuleIOSim(Constants.Swerve.Motors.kBackRightVars));
+      this.m_frontLeft = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kFrontLeftOptions));
+      this.m_frontRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kFrontRightOptions));
+      this.m_backLeft = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackLeftOptions));
+      this.m_backRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
-      // // Create the swerve drive and initialize
-      // this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
-
-      // // Create a new intake
-      // this.m_intake = new Intake(new IntakeIOSim());
+      // Create the swerve drive and initialize
+      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
 
       Logger.recordMetadata("Robot", "Sim");
     }

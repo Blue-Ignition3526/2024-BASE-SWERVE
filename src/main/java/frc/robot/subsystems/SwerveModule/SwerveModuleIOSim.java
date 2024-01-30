@@ -32,6 +32,10 @@ public class SwerveModuleIOSim implements SwerveModuleIO {
     }
 
     public void setState(SwerveModuleState state) {
+        setState(state, true);
+    }
+
+    public void setState(SwerveModuleState state, boolean force) {
         this.state = state;
         this.stateUpdated = Timer.getFPGATimestamp();
     }

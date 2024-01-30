@@ -55,8 +55,7 @@ public final class Constants {
 
         //! Swerve modules configuration
         public static final class SwerveModules {
-            //! PIDs (turn and drive motors)
-            public static final PIDFConstants kDrivePIDConstants = new PIDFConstants(0.175);
+            //! PID
             public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()

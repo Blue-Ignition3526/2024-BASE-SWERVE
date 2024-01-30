@@ -28,6 +28,16 @@ public class SwerveModule extends SubsystemBase {
   }
 
   /**
+   * Sets the state of the swerve module (Speed and angle) (forcefully or not).
+   * (Updates the motors with PID)
+   * @param state SwerveModuleState
+   * @param force boolean
+   */
+  public void setState(SwerveModuleState state, boolean force) {
+    io.setState(state, force);
+  }
+
+  /**
    * Stops the swerve module.
    */
   public void stop() {
@@ -60,8 +70,8 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
     io.periodic();
+    io.updateInputs(inputs);
 
     Logger.recordOutput("SwerveDrive/" + io.getName() + "/RealState", io.getRealState());
     Logger.recordOutput("SwerveDrive/" + io.getName() + "/TargetState", io.getState());

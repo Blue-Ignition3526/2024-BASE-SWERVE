@@ -20,53 +20,100 @@ public class SwerveDrive extends SubsystemBase {
     io.configureAutoBuilder(this);
   }
 
+  /**
+   * Get the current heading of the robot.
+   * @return The current heading of the robot.
+   */
   public Rotation2d getHeading() {
     return io.getHeading();
   }
 
+  /**
+   * Get the odometry object.
+   * @return The odometry object.
+   */
   public SwerveDriveOdometry getOdometry() {
     return io.getOdometry();
   }
 
+  /**
+   * Get all the modules' states.
+   * @return The modules' states.
+   */
   public SwerveModuleState[] getModuleStates() {
     return io.getModuleStates();
   }
 
+  /**
+   * Get all the modules' real states.
+   * @return The modules' real states.
+   */
   public SwerveModuleState[] getRealModuleStates() {
     return io.getRealModuleStates();
   }
 
+  /**
+   * Get all the modules' positions.
+   * @return The modules' positions.
+   */
   public SwerveModulePosition[] getModulePositions() {
     return io.getModulePositions();
   }
 
+  /**
+   * Stop all modules
+   */
   public void stop() {
     io.stop();
   }
 
+  /**
+   * Drive the robot at a given robot relative speed.
+   * @param speeds
+   */
   public void drive(ChassisSpeeds speeds) {
     io.drive(speeds);
   }
 
+  /**
+   * Drive the robot at a given field relative speed.
+   * @param xSpeed The speed that the robot should drive in the x direction.
+   * @param ySpeed The speed that the robot should drive in the y direction.
+   * @param rotSpeed The speed that the robot should rotate.
+   */
   public void driveFieldRelative(double xSpeed, double ySpeed, double rotSpeed) {
     io.driveFieldRelative(xSpeed, ySpeed, rotSpeed);
   }
 
+  /**
+   * Drive the robot at a given field relative speed.
+   * @param speeds
+   */
   public void driveFieldRelative(ChassisSpeeds speeds) {
     io.driveFieldRelative(speeds);
   }
 
+  /**
+   * Drive the robot at a given robot relative speed.
+   * @param xSpeed The speed that the robot should drive in the x direction.
+   * @param ySpeed The speed that the robot should drive in the y direction.
+   * @param rotSpeed The speed that the robot should rotate.
+   */
   public void driveRobotRelative(double xSpeed, double ySpeed, double rotSpeed) {
     io.driveRobotRelative(xSpeed, ySpeed, rotSpeed);
   }
 
+  /**
+   * Drive the robot at a given robot relative speed.
+   * @param speeds
+   */
   public void driveRobotRelative(ChassisSpeeds speeds) {
     io.driveRobotRelative(speeds);
   }
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
     io.periodic();
+    io.updateInputs(inputs);
   }
 }
