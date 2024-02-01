@@ -9,28 +9,20 @@ public class LazyCANSparkMax extends CANSparkMax {
     }
 
     public void set(double value) {
-        if (value != get()) {
-            super.set(value);
-        }
+        if (value != get()) super.set(value);
     }
 
     public void setInverted(boolean isInverted) {
-        if (isInverted != getInverted()) {
-            super.setInverted(isInverted);
-        }
+        if (isInverted != getInverted()) super.setInverted(isInverted);
     }
 
     public REVLibError setClosedLoopRampRate(double seconds) {
-        if (seconds != getClosedLoopRampRate()) {
-            return super.setClosedLoopRampRate(seconds);
-        }
+        if (seconds != getClosedLoopRampRate()) return super.setClosedLoopRampRate(seconds);
         return REVLibError.kOk;
     }
 
     public REVLibError setOpenLoopRampRate(double seconds) {
-        if (seconds != getOpenLoopRampRate()) {
-            return super.setOpenLoopRampRate(seconds);
-        }
+        if (seconds != getOpenLoopRampRate()) return super.setOpenLoopRampRate(seconds);
         return REVLibError.kOk;
     }
 }

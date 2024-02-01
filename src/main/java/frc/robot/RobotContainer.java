@@ -5,10 +5,14 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Intake.IntakeIn;
+import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.XFormation;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
@@ -26,6 +30,8 @@ public class RobotContainer {
   
   private final SwerveDrive m_swerveDrive;
 
+  private final Intake m_intake;
+
   public RobotContainer() {
     if (Robot.isReal()) {
       // Create all real swerve modules and initialize
@@ -37,6 +43,8 @@ public class RobotContainer {
       // Create the real swerve drive and initialize
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, new Gyro(new GyroIOPigeon(34))));
 
+      this.m_intake = new Intake(new IntakeIOReal());
+
       Logger.recordMetadata("Robot", "Real");
     } else {
       // Create all simulated swerve modules and initialize
@@ -47,6 +55,8 @@ public class RobotContainer {
 
       // Create the simulated swerve drive and initialize
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
+
+      this.m_intake = new Intake(null);
 
       Logger.recordMetadata("Robot", "Sim");
     }
@@ -67,6 +77,9 @@ public class RobotContainer {
 
     // Configure the button bindings
     m_driverController.x().whileTrue(new XFormation(m_swerveDrive));
+
+    m_driverController.leftTrigger(0.1).toggleOnTrue(new IntakeIn(m_intake));
+    m_driverController.rightTrigger(0.1).whileTrue(new IntakeOut(m_intake));
   }
 
   public Command getAutonomousCommand() {

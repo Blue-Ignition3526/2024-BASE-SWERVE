@@ -76,4 +76,12 @@ public class PIDFConstants {
         controller.setFF(constants.getF());
         return controller;
     }
+
+    public SparkPIDController applyToSparkPIDController(SparkPIDController controller) {
+        controller.setP(this.getP());
+        controller.setI(this.getI());
+        controller.setD(this.getD());
+        controller.setFF(this.getF());
+        return controller;
+    }
 }

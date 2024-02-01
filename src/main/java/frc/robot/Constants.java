@@ -115,4 +115,28 @@ public final class Constants {
     public static final class Vision {
         AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     }
+
+    //! INTAKE
+    public static final class Intake {
+        // Speeds
+        public static final double kIntakeOutSpeed = -0.5;
+        public static final double kIntakeInSpeed = 0.25;
+        public static final double kIntakeHoldSpeed = 0.02;
+        
+        // Intake motor config
+        public static final int kintakeMotorID = 36;
+        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final double kHasPieceCurrentThreshold = 20;
+        public static final double kHasPieceTimeThreshold = 0.1;
+
+        // Lifter motor config
+        public static final int kLifterMotorID = 37;
+        public static final PIDFConstants kLifterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+
+        // Lifter encoder config
+        public static final double kLifter_RotationToDegrees = 1 / 16 * 360;
+
+        // Intake times
+        public static final double kMaxOuttakeTime = 5;
+    }
 }
