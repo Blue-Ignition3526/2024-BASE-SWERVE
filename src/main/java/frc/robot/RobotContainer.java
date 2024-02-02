@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
-import frc.robot.commands.SwerveDrive.XFormation;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
 import frc.robot.subsystems.Intake.Intake;
@@ -75,10 +74,7 @@ public class RobotContainer {
       )
     );
 
-    // Configure the button bindings
-    m_driverController.x().whileTrue(new XFormation(m_swerveDrive));
-
-    m_driverController.leftTrigger(0.1).toggleOnTrue(new IntakeIn(m_intake));
+    m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
     m_driverController.rightTrigger(0.1).whileTrue(new IntakeOut(m_intake));
   }
 

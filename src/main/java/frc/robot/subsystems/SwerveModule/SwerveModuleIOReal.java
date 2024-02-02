@@ -1,6 +1,5 @@
 package frc.robot.subsystems.SwerveModule;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -35,7 +34,6 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     private final SparkPIDController turningPID;
 
     private final CANcoder absoluteEncoder;
-    private final StatusSignal<Double> absoluteEncoderSignal;
 
     private SwerveModuleState state = new SwerveModuleState();
 
@@ -69,7 +67,6 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
             .withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
             .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
         );
-        this.absoluteEncoderSignal = this.absoluteEncoder.getPosition();
 
         // Reset the encoders
         resetEncoders();
