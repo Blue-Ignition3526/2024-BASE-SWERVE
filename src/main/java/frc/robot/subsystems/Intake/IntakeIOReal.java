@@ -86,11 +86,21 @@ public class IntakeIOReal implements IntakeIO {
         return this.hasPiece;
     }
 
+    public void setIntakeCoast() {
+        this.intakeMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void setIntakeBrake() {
+        this.intakeMotor.setIdleMode(IdleMode.kBrake);
+    }
+
     public void periodic() {
         this.hasPiece = this.hasPiece || (this.isIntaking && this.intakeMotor.getOutputCurrent() > Constants.Intake.kHasPieceCurrentThreshold);
 
         Logger.recordOutput("Intake/HasPiece", this.hasPiece);
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
+        Logger.recordOutput("Intake/Speed", this.getIntakeSpeed());
+        Logger.recordOutput("Intake/LifterAngle", this.getLifterAngle());
     }
 
     public void updateInputs(IntakeIOInputs inputs) {

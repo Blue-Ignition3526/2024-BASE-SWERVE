@@ -107,6 +107,10 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         return Rotation2d.fromDegrees(gyro.getYaw());
     }
 
+    public void zeroHeading() {
+        this.gyro.reset();
+    }
+
     public Pose2d getPose() {
         return odometry.getPoseMeters();
     }

@@ -137,6 +137,6 @@ public final class Constants {
         public static final double kLifter_RotationToDegrees = 1 / 16 * 360;
 
         // Intake times
-        public static final double kMaxOuttakeTime = 5;
+        public static final double kMaxOuttakeTime = 3;
     }
 }

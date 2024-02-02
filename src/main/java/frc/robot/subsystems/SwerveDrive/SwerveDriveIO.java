@@ -19,6 +19,8 @@ public interface SwerveDriveIO {
     }
 
     public Rotation2d getHeading();
+    public void zeroHeading();
+
     public SwerveDriveOdometry getOdometry();
 
     public SwerveModuleState[] getModuleStates();

@@ -120,6 +120,13 @@ public class SwerveDrive extends SubsystemBase {
     io.xFormation();
   }
 
+  /**
+   * Zero the heading (yaw measurement) of the gyroscope.
+   */
+  public void zeroHeading() {
+    io.zeroHeading();
+  }
+
   @Override
   public void periodic() {
     io.periodic();

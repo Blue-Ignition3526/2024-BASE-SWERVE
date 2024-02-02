@@ -22,6 +22,9 @@ public interface IntakeIO {
     public void setIntakeHold();
     public void stopIntake();
 
+    public void setIntakeCoast();
+    public void setIntakeBrake();
+
     public double getIntakeSpeed();
 
     public void setLifterAngle(double angleDeg);
