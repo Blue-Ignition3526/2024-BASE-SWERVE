@@ -1,9 +1,12 @@
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake.Intake;
 
 public class IntakeIn extends Command {
+  private Timer timer = new Timer();
   private Intake intake;
 
   public IntakeIn(Intake intake) {
@@ -12,7 +15,10 @@ public class IntakeIn extends Command {
   }
   
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
   
   @Override
   public void execute() {
@@ -22,11 +28,12 @@ public class IntakeIn extends Command {
   
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeHold();
+    if (intake.hasPiece()) intake.setIntakeHold();
+    else intake.stopIntake();
   }
   
   @Override
   public boolean isFinished() {
-    return intake.hasPiece();
+    return intake.hasPiece() || timer.get() > Constants.Intake.kMaxIntakeTime;
   }
 }

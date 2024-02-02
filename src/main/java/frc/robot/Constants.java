@@ -127,7 +127,10 @@ public final class Constants {
         public static final int kintakeMotorID = 36;
         public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
         public static final double kHasPieceCurrentThreshold = 20;
-        public static final double kHasPieceTimeThreshold = 0.1;
+        public static final double kHasPieceTimeThreshold = 0.2;
+
+        // Intake motor rpm conversion
+        public static final double kIntake_RpmToMechanismRpm = 1 / 4;
 
         // Lifter motor config
         public static final int kLifterMotorID = 37;
@@ -138,5 +141,6 @@ public final class Constants {
 
         // Intake times
         public static final double kMaxOuttakeTime = 3;
+        public static final double kMaxIntakeTime = 6;
     }
 }

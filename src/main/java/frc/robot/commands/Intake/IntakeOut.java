@@ -18,12 +18,16 @@ public class IntakeOut extends Command {
   public void initialize() {
     timer.reset();
     timer.start();
-  }
 
-  @Override
-  public void execute() {
+    intake.setIntakeBrake();
     intake.setIntakeOut();
   }
+
+  /**
+   * EXECURE IS NOT USED BECAUSE IT IS MAPPED TO A WHILE TRUE TRIGGER
+   */
+  @Override
+  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {

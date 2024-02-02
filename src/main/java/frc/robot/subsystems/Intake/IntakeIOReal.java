@@ -87,15 +87,19 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public void setIntakeCoast() {
+        Logger.recordOutput("Intake/Brake", false);
         this.intakeMotor.setIdleMode(IdleMode.kCoast);
     }
 
     public void setIntakeBrake() {
+        Logger.recordOutput("Intake/Brake", true);
         this.intakeMotor.setIdleMode(IdleMode.kBrake);
     }
 
     public void periodic() {
-        this.hasPiece = this.hasPiece || (this.isIntaking && this.intakeMotor.getOutputCurrent() > Constants.Intake.kHasPieceCurrentThreshold);
+        this.hasPiece =
+        this.hasPiece || 
+        (this.isIntaking && this.intakeMotor.getOutputCurrent() > Constants.Intake.kHasPieceCurrentThreshold);
 
         Logger.recordOutput("Intake/HasPiece", this.hasPiece);
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
