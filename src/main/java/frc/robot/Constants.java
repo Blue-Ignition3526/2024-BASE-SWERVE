@@ -143,4 +143,18 @@ public final class Constants {
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;
     }
+
+    //! SHOOTER
+    public static final class Shooter {
+        // Shooter motor config
+        public static final int kLeftShooterMotorID = 30;
+        public static final int kRightShooterMotorID = 31;
+        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+
+        // Shooter motor rpm conversion
+        public static final double kShooter_RpmToMechanismRpm = 3 / 1;
+
+        // Shooter motor time
+        public static final double kMaxShootTime = 5;
+    }
 }
