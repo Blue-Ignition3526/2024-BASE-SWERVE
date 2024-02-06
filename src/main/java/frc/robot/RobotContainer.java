@@ -75,7 +75,9 @@ public class RobotContainer {
     );
 
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
-    m_driverController.rightTrigger(0.1).whileTrue(new IntakeOut(m_intake));
+    m_driverController.y().whileTrue(new IntakeOut(m_intake));
+
+    
   }
 
   public Command getAutonomousCommand() {
