@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import static edu.wpi.first.units.Units.Degrees;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,14 +15,12 @@ public class InAndOut extends Command {
   Intake intake;
   Shooter shooter;
 
-  Supplier<Boolean> in;
+  boolean isInPosition = false;
 
   /** Creates a new InAndOut. */
-  public InAndOut(Intake intake, Shooter shooter, Supplier<Boolean> in) {
+  public InAndOut(Intake intake, Shooter shooter) {
     this.intake = intake;
     this.shooter = shooter;
-
-    this.in = in;
 
     addRequirements(intake, shooter);
   }
@@ -36,25 +32,24 @@ public class InAndOut extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean isIn = in.get();
-
-    if(isIn){
-      boolean isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kGroundAngle.in(Degrees));
-      if (isInPosition){
-        intake.setIntakeIn();
-        if(intake.hasPiece()){
-          isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle.in(Degrees));
-        }
-      }
-    }else if (intake.hasPiece() && Math.abs(intake.getLifterAngle() - Constants.Intake.Physical.kShooterAngle.in(Degrees)) < 5){
-      shooter.shootSpeaker();
-      intake.giveToShooter();
+    if (!intake.hasPiece()){
+      isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kGroundAngle.in(Degrees));
+      intake.setIntakeIn();
+      
+    }
+    if(intake.hasPiece()){
+        isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle.in(Degrees));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (intake.hasPiece() && Math.abs(intake.getLifterAngle() - Constants.Intake.Physical.kShooterAngle.in(Degrees)) < 5){
+      shooter.shootSpeaker();
+      intake.giveToShooter();
+    }
+  }
 
   // Returns true when the command should end.
   @Override

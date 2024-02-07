@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
@@ -12,6 +13,8 @@ import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
@@ -30,6 +33,7 @@ public class RobotContainer {
   private final SwerveDrive m_swerveDrive;
 
   private final Intake m_intake;
+  private final Shooter m_shooter;
 
   public RobotContainer() {
     if (Robot.isReal()) {
@@ -43,6 +47,7 @@ public class RobotContainer {
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, new Gyro(new GyroIOPigeon(34))));
 
       this.m_intake = new Intake(new IntakeIOReal());
+      this.m_shooter = new Shooter(new ShooterIOReal());
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -56,6 +61,7 @@ public class RobotContainer {
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
 
       this.m_intake = new Intake(null);
+      this.m_shooter = new Shooter(null);
 
       Logger.recordMetadata("Robot", "Sim");
     }
@@ -77,7 +83,7 @@ public class RobotContainer {
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
     m_driverController.y().whileTrue(new IntakeOut(m_intake));
 
-    
+    m_driverController.leftBumper().whileTrue(new InAndOut(m_intake, m_shooter));
   }
 
   public Command getAutonomousCommand() {
