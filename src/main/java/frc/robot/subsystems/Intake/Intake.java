@@ -25,6 +25,13 @@ public class Intake extends SubsystemBase {
   }
 
   /**
+   * Sets the speed of the intake to give to the shooter
+   */
+  public void giveToShooter() {
+    io.giveToShooter();
+  }
+
+  /**
    * Sets the intake to a specific speed
    * @param speed the speed to set the intake to
    */
@@ -66,8 +73,8 @@ public class Intake extends SubsystemBase {
    * Sets the angle of the lifter
    * @param angleDeg the angle to set the lifter to
    */
-  public void setLifterAngle(double angleDeg) {
-    io.setLifterAngle(angleDeg);
+  public boolean setLifterAngle(double angleDeg) {
+    return io.setLifterAngle(angleDeg);
   }
 
   /**

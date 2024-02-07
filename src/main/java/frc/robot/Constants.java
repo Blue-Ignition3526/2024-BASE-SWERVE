@@ -122,6 +122,7 @@ public final class Constants {
         public static final double kIntakeOutSpeed = -0.5;
         public static final double kIntakeInSpeed = 0.25;
         public static final double kIntakeHoldSpeed = 0.02;
+        public static final double kGiveToShooterSpeed = -0.2;
         
         // Intake motor config
         public static final int kintakeMotorID = 36;
@@ -142,6 +143,14 @@ public final class Constants {
         // Intake times
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;
+
+        public static final class Physical {
+            public static final Measure<Angle> kLifterMaxHeight = Degrees.of(180);
+            public static final Measure<Angle> kLifterMinHeight = Degrees.of(0);
+
+            public static final Measure<Angle> kShooterAngle = Degrees.of(180);
+            public static final Measure<Angle> kGroundAngle = Degrees.of(0);
+        }
     }
 
     //! SHOOTER
@@ -156,6 +165,10 @@ public final class Constants {
 
         // Shooter motor rpm conversion
         public static final double kShooter_RpmToMechanismRpm = 3 / 1;
+
+        // Shooter speeds
+        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(70);
+        public static final Measure<Velocity<Angle>> kTakeFromHumanPlayer = RPM.of(-5);
 
         // Shooter motor time
         public static final double kMaxShootTime = 4;

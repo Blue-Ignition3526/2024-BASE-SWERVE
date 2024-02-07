@@ -19,6 +19,8 @@ public interface ShooterIO {
     public void set(double leftSpeed, double rightSpeed);
     public void set(double speed);
 
+    public void shootSpeaker();
+
     public void setLeftMotorRpm(double rpm);
     public void setRightMotorRpm(double rpm);
     public void setRpm(double leftRpm, double rightRpm);

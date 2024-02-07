@@ -42,6 +42,10 @@ public class Shooter extends SubsystemBase {
     io.setRpm(rpm);
   }
 
+  public void shootSpeaker() {
+    io.shootSpeaker();
+  }
+
   public double getLeftMotorRpm() {
     return io.getLeftMotorRpm();
   }
