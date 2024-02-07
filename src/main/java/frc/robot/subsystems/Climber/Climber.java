@@ -77,6 +77,20 @@ public class Climber extends SubsystemBase {
     io.stop();
   }
 
+  /**
+   * Set both climbers to go down
+   */
+  public void setClimberDown() {
+    io.setClimberDown();
+  }
+
+  /**
+   * Set both climbers to go up
+   */
+  public void setClimberUp() {
+    io.setClimberUp();
+  }
+
   @Override
   public void periodic() {
     io.periodic();

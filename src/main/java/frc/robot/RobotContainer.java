@@ -6,10 +6,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.Climber.Climb;
 import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
 import frc.robot.subsystems.Intake.Intake;
@@ -32,9 +35,10 @@ public class RobotContainer {
   private final SwerveModule m_backRight;
   
   private final SwerveDrive m_swerveDrive;
-
+  private final Gyro m_gyro;
   private final Intake m_intake;
   private final Shooter m_shooter;
+  private final Climber m_climber;
 
   public RobotContainer() {
     if (Robot.isReal()) {
@@ -45,10 +49,11 @@ public class RobotContainer {
       this.m_backRight = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
       // Create the real swerve drive and initialize
-      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, new Gyro(new GyroIOPigeon(34))));
-
+      this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroCanID));
+      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
       this.m_intake = new Intake(new IntakeIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
+      this.m_climber = new Climber(new ClimberIOReal());
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -59,10 +64,11 @@ public class RobotContainer {
       this.m_backRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
       // Create the simulated swerve drive and initialize
+      this.m_gyro = new Gyro(null);
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
-
       this.m_intake = new Intake(null);
       this.m_shooter = new Shooter(null);
+      this.m_climber = new Climber(null);
 
       Logger.recordMetadata("Robot", "Sim");
     }
@@ -81,11 +87,18 @@ public class RobotContainer {
       )
     );
 
+    m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
+    
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
     m_driverController.y().whileTrue(new IntakeOut(m_intake));
+
     m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
 
-    m_driverController.leftBumper().whileTrue(new InAndOut(m_intake, m_shooter));
+    m_driverController.leftBumper().or(m_driverController.rightBumper()).whileTrue(new Climb(
+      m_climber,
+      () -> m_driverController.leftBumper().getAsBoolean(),
+      () -> m_driverController.rightBumper().getAsBoolean()
+    ));
   }
 
   public Command getAutonomousCommand() {

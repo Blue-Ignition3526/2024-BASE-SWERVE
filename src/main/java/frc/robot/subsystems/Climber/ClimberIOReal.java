@@ -3,20 +3,15 @@ package frc.robot.subsystems.Climber;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Gyro.Gyro;
 import lib.team3526.control.LazyCANSparkMax;
 
 public class ClimberIOReal implements ClimberIO {
     LazyCANSparkMax leftClimberMotor;
     LazyCANSparkMax rightClimberMotor;
 
-    Gyro gyro;
-
-    public ClimberIOReal(Gyro gyro) {
+    public ClimberIOReal() {
         leftClimberMotor = new LazyCANSparkMax(Constants.Climber.kLeftClimberMotorID, MotorType.kBrushless);
         rightClimberMotor = new LazyCANSparkMax(Constants.Climber.kRightClimberMotorID, MotorType.kBrushless);
-
-        this.gyro = gyro;
     }
 
     public void setLeftClimberSpeed(double speed) {
@@ -63,6 +58,14 @@ public class ClimberIOReal implements ClimberIO {
     public void stop() {
         stopLeftClimber();
         stopRightClimber();
+    }
+
+    public void setClimberUp() {
+        set(Constants.Climber.kClimberUpSpeed);
+    }
+
+    public void setClimberDown() {
+        set(Constants.Climber.kClimberDownSpeed);
     }
 
     public void updateInouts(ClimberIOInputs inputs) {

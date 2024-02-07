@@ -40,27 +40,6 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     PIDController headingController = Constants.SwerveDrive.PhysicalModel.kHeadingControllerPIDConstants.toPIDController();
 
-    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight) {
-        this.frontLeft = frontLeft;
-        this.frontRight = frontRight;
-        this.backLeft = backLeft;
-        this.backRight = backRight;
-        this.gyro = new Gyro(new GyroIONavX());
-
-        this.odometry = new SwerveDriveOdometry(
-            Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
-            this.getHeading(),
-            new SwerveModulePosition[]{
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            }
-        );
-
-        this.gyro.reset();
-    }
-
     public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
