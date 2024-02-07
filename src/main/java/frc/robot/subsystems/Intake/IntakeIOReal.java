@@ -46,6 +46,10 @@ public class IntakeIOReal implements IntakeIO {
         this.setIntakeSpeed(Constants.Intake.kIntakeInSpeed);
     }
 
+    public void giveToShooter() {
+        this.setIntakeSpeed(Constants.Intake.kGiveToShooterSpeed);
+    }
+
     public void setIntakeHold() {
         this.setIntakeSpeed(Constants.Intake.kIntakeHoldSpeed);
     }
@@ -66,8 +70,13 @@ public class IntakeIOReal implements IntakeIO {
         this.intakeMotorPID.setReference(speed, ControlType.kVelocity);
     }
 
-    public void setLifterAngle(double angleDeg) {
+    /**
+     * @param angleDeg The angle to set the lifter to
+     * @return true if the lifter is within 5 degrees of the target angle
+     */
+    public boolean setLifterAngle(double angleDeg) {
         this.lifterMotorPID.setReference(angleDeg, ControlType.kPosition);
+        return Math.abs(this.lifterMotorEncoder.getPosition() - angleDeg) < 5;
     }
 
     public void setHasPiece(boolean hasPiece) {

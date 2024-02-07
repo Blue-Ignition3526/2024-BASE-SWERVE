@@ -15,6 +15,7 @@ public interface IntakeIO {
 
     public void setIntakeOut();
     public void setIntakeIn();
+    public void giveToShooter();
 
     public void setIntakeSpeed(double speed);
     public void setIntakeSpeedRpm(double rpm);
@@ -27,7 +28,7 @@ public interface IntakeIO {
 
     public double getIntakeSpeed();
 
-    public void setLifterAngle(double angleDeg);
+    public boolean setLifterAngle(double angleDeg);
     public double getLifterAngle();
     
     public boolean hasPiece();

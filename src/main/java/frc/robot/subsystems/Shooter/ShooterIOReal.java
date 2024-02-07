@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Shooter;
 
+import static edu.wpi.first.units.Units.RPM;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -56,6 +58,10 @@ public class ShooterIOReal implements ShooterIO {
 
     public void set(double speed) {
         set(speed, speed);
+    }
+
+    public void shootSpeaker() {
+        setRpm(Constants.Shooter.kShooterSpeakerSpeed.in(RPM));
     }
 
     public void setLeftMotorRpm(double rpm) {
