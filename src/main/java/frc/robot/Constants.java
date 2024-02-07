@@ -17,6 +17,8 @@ import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
     public static final class SwerveDrive {
+        public static final int kGyroCanID = 34;
+
         public static final double kJoystickDeadband = 0.05;
         //! Physical model of the robot
         public static final class PhysicalModel {
