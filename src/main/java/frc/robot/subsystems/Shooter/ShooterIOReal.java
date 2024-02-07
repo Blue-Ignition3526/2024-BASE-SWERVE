@@ -24,6 +24,8 @@ public class ShooterIOReal implements ShooterIO {
 
     public ShooterIOReal() {
         this.leftMotor = new LazyCANSparkMax(Constants.Shooter.kLeftShooterMotorID, MotorType.kBrushless);
+        this.leftMotor.setInverted(true);
+        
         this.rightMotor = new LazyCANSparkMax(Constants.Shooter.kRightShooterMotorID, MotorType.kBrushless);
 
         this.leftPID = leftMotor.getPIDController();
@@ -91,6 +93,10 @@ public class ShooterIOReal implements ShooterIO {
 
     public double getRightMotorPercentage() {
         return rightMotor.getAppliedOutput();
+    }
+
+    public void stop() {
+        set(0);
     }
 
     public void updateInputs(ShooterIOInputs inputs) {

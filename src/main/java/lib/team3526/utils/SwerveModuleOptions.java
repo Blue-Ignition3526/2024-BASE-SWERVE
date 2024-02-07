@@ -9,9 +9,11 @@ public class SwerveModuleOptions {
     public int driveMotorID;
     public int turningMotorID;
     public String name;
+    public int driveMotorPwmPort;
+    public int turningMotorPwmPort;
 
     public SwerveModuleOptions() {}
-    public SwerveModuleOptions(double offsetRad, boolean absoluteEncoderInverted, int absoluteEncoderID, int driveMotorID, int turningMotorID, boolean driveMotorInverted, boolean turningMotorInverted, String name) {
+    public SwerveModuleOptions(double offsetRad, boolean absoluteEncoderInverted, int absoluteEncoderID, int driveMotorID, int turningMotorID, boolean driveMotorInverted, boolean turningMotorInverted, String name, int driveMotorPwmPort, int turningMotorPwmPort) {
         this.offsetRad = offsetRad;
         this.absoluteEncoderInverted = absoluteEncoderInverted;
         this.driveMotorInverted = driveMotorInverted;
@@ -20,6 +22,8 @@ public class SwerveModuleOptions {
         this.driveMotorID = driveMotorID;
         this.turningMotorID = turningMotorID;
         this.name = name;
+        this.driveMotorPwmPort = driveMotorPwmPort;
+        this.turningMotorPwmPort = turningMotorPwmPort;
     }
 
     public SwerveModuleOptions setOffsetRad(double offsetRad) {
@@ -67,6 +71,16 @@ public class SwerveModuleOptions {
         return this;
     }
 
+    public SwerveModuleOptions setDriveMotorPwmPort(int driveMotorPwmPort) {
+        this.driveMotorPwmPort = driveMotorPwmPort;
+        return this;
+    }
+
+    public SwerveModuleOptions setTurningMotorPwmPort(int turningMotorPwmPort) {
+        this.turningMotorPwmPort = turningMotorPwmPort;
+        return this;
+    }
+
     public double getOffsetRad() {
         return offsetRad;
     }
@@ -101,5 +115,13 @@ public class SwerveModuleOptions {
 
     public String getName() {
         return name;
+    }
+
+    public int getDriveMotorPwmPort() {
+        return driveMotorPwmPort;
+    }
+
+    public int getTurningMotorPwmPort() {
+        return turningMotorPwmPort;
     }
 }

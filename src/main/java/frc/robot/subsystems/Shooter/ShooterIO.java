@@ -24,6 +24,8 @@ public interface ShooterIO {
     public void setRpm(double leftRpm, double rightRpm);
     public void setRpm(double rpm);
 
+    public void stop();
+
     public double getLeftMotorRpm();
     public double getRightMotorRpm();
 

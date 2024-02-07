@@ -151,10 +151,28 @@ public final class Constants {
         public static final int kRightShooterMotorID = 31;
         public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
+        // Shooter speed
+        public static final double kShooterSpeed = -1;
+
         // Shooter motor rpm conversion
         public static final double kShooter_RpmToMechanismRpm = 3 / 1;
 
         // Shooter motor time
-        public static final double kMaxShootTime = 5;
+        public static final double kMaxShootTime = 4;
+    }
+
+    //! CLIMBER
+    public static final class Climber {
+        // Climber motor config
+        public static final int kLeftClimberMotorID = 32;
+        public static final int kRightClimberMotorID = 33;
+        public static final PIDFConstants kClimberPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+
+        // Climber speed
+        public static final double kClimberUpSpeed = 0.15;
+        public static final double kClimberDownSpeed = -kClimberUpSpeed;
+
+        // Climber motor rpm conversion
+        // public static final double kClimber_RpmToMechanismRpm = 1 / 1;
     }
 }
