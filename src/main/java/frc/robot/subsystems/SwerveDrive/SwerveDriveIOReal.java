@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro.Gyro;
-import frc.robot.subsystems.Gyro.GyroIONavX;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 
 import static edu.wpi.first.units.Units.Meters;

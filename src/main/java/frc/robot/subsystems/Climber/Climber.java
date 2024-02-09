@@ -11,7 +11,7 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Set the speed of the climber motors
+   * Set the speed of the climber motor
    * @param speed
    */
   public void set(double speed) {
@@ -19,76 +19,24 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Set the speed of the left and right climber motors
-   * @param leftSpeed
-   * @param rightSpeed
+   * Set the climber motor to go up
    */
-  public void set(double leftSpeed, double rightSpeed) {
-    io.set(leftSpeed, rightSpeed);
+  public void setClimberUp() {
+    io.setClimberUp();
   }
 
   /**
-   * Set the speed of the left climber motor
-   * @param speed
-   */
-  public void setLeftClimberUp() {
-    io.setLeftClimberUp();
-  }
-
-  /**
-   * Set the speed of the left climber motor
-   */
-  public void setLeftClimberDown() {
-    io.setLeftClimberDown();
-  }
-
-  /**
-   * Set the speed of the right climber motor
-   */
-  public void setRightClimberUp() {
-    io.setRightClimberUp();
-  }
-
-  /**
-   * Set the speed of the right climber motor
-   */
-  public void setRightClimberDown() {
-    io.setRightClimberDown();
-  }
-
-  /**
-   * Stop the left climber motor
-   */
-  public void stopLeftClimber() {
-    io.stopLeftClimber();
-  }
-
-  /**
-   * Stop the right climber motor
-   */
-  public void stopRightClimber() {
-    io.stopRightClimber();
-  }
-
-  /**
-   * Stop the climber motors
-   */
-  public void stop() {
-    io.stop();
-  }
-
-  /**
-   * Set both climbers to go down
+   * Set the climber motor to go down
    */
   public void setClimberDown() {
     io.setClimberDown();
   }
 
   /**
-   * Set both climbers to go up
+   * Stop the climber motor
    */
-  public void setClimberUp() {
-    io.setClimberUp();
+  public void stop() {
+    io.stop();
   }
 
   @Override

@@ -38,7 +38,8 @@ public class RobotContainer {
   private final Gyro m_gyro;
   private final Intake m_intake;
   private final Shooter m_shooter;
-  private final Climber m_climber;
+  private final Climber m_leftClimber;
+  private final Climber m_rightClimber;
 
   public RobotContainer() {
     if (Robot.isReal()) {
@@ -53,7 +54,8 @@ public class RobotContainer {
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
       this.m_intake = new Intake(new IntakeIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
-      this.m_climber = new Climber(new ClimberIOReal());
+      this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID));
+      this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID));
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -68,7 +70,8 @@ public class RobotContainer {
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
       this.m_intake = new Intake(null);
       this.m_shooter = new Shooter(null);
-      this.m_climber = new Climber(null);
+      this.m_leftClimber = new Climber(null);
+      this.m_rightClimber = new Climber(null);
 
       Logger.recordMetadata("Robot", "Sim");
     }
@@ -94,11 +97,8 @@ public class RobotContainer {
 
     m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
 
-    m_driverController.leftBumper().or(m_driverController.rightBumper()).whileTrue(new Climb(
-      m_climber,
-      () -> m_driverController.leftBumper().getAsBoolean(),
-      () -> m_driverController.rightBumper().getAsBoolean()
-    ));
+    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.rightStick().getAsBoolean()));
+    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> m_driverController.rightStick().getAsBoolean()));
   }
 
   public Command getAutonomousCommand() {
