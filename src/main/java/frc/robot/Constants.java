@@ -8,6 +8,7 @@ import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 import lib.team3526.constants.PIDFConstants;
+import lib.team3526.utils.CTRECANDevice;
 import lib.team3526.utils.SwerveChassis;
 import lib.team3526.utils.SwerveModuleOptions;
 
@@ -17,7 +18,7 @@ import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
     public static final class SwerveDrive {
-        public static final int kGyroCanID = 34;
+        public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
         public static final double kJoystickDeadband = 0.05;
         //! Physical model of the robot
@@ -67,7 +68,7 @@ public final class Constants {
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
                 .setOffsetDeg(72.686)
                 .setAbsoluteEncoderInverted(true)
-                .setAbsoluteEncoderID(11)
+                .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
                 .setTurningMotorID(21)
                 .setDriveMotorInverted(true)
@@ -77,7 +78,7 @@ public final class Constants {
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
                 .setOffsetDeg(-38.583984375)
                 .setAbsoluteEncoderInverted(true)
-                .setAbsoluteEncoderID(12)
+                .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
                 .setTurningMotorID(23)
                 .setDriveMotorInverted(false)
@@ -87,7 +88,7 @@ public final class Constants {
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
                 .setOffsetDeg(-56.953)
                 .setAbsoluteEncoderInverted(true)
-                .setAbsoluteEncoderID(13)
+                .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
                 .setTurningMotorID(25)
                 .setDriveMotorInverted(true)
@@ -97,7 +98,7 @@ public final class Constants {
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
                 .setOffsetDeg(-105.46875)
                 .setAbsoluteEncoderInverted(true)
-                .setAbsoluteEncoderID(14)
+                .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
                 .setTurningMotorID(27)
                 .setDriveMotorInverted(false)
@@ -188,6 +189,9 @@ public final class Constants {
         public static final double kClimberDownSpeed = -kClimberUpSpeed;
 
         // Climber motor rpm conversion
-        // public static final double kClimber_RpmToMechanismRpm = 1 / 1;
+        public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 / Centimeters.of(31).in(Centimeters);
+
+        // Max current (Used for reseting the climber)
+        public static final double kMaxCurrent = 35;
     }
 }

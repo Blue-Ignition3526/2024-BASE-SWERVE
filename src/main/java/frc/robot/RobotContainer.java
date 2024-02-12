@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.Climber.Climb;
+import frc.robot.commands.Climb;
 import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -50,7 +50,7 @@ public class RobotContainer {
       this.m_backRight = new SwerveModule(new SwerveModuleIOReal(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
       // Create the real swerve drive and initialize
-      this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroCanID));
+      this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroDevice));
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
       this.m_intake = new Intake(new IntakeIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());

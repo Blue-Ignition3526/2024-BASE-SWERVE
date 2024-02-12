@@ -2,11 +2,13 @@ package frc.robot.subsystems.Gyro;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import lib.team3526.utils.CTRECANDevice;
+
 public class GyroIOPigeon implements GyroIO {
     public Pigeon2 gyro;
 
-    public GyroIOPigeon(int canID) {
-        gyro = new Pigeon2(canID);
+    public GyroIOPigeon(CTRECANDevice device) {
+        gyro = new Pigeon2(device.getDeviceID(), device.getCanbus());
     }
 
     public double getPitch() {

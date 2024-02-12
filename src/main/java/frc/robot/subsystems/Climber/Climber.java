@@ -42,6 +42,6 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     io.periodic();
-    io.updateInouts(inputs);
+    io.updateInputs(inputs);
   }
 }
