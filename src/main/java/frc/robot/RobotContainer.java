@@ -90,7 +90,7 @@ public class RobotContainer {
       )
     );
 
-    m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
+    // m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
     
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
     m_driverController.y().whileTrue(new IntakeOut(m_intake));

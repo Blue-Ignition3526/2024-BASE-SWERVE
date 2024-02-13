@@ -11,31 +11,33 @@ import frc.robot.subsystems.Climber.Climber;
 
 public class Climb extends Command {
   Climber climber;
-  Supplier<Boolean> up;
+  boolean up;
+  Supplier<Boolean> upSupplier;
 
   public Climb(Climber climber, Supplier<Boolean> up) {
     this.climber = climber;
-    this.up = up;
-
+    this.upSupplier = up;
     addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.up = this.upSupplier.get();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (up.get()) climber.setClimberDown();
+    if (up) climber.setClimberDown();
     else climber.setClimberUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (up.get()) climber.setClimberHold();
-    else climber.stop();
+    // if (up) climber.setClimberHold();
+    climber.stop();
   }
 
   // Returns true when the command should end.

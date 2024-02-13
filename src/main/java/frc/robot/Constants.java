@@ -122,10 +122,10 @@ public final class Constants {
     //! INTAKE
     public static final class Intake {
         // Speeds
-        public static final double kIntakeOutSpeed = -0.5;
-        public static final double kIntakeInSpeed = 0.25;
+        public static final double kIntakeOutSpeed = -0.75;
+        public static final double kIntakeInSpeed = 0.5;
         public static final double kIntakeHoldSpeed = 0.02;
-        public static final double kGiveToShooterSpeed = -0.2;
+        public static final double kGiveToShooterSpeed = -0.5;
         
         // Intake motor config
         public static final int kintakeMotorID = 36;
