@@ -185,8 +185,9 @@ public final class Constants {
         public static final PIDFConstants kClimberPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         // Climber speed
-        public static final double kClimberUpSpeed = 0.15;
-        public static final double kClimberDownSpeed = -kClimberUpSpeed;
+        public static final double kClimberUpSpeed = 0.75;
+        public static final double kClimberDownSpeed = -0.15;
+        public static final double kClimberHoldSpeed = kClimberDownSpeed / 2;
 
         // Climber motor rpm conversion
         public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 / Centimeters.of(31).in(Centimeters);

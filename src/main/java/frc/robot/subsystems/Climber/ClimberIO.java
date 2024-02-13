@@ -14,12 +14,14 @@ public interface ClimberIO {
 
     Measure<Distance> getExtension();
     double getCurrent();
-    double resetEncoder();
+    void resetEncoder();
 
     void set(double speed);
 
     void setClimberUp();
     void setClimberDown();
+
+    void setClimberHold();
 
     void stop();
 

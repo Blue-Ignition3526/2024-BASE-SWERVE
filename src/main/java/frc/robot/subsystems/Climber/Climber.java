@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Climber;
 
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -37,6 +39,37 @@ public class Climber extends SubsystemBase {
    */
   public void stop() {
     io.stop();
+  }
+
+  /**
+   * Get the extension of the climber
+   * @return
+   */
+  public Measure<Distance> getExtension() {
+    return io.getExtension();
+  }
+
+  /**
+   * Get the current of the climber motor
+   * @return
+   */
+  public double getCurrent() {
+    return io.getCurrent();
+  }
+
+  /**
+   * Reset the encoder of the climber motor
+   * @return
+   */
+  public void resetEncoder() {
+    io.resetEncoder();
+  }
+
+  /**
+   * Set the climber motor to hold in the climb position
+   */
+  public void setClimberHold() {
+    io.setClimberHold();
   }
 
   @Override

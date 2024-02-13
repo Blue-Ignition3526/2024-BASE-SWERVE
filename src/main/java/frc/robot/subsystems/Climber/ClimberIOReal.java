@@ -2,6 +2,8 @@ package frc.robot.subsystems.Climber;
 
 import static edu.wpi.first.units.Units.Centimeters;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -32,6 +34,10 @@ public class ClimberIOReal implements ClimberIO {
         climberMotor.set(Constants.Climber.kClimberDownSpeed);
     }
 
+    public void setClimberHold() {
+        climberMotor.set(Constants.Climber.kClimberHoldSpeed);
+    }
+
     public void stop() {
         climberMotor.set(0);
     }
@@ -44,13 +50,18 @@ public class ClimberIOReal implements ClimberIO {
         return climberMotor.getOutputCurrent();
     }
 
-    public double resetEncoder() {
+    public void resetEncoder() {
         climberEncoder.setPosition(0);
-        return climberEncoder.getPosition();
     }
 
     public void updateInputs(ClimberIOInputs inputs) {
         inputs.speed = climberMotor.get();
         inputs.current = climberMotor.getOutputCurrent();
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("Climber/Current", getCurrent());
+        Logger.recordOutput("Climber/Extension", getExtension());
     }
 }
