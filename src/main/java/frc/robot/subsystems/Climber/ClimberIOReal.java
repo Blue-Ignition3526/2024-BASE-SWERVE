@@ -15,8 +15,10 @@ import lib.team3526.control.LazyCANSparkMax;
 public class ClimberIOReal implements ClimberIO {
     LazyCANSparkMax climberMotor;
     RelativeEncoder climberEncoder;
+    String name;
 
-    public ClimberIOReal(int motorID) {
+    public ClimberIOReal(int motorID, String name) {
+        this.name = name;
         this.climberMotor = new LazyCANSparkMax(motorID, MotorType.kBrushless);
         this.climberEncoder = this.climberMotor.getEncoder();
         this.climberEncoder.setPositionConversionFactor(Constants.Climber.kClimber_RotationToCentimeters);
@@ -61,7 +63,7 @@ public class ClimberIOReal implements ClimberIO {
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Climber/Current", getCurrent());
-        Logger.recordOutput("Climber/Extension", getExtension());
+        Logger.recordOutput("Climber/" + name + "/Current", getCurrent());
+        Logger.recordOutput("Climber/" + name + "/Extension", getExtension());
     }
 }

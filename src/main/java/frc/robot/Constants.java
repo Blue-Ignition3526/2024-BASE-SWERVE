@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
@@ -47,11 +48,16 @@ public final class Constants {
             public static final double kTurningEncoder_RPMToRadianPerSecond = kTurningEncoder_RotationToRadian / 60.0;
 
             // Robot Without bumpers measures
-            public static final Measure<Distance> kTrackWidth = Inches.of(30);
-            public static final Measure<Distance> kWheelBase = Inches.of(30);
+            public static final Measure<Distance> kTrackWidth = Inches.of(23.08);
+            public static final Measure<Distance> kWheelBase = Inches.of(22.64);
     
             // Create a kinematics instance with the positions of the swerve modules
-            public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(SwerveChassis.sizeToModulePositions(kTrackWidth.in(Meters), kWheelBase.in(Meters)));
+            public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+                new Translation2d(kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
+                new Translation2d(kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2),
+                new Translation2d(-kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
+                new Translation2d(-kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2)
+            );
 
             // Rotation lock PIDF Constants
             public static final PIDFConstants kHeadingControllerPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
@@ -63,46 +69,46 @@ public final class Constants {
             public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
 
             //! Global offset
-            public static final Measure<Angle> kGlobalOffset = Degrees.of(-180);
+            public static final Measure<Angle> kGlobalOffset = Degrees.of(90);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
+                .setOffsetDeg(-106.083984375)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
                 .setTurningMotorID(21)
                 .setDriveMotorInverted(true)
-                .setTurningMotorInverted(true)
+                .setTurningMotorInverted(false)
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
+                .setOffsetDeg(-11)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
                 .setTurningMotorID(23)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(true)
+                .setDriveMotorInverted(true)
+                .setTurningMotorInverted(false)
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
+                .setOffsetDeg(-237.30468750000003)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
                 .setTurningMotorID(25)
                 .setDriveMotorInverted(true)
-                .setTurningMotorInverted(true)
+                .setTurningMotorInverted(false)
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
+                .setOffsetDeg(-106.083984375 - 25)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
                 .setTurningMotorID(27)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(true)
+                .setDriveMotorInverted(true)
+                .setTurningMotorInverted(false)
                 .setName("Back Right");
         }
 
@@ -179,13 +185,13 @@ public final class Constants {
     //! CLIMBER
     public static final class Climber {
         // Climber motor config
-        public static final int kLeftClimberMotorID = 32;
-        public static final int kRightClimberMotorID = 33;
-        public static final PIDFConstants kClimberPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final int kLeftClimberMotorID = 33;
+        public static final int kRightClimberMotorID = 32;
+        // public static final PIDFConstants kClimberPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         // Climber speed
         public static final double kClimberUpSpeed = 0.75;
-        public static final double kClimberDownSpeed = -0.15;
+        public static final double kClimberDownSpeed = -0.5;
         public static final double kClimberHoldSpeed = kClimberDownSpeed / 2;
 
         // Climber motor rpm conversion

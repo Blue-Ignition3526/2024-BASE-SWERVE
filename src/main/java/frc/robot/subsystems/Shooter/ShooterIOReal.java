@@ -26,8 +26,8 @@ public class ShooterIOReal implements ShooterIO {
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
 
-    Measure<Velocity<Angle>> leftTargetRpm;
-    Measure<Velocity<Angle>> rightTargetRpm ;
+    Measure<Velocity<Angle>> leftTargetRpm = RPM.zero();
+    Measure<Velocity<Angle>> rightTargetRpm = RPM.zero();
 
     public ShooterIOReal() {
         this.leftMotor = new LazyCANSparkMax(Constants.Shooter.kLeftShooterMotorID, MotorType.kBrushless);

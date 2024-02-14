@@ -54,8 +54,8 @@ public class RobotContainer {
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
       this.m_intake = new Intake(new IntakeIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
-      this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID));
-      this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID));
+      this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
+      this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -89,6 +89,14 @@ public class RobotContainer {
         () -> !m_driverController.a().getAsBoolean()
       )
     );
+
+    m_driverController.leftTrigger(0.1).whileTrue(new DriveSwerve(
+        m_swerveDrive,
+        () -> m_driverController.getLeftTriggerAxis(),
+        () -> 0.0,
+        () -> 0.0,
+        () -> false
+    ));
 
     // m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
     
