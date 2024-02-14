@@ -164,13 +164,12 @@ public final class Constants {
         public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         // Shooter speed
-        public static final double kShooterSpeed = -1;
-
+        public static final double kShooterSpeed = 5000;
         // Shooter motor rpm conversion
-        public static final double kShooter_RpmToMechanismRpm = 3 / 1;
+        public static final double kShooter_RpmToMechanismRpm = 1 / 1;
 
         // Shooter speeds
-        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(70);
+        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(kShooterSpeed*kShooter_RpmToMechanismRpm);
         public static final Measure<Velocity<Angle>> kTakeFromHumanPlayer = RPM.of(-5);
 
         // Shooter motor time

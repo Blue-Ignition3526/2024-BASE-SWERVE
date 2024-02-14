@@ -4,6 +4,11 @@ import static edu.wpi.first.units.Units.RPM;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
+
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -21,8 +26,8 @@ public class ShooterIOReal implements ShooterIO {
     RelativeEncoder leftEncoder;
     RelativeEncoder rightEncoder;
 
-    double leftTargetRpm;
-    double rightTargetRpm;
+    Measure<Velocity<Angle>> leftTargetRpm;
+    Measure<Velocity<Angle>> rightTargetRpm ;
 
     public ShooterIOReal() {
         this.leftMotor = new LazyCANSparkMax(Constants.Shooter.kLeftShooterMotorID, MotorType.kBrushless);
@@ -44,12 +49,12 @@ public class ShooterIOReal implements ShooterIO {
     }
 
     public void setLeftMotor(double speed) {
-        this.leftTargetRpm = 0;
+        this.leftTargetRpm = RPM.of(0);
         leftMotor.set(speed);
     }
 
     public void setRightMotor(double speed) {
-        this.rightTargetRpm = 0;
+        this.rightTargetRpm = RPM.of(0);
         rightMotor.set(speed);
     }
 
@@ -63,25 +68,25 @@ public class ShooterIOReal implements ShooterIO {
     }
 
     public void shootSpeaker() {
-        setRpm(Constants.Shooter.kShooterSpeakerSpeed.in(RPM));
+        setRpm(Constants.Shooter.kShooterSpeakerSpeed);
     }
 
-    public void setLeftMotorRpm(double rpm) {
+    public void setLeftMotorRpm(Measure<Velocity<Angle>> rpm) {
         this.leftTargetRpm = rpm;
-        leftPID.setReference(rpm, ControlType.kVelocity);
+        leftPID.setReference(rpm.in(RPM), ControlType.kVelocity);
     }
 
-    public void setRightMotorRpm(double rpm) {
+    public void setRightMotorRpm(Measure<Velocity<Angle>> rpm) {
         this.rightTargetRpm = rpm;
-        rightPID.setReference(rpm, ControlType.kVelocity);
+        rightPID.setReference(rpm.in(RPM), ControlType.kVelocity);
     }
 
-    public void setRpm(double leftRpm, double rightRpm) {
+    public void setRpm(Measure<Velocity<Angle>> leftRpm, Measure<Velocity<Angle>> rightRpm) {
         setLeftMotorRpm(leftRpm);
         setRightMotorRpm(rightRpm);
     }
 
-    public void setRpm(double rpm) {
+    public void setRpm(Measure<Velocity<Angle>> rpm) {
         setRpm(rpm, rpm);
     }
 
@@ -108,9 +113,9 @@ public class ShooterIOReal implements ShooterIO {
     public void updateInputs(ShooterIOInputs inputs) {
         inputs.leftPercentage = getLeftMotorPercentage();
         inputs.leftRpm = getLeftMotorRpm();
-        inputs.leftTargetRpm = leftTargetRpm;
+        inputs.leftTargetRpm = leftTargetRpm.magnitude();
         inputs.rightPercentage = getRightMotorPercentage();
         inputs.rightRpm = getRightMotorRpm();
-        inputs.rightTargetRpm = rightTargetRpm;
+        inputs.rightTargetRpm = rightTargetRpm.magnitude();
     }
 }

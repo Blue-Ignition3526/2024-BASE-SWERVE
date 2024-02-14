@@ -2,6 +2,10 @@ package frc.robot.subsystems.Shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
+
 public interface ShooterIO {
     @AutoLog
     class ShooterIOInputs {
@@ -21,10 +25,10 @@ public interface ShooterIO {
 
     public void shootSpeaker();
 
-    public void setLeftMotorRpm(double rpm);
-    public void setRightMotorRpm(double rpm);
-    public void setRpm(double leftRpm, double rightRpm);
-    public void setRpm(double rpm);
+    public void setLeftMotorRpm(Measure<Velocity<Angle>> rpm);
+    public void setRightMotorRpm(Measure<Velocity<Angle>> rpm);
+    public void setRpm(Measure<Velocity<Angle>> leftRpm, Measure<Velocity<Angle>> rightRpm);
+    public void setRpm(Measure<Velocity<Angle>> rpm);
 
     public void stop();
 

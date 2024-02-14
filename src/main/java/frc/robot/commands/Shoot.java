@@ -29,7 +29,7 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooter.set(Constants.Shooter.kShooterSpeed);
+    this.shooter.setRpm(Constants.Shooter.kShooterSpeakerSpeed);
   }
 
   // Called once the command ends or is interrupted.
