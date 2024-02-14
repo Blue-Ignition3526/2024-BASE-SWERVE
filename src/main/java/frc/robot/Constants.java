@@ -66,7 +66,7 @@ public final class Constants {
             public static final Measure<Angle> kGlobalOffset = Degrees.of(-180);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(72.686)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
@@ -76,7 +76,7 @@ public final class Constants {
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-38.583984375)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
@@ -86,7 +86,7 @@ public final class Constants {
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-56.953)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
@@ -96,7 +96,7 @@ public final class Constants {
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-105.46875)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)

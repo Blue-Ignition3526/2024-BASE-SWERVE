@@ -106,11 +106,7 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public void periodic() {
-        this.hasPiece =
-        this.hasPiece || 
-        (this.isIntaking && this.intakeMotor.getOutputCurrent() > Constants.Intake.kHasPieceCurrentThreshold);
-
-        Logger.recordOutput("Intake/HasPiece", this.hasPiece);
+        
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
         Logger.recordOutput("Intake/Speed", this.getIntakeSpeed());
         Logger.recordOutput("Intake/LifterAngle", this.getLifterAngle());
