@@ -149,6 +149,8 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     }
 
     public void periodic() {
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/MotEncoderDeg", this.getAngle().in(Degrees));
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
     }

@@ -97,8 +97,8 @@ public class RobotContainer {
 
     m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
 
-    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.rightStick().getAsBoolean()));
-    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !m_driverController.rightStick().getAsBoolean()));
+    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.a().getAsBoolean()));
+    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !m_driverController.a().getAsBoolean()));
   }
 
   public Command getAutonomousCommand() {

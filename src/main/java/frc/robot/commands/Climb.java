@@ -11,7 +11,6 @@ import frc.robot.subsystems.Climber.Climber;
 
 public class Climb extends Command {
   Climber climber;
-  boolean up;
   Supplier<Boolean> upSupplier;
 
   public Climb(Climber climber, Supplier<Boolean> up) {
@@ -22,14 +21,12 @@ public class Climb extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    this.up = this.upSupplier.get();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (up) climber.setClimberDown();
+    if (upSupplier.get()) climber.setClimberDown();
     else climber.setClimberUp();
   }
 
