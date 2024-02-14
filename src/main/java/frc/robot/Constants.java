@@ -2,7 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
@@ -14,6 +17,8 @@ import lib.team3526.utils.SwerveChassis;
 import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
+
+import javax.xml.crypto.dsig.Transform;
 
 import com.pathplanner.lib.util.PIDConstants;
 
@@ -122,7 +127,9 @@ public final class Constants {
 
     //! VISION
     public static final class Vision {
-        AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+        public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+        public static final String kLimelightName = "limelight";
+        public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     }
 
     //! INTAKE
