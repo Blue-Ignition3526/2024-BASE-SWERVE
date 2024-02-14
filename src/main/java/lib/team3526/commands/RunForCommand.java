@@ -22,7 +22,7 @@ public class RunForCommand extends Command {
 
   @Override
   public void execute() {
-    while (timer.get() < duration) command.execute();
+    while (timer.get() < duration) command.schedule();
   }
 
   @Override
