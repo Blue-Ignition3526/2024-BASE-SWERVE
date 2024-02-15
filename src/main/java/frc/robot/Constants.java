@@ -151,39 +151,46 @@ public final class Constants {
         }
     }
 
-    //! INTAKE
+    //* INTAKE
     public static final class Intake {
-        // Speeds
-        public static final double kIntakeOutSpeed = -0.75;
-        public static final double kIntakeInSpeed = 0.5;
-        public static final double kIntakeHoldSpeed = 0.02;
-        public static final double kGiveToShooterSpeed = -0.5;
-        
+
+    //////////////////////////////////////////////// ROLLERS ////////////////////////////////////////////////
+
         // Intake motor config
         public static final int kintakeMotorID = 36;
         public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
         public static final double kHasPieceCurrentThreshold = 20;
         public static final double kHasPieceTimeThreshold = 0.2;
 
-        // Intake motor rpm conversion
-        public static final double kIntake_RpmToMechanismRpm = 1 / 4;
+        // Intake gear ratio
+        public static final double kIntakeRollersGearRatio = 5.0/1.0;
 
-        // Lifter motor config
-        public static final int kLifterMotorID = 37;
-        public static final PIDFConstants kLifterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
-
-        // Lifter encoder config
-        public static final double kLifter_RotationToDegrees = 1 / 16 * 360;
+        // Speeds
+        public static final double kIntakeOutSpeed = -1500.0;
+        public static final Measure<Velocity<Angle>> kIntakeOutSpeedRpm = RPM.of(kIntakeOutSpeed*kIntakeRollersGearRatio);
+        public static final double kIntakeInSpeed = 1000.0;
+        public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
+        public static final double kIntakeHoldSpeed = 50.0;
+        public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
+        public static final double kGiveToShooterSpeed = -500.0;
+        public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
 
         // Intake times
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;
+        
+    ///////////////////////////////////////////////// LIFTER /////////////////////////////////////////////////
+        
+        // Lifter motor config
+        public static final int kLifterMotorID = 37;
+        public static final PIDFConstants kLifterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Degrees.of(180);
             public static final Measure<Angle> kLifterMinHeight = Degrees.of(0);
 
             public static final Measure<Angle> kShooterAngle = Degrees.of(180);
+            public static final Measure<Angle> kAmplifierAngle = Degrees.of(70);
             public static final Measure<Angle> kGroundAngle = Degrees.of(0);
         }
     }
@@ -198,10 +205,10 @@ public final class Constants {
         // Shooter speed
         public static final double kShooterSpeed = 5000;
         // Shooter motor rpm conversion
-        public static final double kShooter_RpmToMechanismRpm = 1 / 1;
+        public static final double kShooterGearRatio = 1.0/1.0;
 
         // Shooter speeds
-        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(kShooterSpeed*kShooter_RpmToMechanismRpm);
+        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(kShooterSpeed*kShooterGearRatio);
         public static final Measure<Velocity<Angle>> kTakeFromHumanPlayer = RPM.of(-5);
 
         // Shooter motor time

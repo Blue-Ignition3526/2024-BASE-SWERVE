@@ -13,7 +13,7 @@ import lib.team3526.control.LazyCANSparkMax;
 
 public class IntakeIOReal implements IntakeIO {
     private final LazyCANSparkMax lifterMotor;
-    private final RelativeEncoder lifterMotorEncoder;
+
     private final SparkPIDController lifterMotorPID;
 
     private final LazyCANSparkMax intakeMotor;
@@ -25,8 +25,6 @@ public class IntakeIOReal implements IntakeIO {
 
     public IntakeIOReal() {
         this.lifterMotor = new LazyCANSparkMax(Constants.Intake.kLifterMotorID, MotorType.kBrushless);
-        this.lifterMotorEncoder = this.lifterMotor.getEncoder();
-        this.lifterMotorEncoder.setPositionConversionFactor(Constants.Intake.kLifter_RotationToDegrees);
         this.lifterMotorPID = this.lifterMotor.getPIDController();
         PIDFConstants.applyToSparkPIDController(lifterMotorPID, Constants.Intake.kLifterPIDConstants);
 
@@ -34,9 +32,9 @@ public class IntakeIOReal implements IntakeIO {
         this.intakeMotorEncoder = this.intakeMotor.getEncoder();
         this.intakeMotorPID = this.intakeMotor.getPIDController();
         PIDFConstants.applyToSparkPIDController(intakeMotorPID, Constants.Intake.kIntakePIDConstants);
-
-        this.intakeMotor.setIdleMode(IdleMode.kCoast);
     }
+
+///////////////////////////// ROLLERS /////////////////////////////
 
     public void setIntakeOut() {
         this.setIntakeSpeed(Constants.Intake.kIntakeOutSpeed);
@@ -70,6 +68,18 @@ public class IntakeIOReal implements IntakeIO {
         this.intakeMotorPID.setReference(speed, ControlType.kVelocity);
     }
 
+    public void setIntakeCoast() {
+        Logger.recordOutput("Intake/Brake", false);
+        this.intakeMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void setIntakeBrake() {
+        Logger.recordOutput("Intake/Brake", true);
+        this.intakeMotor.setIdleMode(IdleMode.kBrake);
+    }
+
+///////////////////////////// LIFTER /////////////////////////////
+
     /**
      * @param angleDeg The angle to set the lifter to
      * @return true if the lifter is within 5 degrees of the target angle
@@ -95,15 +105,7 @@ public class IntakeIOReal implements IntakeIO {
         return this.hasPiece;
     }
 
-    public void setIntakeCoast() {
-        Logger.recordOutput("Intake/Brake", false);
-        this.intakeMotor.setIdleMode(IdleMode.kCoast);
-    }
 
-    public void setIntakeBrake() {
-        Logger.recordOutput("Intake/Brake", true);
-        this.intakeMotor.setIdleMode(IdleMode.kBrake);
-    }
 
     public void periodic() {
         
