@@ -61,7 +61,9 @@ public class RobotContainer {
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
-      this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {new Vision(new LimelightIO("limelight"))}, m_swerveDrive, m_gyro);
+      this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
+        new Vision(new LimelightIO("limelight"))
+      }, m_swerveDrive, m_gyro);
 
       Logger.recordMetadata("Robot", "Real");
     } else {
