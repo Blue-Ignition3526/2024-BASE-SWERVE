@@ -20,9 +20,6 @@ import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
@@ -136,20 +133,7 @@ public final class Constants {
     //! VISION
     public static final class Vision {
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        public static final String kLimelightName = "limelight";
         public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-
-        public static final class Cameras {
-            private static final int LIMELIGHT = 0;
-            private static final int PHOTONVISION = 1;
-            Map<String, Integer> camParams = new HashMap<String, Integer>() {
-                {
-                    // Name, type
-                    put("limelight", LIMELIGHT);
-                    put("photonvision", PHOTONVISION);
-                }
-            };
-        }
     }
 
     //* INTAKE

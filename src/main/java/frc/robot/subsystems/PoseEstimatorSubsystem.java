@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -14,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
-import frc.robot.subsystems.Vision.LimelightIO;
-import frc.robot.subsystems.Vision.PhotonIO;
 import frc.robot.subsystems.Vision.Vision;
 
 public class PoseEstimatorSubsystem extends SubsystemBase {
@@ -23,34 +19,17 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
   static final int PHOTONVISION = 1;
 
   SwerveDrivePoseEstimator poseEstimator;
-  Map<String, Integer> camParams;
   SwerveDrive swerve;
   Gyro gyro;
 
   Vision[] cams;
 
-  public PoseEstimatorSubsystem(Map<String, Integer> camParams, SwerveDrive swerve, Gyro gyro) {
-    this.camParams = camParams;
+  public PoseEstimatorSubsystem(Vision[] cams, SwerveDrive swerve, Gyro gyro) {
     this.swerve = swerve;
     this.gyro = gyro;
+    this.cams = cams;
 
     poseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveDrive.PhysicalModel.kDriveKinematics, gyro.getRotation2d(), swerve.getModulePositions(), Constants.Field.kInitialPoseMeters);
-
-    cams = new Vision[camParams.size()];
-  
-    
-    // loop through the dictionary and create the cameras
-    int i = 0;
-    for (Map.Entry<String, Integer> entry : camParams.entrySet()) {
-      String key = entry.getKey();
-      Integer value = entry.getValue();
-      if (value == LIMELIGHT) {
-        cams[i] = new Vision(new LimelightIO(key));
-      } else if (value == PHOTONVISION) {
-        cams[i] = new Vision(new PhotonIO(key));
-      }
-      i++;
-    }
   }
 
   public Pose2d getEstimatedPose() {
@@ -70,6 +49,10 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
       gyro.getRotation2d(),
       swerve.getModulePositions(),
       newPose);
+  }
+
+  public void resetPosition(){
+    setCurrentPose(Constants.Field.kInitialPoseMeters);
   }
 
   @Override
