@@ -42,10 +42,10 @@ public class ShooterIOReal implements ShooterIO {
         PIDFConstants.applyToSparkPIDController(rightPID, Constants.Shooter.kShooterPIDConstants);
 
         this.leftEncoder = leftMotor.getEncoder();
-        this.leftEncoder.setVelocityConversionFactor(Constants.Shooter.kShooter_RpmToMechanismRpm);
+        this.leftEncoder.setVelocityConversionFactor(Constants.Shooter.kShooterGearRatio);
 
         this.rightEncoder = rightMotor.getEncoder();
-        this.rightEncoder.setVelocityConversionFactor(Constants.Shooter.kShooter_RpmToMechanismRpm);
+        this.rightEncoder.setVelocityConversionFactor(Constants.Shooter.kShooterGearRatio);
     }
 
     public void setLeftMotor(double speed) {

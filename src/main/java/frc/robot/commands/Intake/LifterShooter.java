@@ -18,7 +18,6 @@ public class LifterShooter extends Command {
   /** Creates a new IntakeShooter. */
   public LifterShooter(Intake intake) {
     this.intake = intake;
-
     addRequirements(intake);
   }
 
@@ -29,7 +28,7 @@ public class LifterShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isFinished = intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle.in(Degrees));
+    isFinished = intake.setLifterAngle(Constants.Intake.Physical.kAmplifierAngle.in(Degrees));
   }
 
   // Called once the command ends or is interrupted.

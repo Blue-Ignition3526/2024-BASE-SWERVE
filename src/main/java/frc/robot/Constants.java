@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -158,7 +159,7 @@ public final class Constants {
 
         // Intake motor config
         public static final int kintakeMotorID = 36;
-        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.01, 0.0, 0.0);
         public static final double kHasPieceCurrentThreshold = 20;
         public static final double kHasPieceTimeThreshold = 0.2;
 
@@ -175,6 +176,10 @@ public final class Constants {
         public static final double kGiveToShooterSpeed = -500.0;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
 
+        // Lifter encoder 
+        public static final int kLifterEncoderPort = 0;
+        public static final double kLifterEncoderOffset = 0.0;
+
         // Intake times
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;
@@ -183,7 +188,7 @@ public final class Constants {
         
         // Lifter motor config
         public static final int kLifterMotorID = 37;
-        public static final PIDFConstants kLifterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final PIDController kLifterPIDController = new PIDController(0.1, 0.0, 0.0);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Degrees.of(180);

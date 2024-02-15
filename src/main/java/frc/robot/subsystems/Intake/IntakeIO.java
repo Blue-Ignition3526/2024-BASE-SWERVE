@@ -2,6 +2,10 @@ package frc.robot.subsystems.Intake;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
+
 public interface IntakeIO {
     @AutoLog
     class IntakeIOInputs {
@@ -18,7 +22,7 @@ public interface IntakeIO {
     public void giveToShooter();
 
     public void setIntakeSpeed(double speed);
-    public void setIntakeSpeedRpm(double rpm);
+    public void setIntakeSpeedRpm(Measure<Velocity<Angle>> rpm);
 
     public void setIntakeHold();
     public void stopIntake();

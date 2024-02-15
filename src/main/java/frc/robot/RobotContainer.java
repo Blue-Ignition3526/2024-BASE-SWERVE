@@ -10,6 +10,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
@@ -107,6 +108,8 @@ public class RobotContainer {
 
     m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.a().getAsBoolean()));
     m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !m_driverController.a().getAsBoolean()));
+
+    m_driverController.povUp().whileTrue(new LifterShooter(m_intake));
   }
 
   public Command getAutonomousCommand() {
