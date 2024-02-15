@@ -1,32 +1,33 @@
 package frc.robot.subsystems.Vision;
 
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.LimelightHelpers;
-
-import static frc.robot.Constants.Vision.*;
 
 import org.littletonrobotics.junction.Logger;
 
 public class LimelightIO implements VisionIO {
-    public LimelightIO() {
+    String name;
+
+    public LimelightIO(String name) {
+        this.name = name;
     }
 
-    public Pose3d getEstimatedPose() {
-        return LimelightHelpers.getBotPose3d(kLimelightName);
+    public Pose2d getEstimatedPose() {
+        return LimelightHelpers.getBotPose3d(name).toPose2d();
     }
 
     public double getTimestampSeconds() {
-        return LimelightHelpers.getLatency_Pipeline(kLimelightName);
+        return LimelightHelpers.getLatency_Pipeline(name);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
-        inputs.targetX = LimelightHelpers.getTX(kLimelightName);
-        inputs.targetY = LimelightHelpers.getTY(kLimelightName);
-        inputs.targetArea = LimelightHelpers.getTA(kLimelightName);
-        inputs.targetID = LimelightHelpers.getFiducialID(kLimelightName);
+        inputs.targetX = LimelightHelpers.getTX(name);
+        inputs.targetY = LimelightHelpers.getTY(name);
+        inputs.targetArea = LimelightHelpers.getTA(name);
+        inputs.targetID = LimelightHelpers.getFiducialID(name);
     }
 
     public void periodic() {
-        Logger.recordOutput("Vision/" + kLimelightName + "/EstimatedPose", getEstimatedPose());
+        Logger.recordOutput("Vision/" + name + "/EstimatedPose", getEstimatedPose());
     }
 }

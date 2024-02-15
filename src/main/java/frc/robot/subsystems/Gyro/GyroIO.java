@@ -2,6 +2,8 @@ package frc.robot.subsystems.Gyro;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public interface GyroIO {
     @AutoLog
     class GyroIOInputs {
@@ -33,6 +35,8 @@ public interface GyroIO {
     double getAccelerationX();
     double getAccelerationY();
     double getAccelerationZ();
+
+    Rotation2d getRotation2d();
 
     void reset();
 

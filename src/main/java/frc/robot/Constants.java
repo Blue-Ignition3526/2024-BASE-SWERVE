@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,12 +15,12 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.utils.CTRECANDevice;
-import lib.team3526.utils.SwerveChassis;
 import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
-import javax.xml.crypto.dsig.Transform;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.pathplanner.lib.util.PIDConstants;
 
@@ -125,11 +127,28 @@ public final class Constants {
         }
     }
 
+    //! FIELD
+    public static final class Field {
+        public static final Pose2d kInitialPoseMeters = new Pose2d(new Translation2d(0, 0), new Rotation2d(0, 0));
+    }
+
     //! VISION
     public static final class Vision {
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         public static final String kLimelightName = "limelight";
         public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
+        public static final class Cameras {
+            private static final int LIMELIGHT = 0;
+            private static final int PHOTONVISION = 1;
+            Map<String, Integer> camParams = new HashMap<String, Integer>() {
+                {
+                    // Name, type
+                    put("limelight", LIMELIGHT);
+                    put("photonvision", PHOTONVISION);
+                }
+            };
+        }
     }
 
     //! INTAKE

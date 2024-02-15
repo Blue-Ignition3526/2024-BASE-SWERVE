@@ -2,7 +2,7 @@ package frc.robot.subsystems.Vision;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
 
 public interface VisionIO {
     @AutoLog
@@ -13,7 +13,7 @@ public interface VisionIO {
         public double targetID;
     }
 
-    Pose3d getEstimatedPose();
+    Pose2d getEstimatedPose();
     double getTimestampSeconds();
 
     void updateInputs(VisionIOInputs inputs);

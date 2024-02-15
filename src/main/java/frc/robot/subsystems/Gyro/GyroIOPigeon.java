@@ -2,6 +2,7 @@ package frc.robot.subsystems.Gyro;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import lib.team3526.utils.CTRECANDevice;
 
 public class GyroIOPigeon implements GyroIO {
@@ -47,6 +48,10 @@ public class GyroIOPigeon implements GyroIO {
         return gyro.getAccelerationZ().refresh().getValue();
     }
 
+    public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(getYaw());
+    }
+    
     public void reset() {
         // Reset the gyro to 0 degrees
         new Thread(() -> {

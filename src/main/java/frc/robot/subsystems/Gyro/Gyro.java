@@ -6,6 +6,7 @@ package frc.robot.subsystems.Gyro;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase {
@@ -89,6 +90,10 @@ public class Gyro extends SubsystemBase {
    */
   public double getAccelerationZ() {
     return io.getAccelerationZ();
+  }
+
+  public Rotation2d getRotation2d() {
+    return io.getRotation2d();
   }
 
   /**

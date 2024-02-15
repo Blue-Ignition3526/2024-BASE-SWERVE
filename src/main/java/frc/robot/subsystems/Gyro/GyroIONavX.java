@@ -1,6 +1,8 @@
 package frc.robot.subsystems.Gyro;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.I2C;
 
 public class GyroIONavX implements GyroIO {
@@ -44,6 +46,10 @@ public class GyroIONavX implements GyroIO {
 
     public double getAccelerationZ() {
         return gyro.getRawAccelZ();
+    }
+
+    public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(getYaw());
     }
 
     public void reset() {

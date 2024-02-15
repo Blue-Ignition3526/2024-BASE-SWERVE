@@ -7,27 +7,27 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
 
 public class PhotonIO implements VisionIO {
     PhotonCamera camera;
     PhotonPoseEstimator poseEstimator;
     double lastEstTimestamp = 0;
 
-    public PhotonIO(String cameraName) {
-        camera = new PhotonCamera(cameraName);
+    public PhotonIO(String name) {
+        camera = new PhotonCamera(name);
         poseEstimator = new PhotonPoseEstimator(kAprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, kCameraPose);
     }
 
-    public Pose3d getEstimatedGlobalPose() {
+    public Pose2d getEstimatedGlobalPose() {
         var visionEst = poseEstimator.update();
         double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
         boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
         if (newResult) lastEstTimestamp = latestTimestamp;
-        return visionEst.get().estimatedPose;
+        return visionEst.get().estimatedPose.toPose2d();
     }
 
-    public Pose3d getEstimatedPose() {
+    public Pose2d getEstimatedPose() {
         return getEstimatedGlobalPose();
     }
 

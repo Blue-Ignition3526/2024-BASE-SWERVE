@@ -4,8 +4,7 @@
 
 package frc.robot.subsystems.Vision;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Pose2d;import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
   VisionIO io;
@@ -21,7 +20,11 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public Pose3d getEstimatedPose() {
+  public Pose2d getEstimatedPose() {
     return io.getEstimatedPose();
+  }
+
+  public double getTimestampSeconds() {
+    return io.getTimestampSeconds();
   }
 }
