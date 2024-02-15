@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.control.LazyCANSparkMax;
@@ -49,6 +50,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         this.driveEncoder = this.driveMotor.getEncoder();
         this.driveEncoder.setPositionConversionFactor(Constants.SwerveDrive.PhysicalModel.kDriveEncoder_RotationToMeter); 
         this.driveEncoder.setVelocityConversionFactor(Constants.SwerveDrive.PhysicalModel.kDriveEncoder_RPMToMeterPerSecond);
+        this.driveMotor.setInverted(options.driveMotorInverted);
 
         this.turningEncoder = this.turningMotor.getEncoder();
         this.turningEncoder.setPositionConversionFactor(Constants.SwerveDrive.PhysicalModel.kTurningEncoder_RotationToRadian); 
@@ -61,11 +63,11 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         this.turningPID.setPositionPIDWrappingEnabled(true);
 
         // Configure the absolute encoder
-        this.absoluteEncoder = new CANcoder(options.absoluteEncoderID, "*");
+        this.absoluteEncoder = new CANcoder(options.getAbsoluteEncoderCANDevice().getDeviceID(), options.getAbsoluteEncoderCANDevice().getCanbus());
         this.absoluteEncoder.getConfigurator().apply(
             new MagnetSensorConfigs()
-            .withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
-            .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
+                .withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
+                .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
         );
 
         // Reset the encoders
@@ -73,7 +75,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     }
 
     public Measure<Angle> getAbsoluteEncoderPosition() {
-        return Radians.of((absoluteEncoder.getPosition().refresh().getValue() * 2 * Math.PI) % (2 * Math.PI) * (this.options.absoluteEncoderInverted ? -1.0 : 1.0));
+        return Radians.of((absoluteEncoder.getAbsolutePosition().refresh().getValue() * 2 * Math.PI) % (2 * Math.PI) * (this.options.absoluteEncoderInverted ? -1.0 : 1.0));
     }
 
     public void resetDriveEncoder() {
@@ -148,9 +150,15 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         inputs.distance = this.driveEncoder.getPosition();
     }
 
+    double lastResetTime = Timer.getFPGATimestamp();
     public void periodic() {
-        Logger.recordOutput("SwerveDrive/" + this.getName() + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
+        if (Timer.getFPGATimestamp() - lastResetTime > 1.0) {
+            // resetTurningEncoder();
+            lastResetTime = Timer.getFPGATimestamp();
+        }
+
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/MotEncoderDeg", this.getAngle().in(Degrees));
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
     }

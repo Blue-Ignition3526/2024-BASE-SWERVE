@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro.Gyro;
-import frc.robot.subsystems.Gyro.GyroIONavX;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 
 import static edu.wpi.first.units.Units.Meters;
@@ -39,27 +38,6 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     double headingTarget = 0;
 
     PIDController headingController = Constants.SwerveDrive.PhysicalModel.kHeadingControllerPIDConstants.toPIDController();
-
-    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight) {
-        this.frontLeft = frontLeft;
-        this.frontRight = frontRight;
-        this.backLeft = backLeft;
-        this.backRight = backRight;
-        this.gyro = new Gyro(new GyroIONavX());
-
-        this.odometry = new SwerveDriveOdometry(
-            Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
-            this.getHeading(),
-            new SwerveModulePosition[]{
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            }
-        );
-
-        this.gyro.reset();
-    }
 
     public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
         this.frontLeft = frontLeft;

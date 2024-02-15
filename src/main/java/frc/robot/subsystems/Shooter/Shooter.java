@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -26,19 +29,19 @@ public class Shooter extends SubsystemBase {
     io.set(speed);
   }
 
-  public void setLeftMotorRpm(double rpm) {
+  public void setLeftMotorRpm(Measure<Velocity<Angle>> rpm) {
     io.setLeftMotorRpm(rpm);
   }
 
-  public void setRightMotorRpm(double rpm) {
+  public void setRightMotorRpm(Measure<Velocity<Angle>> rpm) {
     io.setRightMotorRpm(rpm);
   }
 
-  public void setRpm(double leftRpm, double rightRpm) {
+  public void setRpm(Measure<Velocity<Angle>> leftRpm, Measure<Velocity<Angle>> rightRpm) {
     io.setRpm(leftRpm, rightRpm);
   }
 
-  public void setRpm(double rpm) {
+  public void setRpm(Measure<Velocity<Angle>> rpm) {
     io.setRpm(rpm);
   }
 

@@ -35,19 +35,25 @@ public class InAndOut extends Command {
     if (!intake.hasPiece()){
       isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kGroundAngle.in(Degrees));
       intake.setIntakeIn();
-      
-    }
-    if(intake.hasPiece()){
-        isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle.in(Degrees));
+    } else {
+      isInPosition = intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle.in(Degrees));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (intake.hasPiece() && Math.abs(intake.getLifterAngle() - Constants.Intake.Physical.kShooterAngle.in(Degrees)) < 5){
+    if (intake.hasPiece() && isInPosition){
       shooter.shootSpeaker();
       intake.giveToShooter();
+
+      new Thread(() -> {
+        try {
+          Thread.sleep(1000);
+          intake.stopIntake();
+          shooter.stop();
+        } catch (InterruptedException e) {System.out.println(e.getStackTrace());}
+      }).start();
     }
   }
 

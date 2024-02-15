@@ -1,72 +1,69 @@
 package frc.robot.subsystems.Climber;
 
+import static edu.wpi.first.units.Units.Centimeters;
+
+import org.littletonrobotics.junction.Logger;
+
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
 import frc.robot.Constants;
-import frc.robot.subsystems.Gyro.Gyro;
 import lib.team3526.control.LazyCANSparkMax;
 
 public class ClimberIOReal implements ClimberIO {
-    LazyCANSparkMax leftClimberMotor;
-    LazyCANSparkMax rightClimberMotor;
+    LazyCANSparkMax climberMotor;
+    RelativeEncoder climberEncoder;
+    String name;
 
-    Gyro gyro;
-
-    public ClimberIOReal(Gyro gyro) {
-        leftClimberMotor = new LazyCANSparkMax(Constants.Climber.kLeftClimberMotorID, MotorType.kBrushless);
-        rightClimberMotor = new LazyCANSparkMax(Constants.Climber.kRightClimberMotorID, MotorType.kBrushless);
-
-        this.gyro = gyro;
-    }
-
-    public void setLeftClimberSpeed(double speed) {
-        leftClimberMotor.set(speed);
-    }
-
-    public void setRightClimberSpeed(double speed) {
-        rightClimberMotor.set(speed);
-    }
-
-    public void set(double leftSpeed, double rightSpeed) {
-        setLeftClimberSpeed(leftSpeed);
-        setRightClimberSpeed(rightSpeed);
+    public ClimberIOReal(int motorID, String name) {
+        this.name = name;
+        this.climberMotor = new LazyCANSparkMax(motorID, MotorType.kBrushless);
+        this.climberEncoder = this.climberMotor.getEncoder();
+        this.climberEncoder.setPositionConversionFactor(Constants.Climber.kClimber_RotationToCentimeters);
     }
 
     public void set(double speed) {
-        set(speed, speed);
+        climberMotor.set(speed);
     }
 
-    public void setLeftClimberUp() {
-        setLeftClimberSpeed(Constants.Climber.kClimberUpSpeed);
+    public void setClimberUp() {
+        climberMotor.set(Constants.Climber.kClimberUpSpeed);
     }
 
-    public void setLeftClimberDown() {
-        setLeftClimberSpeed(Constants.Climber.kClimberDownSpeed);
+    public void setClimberDown() {
+        climberMotor.set(Constants.Climber.kClimberDownSpeed);
     }
 
-    public void setRightClimberUp() {
-        setRightClimberSpeed(Constants.Climber.kClimberUpSpeed);
-    }
-
-    public void setRightClimberDown() {
-        setRightClimberSpeed(Constants.Climber.kClimberDownSpeed);
-    }
-
-    public void stopLeftClimber() {
-        setLeftClimberSpeed(0);
-    }
-
-    public void stopRightClimber() {
-        setRightClimberSpeed(0);
+    public void setClimberHold() {
+        climberMotor.set(Constants.Climber.kClimberHoldSpeed);
     }
 
     public void stop() {
-        stopLeftClimber();
-        stopRightClimber();
+        climberMotor.set(0);
     }
 
-    public void updateInouts(ClimberIOInputs inputs) {
-        inputs.leftClimberSpeed = leftClimberMotor.get();
-        inputs.rightClimberSpeed = rightClimberMotor.get();
+    public Measure<Distance> getExtension() {
+        return Centimeters.of(this.climberEncoder.getPosition());
+    }
+
+    public double getCurrent() {
+        return climberMotor.getOutputCurrent();
+    }
+
+    public void resetEncoder() {
+        climberEncoder.setPosition(0);
+    }
+
+    public void updateInputs(ClimberIOInputs inputs) {
+        inputs.speed = climberMotor.get();
+        inputs.current = climberMotor.getOutputCurrent();
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("Climber/" + name + "/Current", getCurrent());
+        Logger.recordOutput("Climber/" + name + "/Extension", getExtension());
     }
 }

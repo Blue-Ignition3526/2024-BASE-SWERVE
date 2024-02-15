@@ -2,23 +2,21 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Intake;
+package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.Degrees;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Climber.Climber;
 
-public class LifterShooter extends Command {
-  Intake intake;
+public class Climb extends Command {
+  Climber climber;
+  Supplier<Boolean> upSupplier;
 
-  boolean isFinished = false;
-
-  /** Creates a new IntakeShooter. */
-  public LifterShooter(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public Climb(Climber climber, Supplier<Boolean> up) {
+    this.climber = climber;
+    this.upSupplier = up;
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
@@ -28,16 +26,20 @@ public class LifterShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isFinished = intake.setLifterAngle(Constants.Intake.Physical.kAmplifierAngle.in(Degrees));
+    if (upSupplier.get()) climber.setClimberDown();
+    else climber.setClimberUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // if (up) climber.setClimberHold();
+    climber.stop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return false;
   }
 }

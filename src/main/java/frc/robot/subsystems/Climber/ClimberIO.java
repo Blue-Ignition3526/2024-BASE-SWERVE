@@ -2,28 +2,29 @@ package frc.robot.subsystems.Climber;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+
 public interface ClimberIO {
     @AutoLog
     class ClimberIOInputs {
-        double leftClimberSpeed;
-        double rightClimberSpeed;
+        double speed;
+        double current;
     }
 
-    void setLeftClimberSpeed(double speed);
-    void setRightClimberSpeed(double speed);
-    void set(double leftSpeed, double rightSpeed);
+    Measure<Distance> getExtension();
+    double getCurrent();
+    void resetEncoder();
+
     void set(double speed);
 
-    void setLeftClimberUp();
-    void setLeftClimberDown();
+    void setClimberUp();
+    void setClimberDown();
 
-    void setRightClimberUp();
-    void setRightClimberDown();
+    void setClimberHold();
 
-    void stopLeftClimber();
-    void stopRightClimber();
     void stop();
 
-    void updateInouts(ClimberIOInputs inputs);
+    void updateInputs(ClimberIOInputs inputs);
     public default void periodic() {};
 }

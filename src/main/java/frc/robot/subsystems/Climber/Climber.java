@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Climber;
 
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -11,7 +13,7 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Set the speed of the climber motors
+   * Set the speed of the climber motor
    * @param speed
    */
   public void set(double speed) {
@@ -19,67 +21,60 @@ public class Climber extends SubsystemBase {
   }
 
   /**
-   * Set the speed of the left and right climber motors
-   * @param leftSpeed
-   * @param rightSpeed
+   * Set the climber motor to go up
    */
-  public void set(double leftSpeed, double rightSpeed) {
-    io.set(leftSpeed, rightSpeed);
+  public void setClimberUp() {
+    io.setClimberUp();
   }
 
   /**
-   * Set the speed of the left climber motor
-   * @param speed
+   * Set the climber motor to go down
    */
-  public void setLeftClimberUp() {
-    io.setLeftClimberUp();
+  public void setClimberDown() {
+    io.setClimberDown();
   }
 
   /**
-   * Set the speed of the left climber motor
-   */
-  public void setLeftClimberDown() {
-    io.setLeftClimberDown();
-  }
-
-  /**
-   * Set the speed of the right climber motor
-   */
-  public void setRightClimberUp() {
-    io.setRightClimberUp();
-  }
-
-  /**
-   * Set the speed of the right climber motor
-   */
-  public void setRightClimberDown() {
-    io.setRightClimberDown();
-  }
-
-  /**
-   * Stop the left climber motor
-   */
-  public void stopLeftClimber() {
-    io.stopLeftClimber();
-  }
-
-  /**
-   * Stop the right climber motor
-   */
-  public void stopRightClimber() {
-    io.stopRightClimber();
-  }
-
-  /**
-   * Stop the climber motors
+   * Stop the climber motor
    */
   public void stop() {
     io.stop();
   }
 
+  /**
+   * Get the extension of the climber
+   * @return
+   */
+  public Measure<Distance> getExtension() {
+    return io.getExtension();
+  }
+
+  /**
+   * Get the current of the climber motor
+   * @return
+   */
+  public double getCurrent() {
+    return io.getCurrent();
+  }
+
+  /**
+   * Reset the encoder of the climber motor
+   * @return
+   */
+  public void resetEncoder() {
+    io.resetEncoder();
+  }
+
+  /**
+   * Set the climber motor to hold in the climb position
+   */
+  public void setClimberHold() {
+    io.setClimberHold();
+  }
+
   @Override
   public void periodic() {
     io.periodic();
-    io.updateInouts(inputs);
+    io.updateInputs(inputs);
   }
 }

@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Intake;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -50,7 +53,7 @@ public class Intake extends SubsystemBase {
    * Sets the intake to a specific speed in RPM
    * @param rpm the speed to set the intake to
    */
-  public void setIntakeSpeedRpm(double rpm) {
+  public void setIntakeSpeedRpm(Measure<Velocity<Angle>> rpm) {
     io.setIntakeSpeedRpm(rpm);
   }
 
