@@ -175,6 +175,9 @@ public final class Constants {
         // Lifter encoder config
         public static final double kLifter_RotationToDegrees = 1 / 16 * 360;
 
+        // Lifter encoder port
+        public static final int kLifterEncoderPort = 0;
+
         // Intake times
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;

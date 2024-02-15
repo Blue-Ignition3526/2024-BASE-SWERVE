@@ -7,6 +7,8 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.control.LazyCANSparkMax;
@@ -15,6 +17,8 @@ public class IntakeIOReal implements IntakeIO {
     private final LazyCANSparkMax lifterMotor;
     private final RelativeEncoder lifterMotorEncoder;
     private final SparkPIDController lifterMotorPID;
+
+    private final DutyCycleEncoder lifterEncoder;
 
     private final LazyCANSparkMax intakeMotor;
     private final RelativeEncoder intakeMotorEncoder;
@@ -35,7 +39,7 @@ public class IntakeIOReal implements IntakeIO {
         this.intakeMotorPID = this.intakeMotor.getPIDController();
         PIDFConstants.applyToSparkPIDController(intakeMotorPID, Constants.Intake.kIntakePIDConstants);
 
-        this.intakeMotor.setIdleMode(IdleMode.kCoast);
+        this.lifterEncoder = new DutyCycleEncoder(new DigitalInput(Constants.Intake.kLifterEncoderPort));
     }
 
     public void setIntakeOut() {
