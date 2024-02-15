@@ -61,7 +61,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         this.turningPID.setPositionPIDWrappingEnabled(true);
 
         // Configure the absolute encoder
-        this.absoluteEncoder = new CANcoder(options.absoluteEncoderID);
+        this.absoluteEncoder = new CANcoder(options.absoluteEncoderID, "*");
         this.absoluteEncoder.getConfigurator().apply(
             new MagnetSensorConfigs()
             .withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
@@ -149,6 +149,8 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     }
 
     public void periodic() {
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
+        Logger.recordOutput("SwerveDrive/" + this.getName() + "/MotEncoderDeg", this.getAngle().in(Degrees));
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
         Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
     }

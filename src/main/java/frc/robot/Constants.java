@@ -62,10 +62,10 @@ public final class Constants {
             public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
 
             //! Global offset
-            public static final Measure<Angle> kGlobalOffset = Degrees.of(-180);
+            public static final Measure<Angle> kGlobalOffset = Degrees.of(0);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(72.686)
+                .setOffsetDeg(110.03906249999999)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderID(11)
                 .setDriveMotorID(22)
@@ -75,7 +75,7 @@ public final class Constants {
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-38.583984375)
+                .setOffsetDeg(131.92382812500009)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderID(12)
                 .setDriveMotorID(24)
@@ -85,7 +85,7 @@ public final class Constants {
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-56.953)
+                .setOffsetDeg(234.58007812500009)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderID(13)
                 .setDriveMotorID(26)
@@ -95,7 +95,7 @@ public final class Constants {
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-105.46875)
+                .setOffsetDeg(12.041015625000094)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderID(14)
                 .setDriveMotorID(28)
@@ -121,7 +121,7 @@ public final class Constants {
     //! INTAKE
     public static final class Intake {
         // Speeds
-        public static final double kIntakeOutSpeed = -0.5;
+        public static final double kIntakeOutSpeed = -0.2;
         public static final double kIntakeInSpeed = 0.25;
         public static final double kIntakeHoldSpeed = 0.02;
         public static final double kGiveToShooterSpeed = -0.2;
