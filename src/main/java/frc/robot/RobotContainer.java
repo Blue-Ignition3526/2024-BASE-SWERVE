@@ -15,6 +15,7 @@ import frc.robot.commands.Intake.LifterAmp;
 import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
+import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Gyro.Gyro;
@@ -28,6 +29,8 @@ import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
+import frc.robot.subsystems.Vision.LimelightIO;
+import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
 public class RobotContainer {
@@ -45,6 +48,7 @@ public class RobotContainer {
   private final Shooter m_shooter;
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
+  private final PoseEstimatorSubsystem m_poseEstimator;
 
   public RobotContainer() {
     if (Robot.isReal()) {
@@ -61,6 +65,9 @@ public class RobotContainer {
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
+      this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
+        new Vision(new LimelightIO("limelight"))
+      }, m_swerveDrive, m_gyro);
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -77,6 +84,7 @@ public class RobotContainer {
       this.m_shooter = new Shooter(null);
       this.m_leftClimber = new Climber(null);
       this.m_rightClimber = new Climber(null);
+      this.m_poseEstimator = null;
 
       Logger.recordMetadata("Robot", "Sim");
     }
