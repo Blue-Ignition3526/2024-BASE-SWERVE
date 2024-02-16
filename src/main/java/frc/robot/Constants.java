@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
@@ -29,11 +31,11 @@ public final class Constants {
     public static final class SwerveDrive {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
-        public static final double kJoystickDeadband = 0.05;
+        public static final double kJoystickDeadband = 0.1;
         //! Physical model of the robot
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
-            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(20);
+            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(10);
             public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond));
 
             //! MAX ROTATIONAL SPEED (and acceleration)
@@ -80,7 +82,7 @@ public final class Constants {
             public static final Measure<Angle> kGlobalOffset = Degrees.of(0);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(110.03906249999999)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
@@ -90,7 +92,7 @@ public final class Constants {
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(131.92382812500009)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
@@ -100,7 +102,7 @@ public final class Constants {
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(234.58007812500009)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
@@ -110,7 +112,7 @@ public final class Constants {
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(12.041015625000094)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
@@ -178,7 +180,7 @@ public final class Constants {
 
         // Lifter encoder 
         public static final int kLifterEncoderPort = 0;
-        public static final double kLifterEncoderOffset = 0.0;
+        public static final double kLifterEncoderOffset = 0.3626;
 
         // Intake times
         public static final double kMaxOuttakeTime = 3;
@@ -188,15 +190,15 @@ public final class Constants {
         
         // Lifter motor config
         public static final int kLifterMotorID = 37;
-        public static final PIDController kLifterPIDController = new PIDController(0.1, 0.0, 0.0);
+        public static final PIDController kLifterPIDController = new PIDController(0.0, 0.0, 0.0);
 
         public static final class Physical {
-            public static final Measure<Angle> kLifterMaxHeight = Degrees.of(180);
+            public static final Measure<Angle> kLifterMaxHeight = Degrees.of(185);
             public static final Measure<Angle> kLifterMinHeight = Degrees.of(0);
 
-            public static final Measure<Angle> kShooterAngle = Degrees.of(180);
+            public static final Measure<Angle> kShooterAngle = Degrees.of(0);
             public static final Measure<Angle> kAmplifierAngle = Degrees.of(70);
-            public static final Measure<Angle> kGroundAngle = Degrees.of(0);
+            public static final Measure<Angle> kGroundAngle = Degrees.of(185);
         }
     }
 
@@ -205,7 +207,7 @@ public final class Constants {
         // Shooter motor config
         public static final int kLeftShooterMotorID = 30;
         public static final int kRightShooterMotorID = 31;
-        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.5, 0.0, 0.1);
 
         // Shooter speed
         public static final double kShooterSpeed = 5000;

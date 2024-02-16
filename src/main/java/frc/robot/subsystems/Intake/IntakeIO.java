@@ -15,6 +15,7 @@ public interface IntakeIO {
         double lifterAngle;
 
         boolean hasPiece;
+        Measure<Angle> desiredAngle;
     }
 
     public void setIntakeOut();
@@ -32,7 +33,7 @@ public interface IntakeIO {
 
     public double getIntakeSpeed();
 
-    public boolean setLifterAngle(double angleDeg);
+    public void setLifterAngle(Measure<Angle> angleDeg);
     public double getLifterAngle();
     
     public boolean hasPiece();

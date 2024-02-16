@@ -2,16 +2,19 @@ package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
-import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.LifterAmp;
 import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
+import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Gyro.Gyro;
@@ -29,6 +32,7 @@ import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
 public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(0);
+  private final CommandXboxController m_operatorController = new CommandXboxController(1);
 
   private final SwerveModule m_frontLeft;
   private final SwerveModule m_frontRight;
@@ -53,7 +57,7 @@ public class RobotContainer {
       // Create the real swerve drive and initialize
       this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroDevice));
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
-      this.m_intake = new Intake(new IntakeIOReal());
+      this.m_intake =  new Intake(new IntakeIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
@@ -77,6 +81,8 @@ public class RobotContainer {
       Logger.recordMetadata("Robot", "Sim");
     }
 
+    SmartDashboard.putData("SwerveDrive/ZeroHeading", new ZeroHeading(m_swerveDrive));
+
     configureBindings();
   }
 
@@ -91,25 +97,38 @@ public class RobotContainer {
       )
     );
 
-    m_driverController.leftTrigger(0.1).whileTrue(new DriveSwerve(
+    /* m_driverController.leftTrigger(0.1).whileTrue(new DriveSwerve(
         m_swerveDrive,
         () -> m_driverController.getLeftTriggerAxis(),
         () -> 0.0,
         () -> 0.0,
         () -> false
-    ));
+    )); */
 
     // m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
     
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
-    m_driverController.y().whileTrue(new IntakeOut(m_intake));
+    m_driverController.leftTrigger(0.1).whileTrue(new IntakeOut(m_intake));
 
     m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
 
-    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.a().getAsBoolean()));
-    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !m_driverController.a().getAsBoolean()));
+      
+    m_driverController.rightBumper().whileTrue(new Climb(m_leftClimber, () -> true));
+    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> true));
 
-    m_driverController.povUp().whileTrue(new LifterShooter(m_intake));
+    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> false));
+    m_driverController.leftBumper().whileTrue(new Climb(m_rightClimber, () -> false));
+
+    m_driverController.povUp().whileTrue(new LifterAmp(m_intake));
+    m_driverController.povDown().whileTrue(new LifterShooter(m_intake));
+
+    m_operatorController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> false));
+    m_operatorController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> false));
+
+
+
+
+    // m_driverController.povUp().whileTrue(new LifterShooter(m_intake));
   }
 
   public Command getAutonomousCommand() {

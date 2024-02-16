@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Intake.LifterGround;
+import frc.robot.commands.Intake.LifterAmp;
 import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.SwerveDrive.XFormation;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
@@ -31,7 +31,7 @@ public class SelfTest extends SequentialCommandGroup {
       new WaitCommand(2),
 
       new LogCommand("Dropping intake..."),
-      new LifterGround(intake),
+      new LifterAmp(intake),
 
       new LogCommand("Running intake..."),
       new RunForCommand(new IntakeIn(intake), 0.25),

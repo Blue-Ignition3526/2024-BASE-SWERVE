@@ -4,16 +4,12 @@
 
 package frc.robot.commands.Intake;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake.Intake;
 
 public class LifterShooter extends Command {
   Intake intake;
-
-  boolean isFinished = false;
 
   /** Creates a new IntakeShooter. */
   public LifterShooter(Intake intake) {
@@ -28,7 +24,7 @@ public class LifterShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isFinished = intake.setLifterAngle(Constants.Intake.Physical.kAmplifierAngle.in(Degrees));
+    this.intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +34,6 @@ public class LifterShooter extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return false;
   }
 }

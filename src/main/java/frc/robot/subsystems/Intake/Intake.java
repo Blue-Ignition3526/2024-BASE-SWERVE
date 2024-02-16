@@ -76,8 +76,8 @@ public class Intake extends SubsystemBase {
    * Sets the angle of the lifter
    * @param angleDeg the angle to set the lifter to
    */
-  public boolean setLifterAngle(double angleDeg) {
-    return io.setLifterAngle(angleDeg);
+  public void setLifterAngle(Measure<Angle> angleDeg) {
+    io.setLifterAngle(angleDeg);
   }
 
   /**
