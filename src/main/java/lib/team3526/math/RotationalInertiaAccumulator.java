@@ -29,6 +29,8 @@ public class RotationalInertiaAccumulator {
     }
 
     public void update(double currentYaw) {
+        reset();
+
         double currentTime = Timer.getFPGATimestamp();
 
         if (previousTime == 0) {
