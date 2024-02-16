@@ -106,8 +106,8 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getLifterAngle() {
-        double angleDegrees = (this.lifterEncoder.getAbsolutePosition()-0.3655)*360;
-        return ((Math.floor(angleDegrees*1000)) / 1000);
+        double angleDegrees = (this.lifterEncoder.getAbsolutePosition() - Constants.Intake.kLifterEncoderOffset) * 360;
+        return ((Math.floor(angleDegrees * 1000)) / 1000);
     }
 
     public double getIntakeSpeed() {
