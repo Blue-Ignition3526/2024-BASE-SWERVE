@@ -63,14 +63,17 @@ public final class Constants {
     
             // Create a kinematics instance with the positions of the swerve modules
             public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
-                new Translation2d(kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2),
-                new Translation2d(-kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
-                new Translation2d(-kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2)
+                new Translation2d(kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
+                new Translation2d(kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2),
+                new Translation2d(-kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
+                new Translation2d(-kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2)
             );
 
             // Rotation lock PIDF Constants
             public static final PIDFConstants kHeadingControllerPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+
+            // Rotational inertia constants
+            public static final double kRobotMassKg = 46;
         }
 
         //! Swerve modules configuration
@@ -138,7 +141,7 @@ public final class Constants {
     //! VISION
     public static final class Vision {
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+        public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0.5, 0.5, 0.3), new Rotation3d(0, -2, 0));
     }
 
     //* INTAKE

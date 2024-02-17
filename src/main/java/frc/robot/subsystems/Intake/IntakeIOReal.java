@@ -13,8 +13,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+<<<<<<< HEAD
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+=======
+>>>>>>> 9618aae46668865069225df3be4e386906b93a07
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
@@ -116,8 +119,8 @@ public class IntakeIOReal implements IntakeIO {
     }
 
     public double getLifterAngle() {
-        double angleDegrees = (this.lifterEncoder.getAbsolutePosition()-0.3655)*360;
-        return ((Math.floor(angleDegrees*1000)) / 1000);
+        double angleDegrees = (this.lifterEncoder.getAbsolutePosition() - Constants.Intake.kLifterEncoderOffset) * 360;
+        return ((Math.floor(angleDegrees * 1000)) / 1000);
     }
 
     public double getIntakeSpeed() {

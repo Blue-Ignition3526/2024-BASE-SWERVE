@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
+import lib.team3526.math.RotationalInertiaAccumulator;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -37,7 +38,9 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     ChassisSpeeds speeds = new ChassisSpeeds();
     double headingTarget = 0;
 
-    PIDController headingController = Constants.SwerveDrive.PhysicalModel.kHeadingControllerPIDConstants.toPIDController();
+    // PIDController headingController = Constants.SwerveDrive.PhysicalModel.kHeadingControllerPIDConstants.toPIDController();
+
+    RotationalInertiaAccumulator rotationalInertiaAccumulator = new RotationalInertiaAccumulator(Constants.SwerveDrive.PhysicalModel.kRobotMassKg);
 
     public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
         this.frontLeft = frontLeft;
@@ -210,8 +213,14 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public void periodic() {
+        // Update inertia acculumator
+        rotationalInertiaAccumulator.update(this.getHeading().getRadians());
+
+        // Record outputs
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());
         Logger.recordOutput("SwerveDrive/RobotHeadingDeg", this.getHeading().getDegrees());
+
+        Logger.recordOutput("SwerveDrive/RobotRotationalInertia", rotationalInertiaAccumulator.getTotalRotationalInertia());
         
         Logger.recordOutput("SwerveDrive/RobotPose", this.getPose());
 
