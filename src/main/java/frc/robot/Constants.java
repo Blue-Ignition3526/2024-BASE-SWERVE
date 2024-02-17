@@ -2,8 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
@@ -145,7 +148,7 @@ public final class Constants {
 
         // Intake motor config
         public static final int kintakeMotorID = 36;
-        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.01, 0.0, 0.0);
+        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.00001, 0.0, 0.0,0.0001);
         public static final double kHasPieceCurrentThreshold = 20;
         public static final double kHasPieceTimeThreshold = 0.2;
 
@@ -153,13 +156,13 @@ public final class Constants {
         public static final double kIntakeRollersGearRatio = 5.0/1.0;
 
         // Speeds
-        public static final double kIntakeOutSpeed = -1500.0;
+        public static final double kIntakeOutSpeed = -1250.0;
         public static final Measure<Velocity<Angle>> kIntakeOutSpeedRpm = RPM.of(kIntakeOutSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeInSpeed = 1000.0;
         public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeHoldSpeed = 50.0;
         public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
-        public static final double kGiveToShooterSpeed = -500.0;
+        public static final double kGiveToShooterSpeed = -1000.0;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
 
         // Lifter encoder 
@@ -174,7 +177,9 @@ public final class Constants {
         
         // Lifter motor config
         public static final int kLifterMotorID = 37;
-        public static final PIDController kLifterPIDController = new PIDController(0.0, 0.0, 0.0);
+        public static final Constraints kLifterConstraints = new Constraints(2, 2);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.15, 0.0, 0.0, kLifterConstraints);
+        public static final double kLifterFeedForward = 5;
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Degrees.of(185);
@@ -191,7 +196,7 @@ public final class Constants {
         // Shooter motor config
         public static final int kLeftShooterMotorID = 30;
         public static final int kRightShooterMotorID = 31;
-        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.5, 0.0, 0.1);
+        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.0, 0.0, 0.0);
 
         // Shooter speed
         public static final double kShooterSpeed = 5000;

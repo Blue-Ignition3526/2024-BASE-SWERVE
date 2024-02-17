@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;import edu.wpi.first.wpilibj2.command.
 
 public class Vision extends SubsystemBase {
   VisionIO io;
+  VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
+
   /** Creates a new Vision. */
   public Vision(VisionIO io) {
     this.io = io;
@@ -16,8 +18,7 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     io.periodic();
-    io.updateInputs(null);
-    // This method will be called once per scheduler run
+    io.updateInputs(inputs);
   }
 
   public Pose2d getEstimatedPose() {

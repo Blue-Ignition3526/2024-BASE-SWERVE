@@ -19,8 +19,7 @@ public class IntakeOut extends Command {
     timer.reset();
     timer.start();
 
-    intake.setIntakeBrake();
-    intake.setIntakeOut();
+    intake.giveToShooter();
   }
 
   /**
@@ -31,12 +30,11 @@ public class IntakeOut extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeCoast();
     intake.stopIntake();
   }
 
   @Override
   public boolean isFinished() {
-    return timer.get() > Constants.Intake.kMaxOuttakeTime;
+    return false;
   }
 }
