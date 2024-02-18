@@ -9,11 +9,8 @@ import edu.wpi.first.math.geometry.Pose2d;import edu.wpi.first.wpilibj2.command.
 public class Vision extends SubsystemBase {
   //! IO IMPLEMENTATION
   VisionIO io;
-<<<<<<< HEAD
-=======
 
   //! INPUTS LOG TABLE (Generated )
->>>>>>> 9618aae46668865069225df3be4e386906b93a07
   VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
 
   /** Creates a new Vision. */
@@ -24,13 +21,10 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     io.periodic();
-<<<<<<< HEAD
-=======
 
     //! AUTO-LOGGED INPUTS
     // the inputs parameters is the previously created VisionIOInputsAutoLogged object
     // the inputs object is updated with the current values of the VisionIO object
->>>>>>> 9618aae46668865069225df3be4e386906b93a07
     io.updateInputs(inputs);
   }
 

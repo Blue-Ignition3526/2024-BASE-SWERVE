@@ -205,6 +205,25 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
     }
 
+    public void resetTurningEncoders() {
+        this.frontLeft.resetTurningEncoder();
+        this.frontRight.resetTurningEncoder();
+        this.backLeft.resetTurningEncoder();
+        this.backRight.resetTurningEncoder();
+    }
+
+    public void resetDriveEncoders() {
+        this.frontLeft.resetDriveEncoder();
+        this.frontRight.resetDriveEncoder();
+        this.backLeft.resetDriveEncoder();
+        this.backRight.resetDriveEncoder();
+    }
+
+    public void resetEncoders() {
+        this.resetTurningEncoders();
+        this.resetDriveEncoders();
+    }
+
     public void updateInputs(SwerveDriveIOInputs inputs) {
         inputs.heading = this.getHeading().getDegrees();
         inputs.rotSpeed = speeds.omegaRadiansPerSecond;

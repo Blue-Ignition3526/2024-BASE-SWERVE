@@ -127,6 +127,27 @@ public class SwerveDrive extends SubsystemBase {
     io.zeroHeading();
   }
 
+  /**
+   * Resets the turning encoders of all the modules.
+   */
+  public void resetTurningEncoders() {
+    io.resetTurningEncoders();
+  }
+
+  /**
+   * Resets the drive encoders of all the modules.
+   */
+  public void resetDriveEncoders() {
+    io.resetDriveEncoders();
+  }
+
+  /**
+   * Resets the turning and drive encoders of all the modules.
+   */
+  public void resetEncoders() {
+    io.resetEncoders();
+  }
+
   @Override
   public void periodic() {
     io.periodic();

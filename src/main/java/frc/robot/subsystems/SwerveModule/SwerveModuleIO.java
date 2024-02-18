@@ -26,6 +26,10 @@ public interface SwerveModuleIO {
     SwerveModuleState getState();
     String getName();
 
+    default void resetTurningEncoder() {};
+    default void resetDriveEncoder() {};
+    default void resetEncoders() {};
+
     default void updateInputs(SwerveModuleIOInputs inputs) {};
     default void periodic() {};
 }

@@ -9,11 +9,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
-import frc.robot.commands.Intake.IntakeAmp;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
-import frc.robot.commands.Intake.LifterFloor;
 import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
@@ -119,7 +117,6 @@ public class RobotContainer {
     
     m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
     m_driverController.leftTrigger(0.1).whileTrue(new IntakeOut(m_intake));
-    m_driverController.b().whileTrue(new IntakeAmp(m_intake));
 
     m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
 
@@ -130,7 +127,6 @@ public class RobotContainer {
     m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> false));
     m_driverController.leftBumper().whileTrue(new Climb(m_rightClimber, () -> false));
 
-    m_driverController.povUp().whileTrue(new LifterFloor(m_intake));
     m_driverController.povDown().whileTrue(new LifterShooter(m_intake));
     m_driverController.povLeft().whileTrue(new LifterAmp(m_intake));
 

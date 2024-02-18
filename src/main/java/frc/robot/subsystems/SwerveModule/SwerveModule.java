@@ -66,7 +66,28 @@ public class SwerveModule extends SubsystemBase {
    */
   public SwerveModuleState getState() {
     return io.getState();
-  }  
+  }
+
+  /**
+   * Resets the turn encoder (APPLIES ABSOLUTE ENCODER POSITION)
+   */
+  public void resetTurningEncoder() {
+    io.resetTurningEncoder();
+  }
+
+  /**
+   * Resets the drive encoder (SETS TO 0 DISTANCE)
+   */
+  public void resetDriveEncoder() {
+    io.resetDriveEncoder();
+  }
+
+  /**
+   * Resets the turn and drive encoders (APPLIES ABSOLUTE ENCODER POSITION)
+   */
+  public void resetEncoders() {
+    io.resetEncoders();
+  }
 
   @Override
   public void periodic() {
