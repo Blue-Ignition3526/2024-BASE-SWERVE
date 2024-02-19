@@ -39,13 +39,13 @@ public class CustomController {
 
         switch (this.type) {
             case XBOX:
-                xboxController = new XboxController(port);
+                xboxController = new XboxController(this.port);
                 break;
             case PS4:
-                ps4Controller = new PS4Controller(port);
+                ps4Controller = new PS4Controller(this.port);
                 break;
             case PS5:
-                ps5Controller = new PS5Controller(port);
+                ps5Controller = new PS5Controller(this.port);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid Controller Type");

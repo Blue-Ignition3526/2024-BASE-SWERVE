@@ -40,8 +40,6 @@ public class RobotContainer {
 
 
   private final CustomController m_driverControllerCustom;
-  private final CommandXboxController m_driverController = new CommandXboxController(0);
-  private final CommandXboxController m_operatorController = new CommandXboxController(1);
 
   private final SwerveModule m_frontLeft;
   private final SwerveModule m_frontRight;

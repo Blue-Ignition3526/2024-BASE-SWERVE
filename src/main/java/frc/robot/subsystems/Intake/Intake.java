@@ -84,8 +84,8 @@ public class Intake extends SubsystemBase {
    * Gets the angle of the lifter
    * @return the angle of the lifter
    */
-  public double getLifterAngle() {
-    return io.getLifterAngle();
+  public double getLifterAngleRadians() {
+    return io.getLifterAngleRadians();
   }
 
   /**

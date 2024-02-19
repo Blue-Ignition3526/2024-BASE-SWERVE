@@ -2,6 +2,7 @@ package frc.robot.subsystems.Intake;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
 
 import org.littletonrobotics.junction.Logger;
 import com.revrobotics.RelativeEncoder;
@@ -10,6 +11,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
@@ -23,7 +25,7 @@ import lib.team3526.control.LazyCANSparkMax;
 public class IntakeIOReal implements IntakeIO {
     private final LazyCANSparkMax lifterMotor;
     private final ProfiledPIDController lifterMotorPID;
-    private final double lifterMotorFeedforward;
+    private final ArmFeedforward lifterMotorFeedforward;
     private final DutyCycleEncoder lifterEncoder;
 
     private final LazyCANSparkMax intakeMotor;
@@ -33,7 +35,6 @@ public class IntakeIOReal implements IntakeIO {
     private boolean hasPiece = false;
     private double setRollerSpeed = 0.0;
     private boolean isIntaking = false;
-    private double feedForward = 0.0;
     
     private Measure<Angle> desiredAngle = Degrees.of(0.0);
 
@@ -41,7 +42,7 @@ public class IntakeIOReal implements IntakeIO {
         this.lifterMotor = new LazyCANSparkMax(Constants.Intake.kLifterMotorID, MotorType.kBrushless);
         this.lifterMotor.setInverted(true);
         this.lifterMotorPID = Constants.Intake.kLifterPIDController;
-        this.lifterMotorFeedforward = Constants.Intake.kLifterFeedForward;
+        this.lifterMotorFeedforward = Constants.Intake.kLifterFeedforward;
         this.lifterEncoder = new DutyCycleEncoder(Constants.Intake.kLifterEncoderPort);
 
         this.intakeMotor = new LazyCANSparkMax(Constants.Intake.kintakeMotorID, MotorType.kBrushless);
@@ -111,9 +112,9 @@ public class IntakeIOReal implements IntakeIO {
         this.hasPiece = hasPiece;
     }
 
-    public double getLifterAngle() {
-        double angleDegrees = (this.lifterEncoder.getAbsolutePosition() - Constants.Intake.kLifterEncoderOffset) * 360;
-        return ((Math.floor(angleDegrees * 1000)) / 1000);
+    public double getLifterAngleRadians() {
+        double angleRadians = (this.lifterEncoder.getAbsolutePosition() - Constants.Intake.kLifterEncoderOffset) * (2*Math.PI);
+        return ((Math.floor(angleRadians * 1000)) / 1000);
     }
 
     public double getIntakeSpeed() {
@@ -124,22 +125,13 @@ public class IntakeIOReal implements IntakeIO {
         return this.hasPiece;
     }
 
-
-
     public void periodic() {
-        if (this.getLifterAngle() == 0.0) {
+        if (this.getLifterAngleRadians() == 0.0) {
             this.lifterMotor.setVoltage(0);
         } else {
-            if (Math.abs(this.getLifterAngle() - this.desiredAngle.in(Degrees)) > 2) {
-                if (this.getLifterAngle()<65) {
-                    this.feedForward = this.lifterMotorFeedforward;
-                } else if (this.getLifterAngle()>87) {
-                    this.feedForward = -this.lifterMotorFeedforward;
-                } else {
-                    this.feedForward = 0.175;
-                } 
-                this.lifterMotor.setVoltage( feedForward
-                    + (this.lifterMotorPID.calculate(this.getLifterAngle(), this.desiredAngle.in(Degrees))*3)
+            if (Math.abs(this.getLifterAngleRadians() - this.desiredAngle.in(Radians)) > 0.2) {
+                this.lifterMotor.setVoltage( this.lifterMotorFeedforward.calculate(this.desiredAngle.in(Radians),2)
+                    + this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Radians))
                 );
             } else {
                 this.lifterMotor.setVoltage(0);
@@ -148,12 +140,11 @@ public class IntakeIOReal implements IntakeIO {
         
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
         Logger.recordOutput("Intake/Speed", this.getIntakeSpeed());
-        Logger.recordOutput("Intake/LifterAngle", this.getLifterAngle());
+        Logger.recordOutput("Intake/LifterAngle", this.getLifterAngleRadians());
         Logger.recordOutput("Intake/Lifter", this.lifterMotor.getAppliedOutput());
         Logger.recordOutput("Intake/SetAngle", this.desiredAngle.in(Degrees));
         Logger.recordOutput("Intake/SetRollerSpeed", this.setRollerSpeed);
-        Logger.recordOutput("Intake/FeedForward", this.feedForward);
-        Logger.recordOutput("Intake/PIDOutput", this.lifterMotorPID.calculate(this.getLifterAngle(), this.desiredAngle.in(Degrees)));
+        Logger.recordOutput("Intake/PIDOutput", this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Degrees)));
 
 
         SmartDashboard.putData(this.lifterMotorPID);
@@ -163,6 +154,6 @@ public class IntakeIOReal implements IntakeIO {
         inputs.hasPiece = this.hasPiece;
         inputs.intakeCurrent = this.intakeMotor.getOutputCurrent();
         inputs.intakeSpeed = this.intakeMotor.getAppliedOutput();
-        inputs.lifterAngle = this.getLifterAngle();
+        inputs.lifterAngle = this.getLifterAngleRadians();
     }
 }

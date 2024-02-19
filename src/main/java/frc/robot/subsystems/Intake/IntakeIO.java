@@ -34,7 +34,7 @@ public interface IntakeIO {
     public double getIntakeSpeed();
 
     public void setLifterAngle(Measure<Angle> angleDeg);
-    public double getLifterAngle();
+    public double getLifterAngleRadians();
     
     public boolean hasPiece();
 
