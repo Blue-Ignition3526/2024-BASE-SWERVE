@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake.Intake;
 
-public class IntakeIn extends Command {
+public class IntakeAmp extends Command {
   private Timer timer = new Timer();
   private Intake intake;
 
-  public IntakeIn(Intake intake) {
+  public IntakeAmp(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
   }
@@ -19,7 +19,7 @@ public class IntakeIn extends Command {
     timer.reset();
     timer.start();
 
-    intake.setIntakeIn();
+    intake.setIntakeOut();
   }
   
   @Override

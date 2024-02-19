@@ -2,6 +2,8 @@ package frc.robot.subsystems.SwerveDrive;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -40,6 +42,10 @@ public interface SwerveDriveIO {
     public void configureAutoBuilder(SwerveDrive swerveDrive);
 
     public void xFormation();
+
+    public default void resetTurningEncoders() {};
+    public default void resetDriveEncoders() {};
+    public default void resetEncoders() {};
 
     public void updateInputs(SwerveDriveIOInputs inputs);
     public default void periodic() {}

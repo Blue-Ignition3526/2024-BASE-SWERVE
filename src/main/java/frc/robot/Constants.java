@@ -2,7 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -10,6 +13,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
@@ -20,20 +25,17 @@ import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
     public static final class SwerveDrive {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
-        public static final double kJoystickDeadband = 0.05;
+        public static final double kJoystickDeadband = 0.1;
         //! Physical model of the robot
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
-            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(20);
+            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(10);
             public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond));
 
             //! MAX ROTATIONAL SPEED (and acceleration)
@@ -61,14 +63,17 @@ public final class Constants {
     
             // Create a kinematics instance with the positions of the swerve modules
             public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
-                new Translation2d(kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2),
-                new Translation2d(-kWheelBase.in(Meters)/2, -kTrackWidth.in(Meters)/2),
-                new Translation2d(-kWheelBase.in(Meters)/2, kTrackWidth.in(Meters)/2)
+                new Translation2d(kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
+                new Translation2d(kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2),
+                new Translation2d(-kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
+                new Translation2d(-kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2)
             );
 
             // Rotation lock PIDF Constants
             public static final PIDFConstants kHeadingControllerPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+
+            // Rotational inertia constants
+            public static final double kRobotMassKg = 46;
         }
 
         //! Swerve modules configuration
@@ -77,10 +82,10 @@ public final class Constants {
             public static final PIDFConstants kTurningPIDConstants = new PIDFConstants(0.5);
 
             //! Global offset
-            public static final Measure<Angle> kGlobalOffset = Degrees.of(90);
+            public static final Measure<Angle> kGlobalOffset = Degrees.of(0);
 
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-106.083984375)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
@@ -90,7 +95,7 @@ public final class Constants {
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-11)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
@@ -100,7 +105,7 @@ public final class Constants {
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-237.30468750000003)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
@@ -110,7 +115,7 @@ public final class Constants {
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(-106.083984375 - 25)
+                .setOffsetDeg(0)
                 .setAbsoluteEncoderInverted(true)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
@@ -136,20 +141,7 @@ public final class Constants {
     //! VISION
     public static final class Vision {
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        public static final String kLimelightName = "limelight";
-        public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-
-        public static final class Cameras {
-            private static final int LIMELIGHT = 0;
-            private static final int PHOTONVISION = 1;
-            Map<String, Integer> camParams = new HashMap<String, Integer>() {
-                {
-                    // Name, type
-                    put("limelight", LIMELIGHT);
-                    put("photonvision", PHOTONVISION);
-                }
-            };
-        }
+        public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0.5, 0.5, 0.3), new Rotation3d(0, -2, 0));
     }
 
     //* INTAKE
@@ -159,7 +151,7 @@ public final class Constants {
 
         // Intake motor config
         public static final int kintakeMotorID = 36;
-        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.01, 0.0, 0.0);
+        public static final PIDFConstants kIntakePIDConstants = new PIDFConstants(0.00001, 0.0, 0.0,0.0001);
         public static final double kHasPieceCurrentThreshold = 20;
         public static final double kHasPieceTimeThreshold = 0.2;
 
@@ -167,18 +159,18 @@ public final class Constants {
         public static final double kIntakeRollersGearRatio = 5.0/1.0;
 
         // Speeds
-        public static final double kIntakeOutSpeed = -1500.0;
+        public static final double kIntakeOutSpeed = -1250.0;
         public static final Measure<Velocity<Angle>> kIntakeOutSpeedRpm = RPM.of(kIntakeOutSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeInSpeed = 1000.0;
         public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeHoldSpeed = 50.0;
         public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
-        public static final double kGiveToShooterSpeed = -500.0;
+        public static final double kGiveToShooterSpeed = -1000.0;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
 
         // Lifter encoder 
         public static final int kLifterEncoderPort = 0;
-        public static final double kLifterEncoderOffset = 0.0;
+        public static final double kLifterEncoderOffset = 0.3626;
 
         // Intake times
         public static final double kMaxOuttakeTime = 3;
@@ -188,15 +180,17 @@ public final class Constants {
         
         // Lifter motor config
         public static final int kLifterMotorID = 37;
-        public static final PIDController kLifterPIDController = new PIDController(0.1, 0.0, 0.0);
+        public static final Constraints kLifterConstraints = new Constraints(2, 2);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.15, 0.0, 0.0, kLifterConstraints);
+        public static final double kLifterFeedForward = 5;
 
         public static final class Physical {
-            public static final Measure<Angle> kLifterMaxHeight = Degrees.of(180);
+            public static final Measure<Angle> kLifterMaxHeight = Degrees.of(185);
             public static final Measure<Angle> kLifterMinHeight = Degrees.of(0);
 
-            public static final Measure<Angle> kShooterAngle = Degrees.of(180);
+            public static final Measure<Angle> kShooterAngle = Degrees.of(0);
             public static final Measure<Angle> kAmplifierAngle = Degrees.of(70);
-            public static final Measure<Angle> kGroundAngle = Degrees.of(0);
+            public static final Measure<Angle> kGroundAngle = Degrees.of(185);
         }
     }
 
@@ -205,7 +199,7 @@ public final class Constants {
         // Shooter motor config
         public static final int kLeftShooterMotorID = 30;
         public static final int kRightShooterMotorID = 31;
-        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
+        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.0, 0.0, 0.0);
 
         // Shooter speed
         public static final double kShooterSpeed = 5000;

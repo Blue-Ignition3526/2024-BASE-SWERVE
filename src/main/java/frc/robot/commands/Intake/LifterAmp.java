@@ -4,16 +4,18 @@
 
 package frc.robot.commands.Intake;
 
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake.Intake;
 
-public class LifterShooter extends Command {
+public class LifterAmp extends Command {
   Intake intake;
 
-  /** Creates a new IntakeShooter. */
-  public LifterShooter(Intake intake) {
+  /** Creates a new IntakeGround. */
+  public LifterAmp(Intake intake) {
     this.intake = intake;
+    
     addRequirements(intake);
   }
 
@@ -24,7 +26,7 @@ public class LifterShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
+    this.intake.setLifterAngle(Constants.Intake.Physical.kAmplifierAngle);
   }
 
   // Called once the command ends or is interrupted.
