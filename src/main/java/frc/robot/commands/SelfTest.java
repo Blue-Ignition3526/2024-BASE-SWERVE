@@ -44,7 +44,7 @@ public class SelfTest extends SequentialCommandGroup {
       new LifterShooter(intake),
 
       new LogCommand("Testing shooter..."),
-      new ParallelCommandGroup(new Shoot(shooter), new SequentialCommandGroup(new RunForCommand(new IntakeOut(intake), 0.25)))
+      new ParallelCommandGroup(new Shoot(shooter, intake), new SequentialCommandGroup(new RunForCommand(new IntakeOut(intake), 0.25)))
     );
   }
 }

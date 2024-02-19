@@ -45,19 +45,19 @@ public class IntakeIOReal implements IntakeIO {
 ///////////////////////////// ROLLERS /////////////////////////////
 
     public void setIntakeOut() {
-        this.setIntakeSpeed(Constants.Intake.kIntakeOutSpeed);
+        this.setIntakeSpeedRpm(Constants.Intake.kIntakeOutSpeedRpm);
     }
 
     public void setIntakeIn() {
-        this.setIntakeSpeed(Constants.Intake.kIntakeInSpeed);
+        this.setIntakeSpeedRpm(Constants.Intake.kIntakeInSpeedRpm);
     }
 
     public void giveToShooter() {
-        this.setIntakeSpeed(Constants.Intake.kGiveToShooterSpeed);
+        this.setIntakeSpeedRpm(Constants.Intake.kGiveToShooterSpeedRpm);
     }
 
     public void setIntakeHold() {
-        this.setIntakeSpeed(Constants.Intake.kIntakeHoldSpeed);
+        this.setIntakeSpeedRpm(Constants.Intake.kIntakeHoldSpeedRpm);
     }
 
     public void stopIntake() {

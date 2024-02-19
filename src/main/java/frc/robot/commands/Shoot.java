@@ -7,16 +7,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class Shoot extends Command {
   Shooter shooter;
+  Intake intake;
   private Timer timer = new Timer();
 
   /** Creates a new Shoot. */
-  public Shoot(Shooter shooter) {
+  public Shoot(Shooter shooter, Intake intake) {
     this.shooter = shooter;
-    addRequirements(shooter);
+    this.intake = intake;
+    addRequirements(shooter, intake);
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +38,13 @@ public class Shoot extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooter.stop();
+    if (!interrupted) {
+      while (timer.get() < 1) {
+        this.intake.stopIntake();
+        this.shooter.set(-0.7);
+      }
+      
+    }
   }
 
   // Returns true when the command should end.

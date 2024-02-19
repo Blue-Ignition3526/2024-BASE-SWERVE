@@ -11,6 +11,7 @@ import frc.robot.commands.InAndOut;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterShooter;
+import frc.robot.commands.Shooter.OnReleaseShoot;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
@@ -25,9 +26,14 @@ import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
+import lib.team3526.driveControl.CustomController;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
+
 public class RobotContainer {
+
+
+  private final CustomController m_driverControllerCustom;
   private final CommandXboxController m_driverController = new CommandXboxController(0);
 
   private final SwerveModule m_frontLeft;
@@ -75,7 +81,10 @@ public class RobotContainer {
       this.m_rightClimber = new Climber(null);
 
       Logger.recordMetadata("Robot", "Sim");
+
     }
+
+    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.CUBIC);
 
     configureBindings();
   }
@@ -84,16 +93,16 @@ public class RobotContainer {
     // Set the default command for the swerve drive
     m_swerveDrive.setDefaultCommand(new DriveSwerve(
         m_swerveDrive,
-        () -> m_driverController.getLeftY(),
-        () -> -m_driverController.getLeftX(),
-        () -> -m_driverController.getRightX(),
-        () -> !m_driverController.a().getAsBoolean()
+        () -> this.m_driverControllerCustom.getLeftY(),
+        () -> -this.m_driverControllerCustom.getLeftX(),
+        () -> -this.m_driverControllerCustom.getRightX(),
+        () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()
       )
     );
 
-    m_driverController.leftTrigger(0.1).whileTrue(new DriveSwerve(
+    this.m_driverControllerCustom.leftTrigger().whileTrue(new DriveSwerve(
         m_swerveDrive,
-        () -> m_driverController.getLeftTriggerAxis(),
+        () -> 0.7,
         () -> 0.0,
         () -> 0.0,
         () -> false
@@ -101,15 +110,15 @@ public class RobotContainer {
 
     // m_driverController.b().whileTrue(new InAndOut(m_intake, m_shooter));
     
-    m_driverController.x().toggleOnTrue(new IntakeIn(m_intake));
-    m_driverController.y().whileTrue(new IntakeOut(m_intake));
+    this.m_driverControllerCustom.leftButton().toggleOnTrue(new IntakeIn(m_intake));
+    this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_intake));
 
-    m_driverController.rightTrigger(0.1).whileTrue(new Shoot(m_shooter));
+    this.m_driverControllerCustom.rightTrigger().whileTrue(new OnReleaseShoot(m_shooter, m_intake));
 
-    m_driverController.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !m_driverController.a().getAsBoolean()));
-    m_driverController.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !m_driverController.a().getAsBoolean()));
+    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()));
 
-    m_driverController.povUp().whileTrue(new LifterShooter(m_intake));
+    this.m_driverControllerCustom.povUp().whileTrue(new LifterShooter(m_intake));
   }
 
   public Command getAutonomousCommand() {
