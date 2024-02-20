@@ -19,6 +19,7 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.utils.CTRECANDevice;
 import lib.team3526.utils.SwerveModuleOptions;
@@ -180,7 +181,7 @@ public final class Constants {
         
         // Lifter motor config
         public static final int kLifterMotorID = 37;
-        public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 1.0, 0.0);
+        public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 1.5, 0.2);
         public static final Constraints kLifterConstraints = new Constraints(2, 2);
         public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.0, 0.0, 0.0, kLifterConstraints);
         public static final double kLifterFeedForward = 5;
@@ -191,7 +192,7 @@ public final class Constants {
 
             public static final Measure<Angle> kShooterAngle = Radians.of(0);
             public static final Measure<Angle> kAmplifierAngle = Radians.of((7/18)*Math.PI);
-            public static final Measure<Angle> kGroundAngle = Radians.of((37/36)*Math.PI);
+            public static final Measure<Angle> kGroundAngle = Degrees.of(180);
         }
     }
 

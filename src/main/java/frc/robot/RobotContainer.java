@@ -2,6 +2,7 @@ package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,6 +13,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
+import frc.robot.commands.Intake.LifterFloor;
 import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.Shooter.OnReleaseShoot;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
@@ -94,7 +96,7 @@ public class RobotContainer {
 
     }
 
-    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.CUBIC);
+    this.m_driverControllerCustom = new CustomController(0, DriverStation.getJoystickIsXbox(0) ? CustomController.CustomControllerType.PS5 : CustomController.CustomControllerType.XBOX, CustomController.CustomJoystickCurve.CUBIC);
 
     configureBindings();
   }
@@ -128,6 +130,7 @@ public class RobotContainer {
     this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()));
 
     this.m_driverControllerCustom.povUp().whileTrue(new LifterShooter(m_intake));
+    this.m_driverControllerCustom.povUp().whileTrue(new LifterFloor(m_intake));
   }
 
   public Command getAutonomousCommand() {
