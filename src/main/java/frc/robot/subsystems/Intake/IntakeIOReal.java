@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.Angle;
@@ -125,18 +126,26 @@ public class IntakeIOReal implements IntakeIO {
         return this.hasPiece;
     }
 
+    public void setLifterSpeed(double speed) {
+        this.lifterMotor.set(MathUtil.clamp(speed, -Constants.Intake.kMaxLifterSpeed, Constants.Intake.kMaxLifterSpeed));
+    }
+
+    public void stopLifter() {
+        this.lifterMotor.set(0);
+    }
+
     public void periodic() {
-        if (this.getLifterAngleRadians() == 0.0) {
-            this.lifterMotor.setVoltage(0);
-        } else {
-            if (Math.abs(this.getLifterAngleRadians() - this.desiredAngle.in(Radians)) > 0.2) {
-                this.lifterMotor.setVoltage( this.lifterMotorFeedforward.calculate(this.desiredAngle.in(Radians),2)
-                    + this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Radians))
-                );
-            } else {
-                this.lifterMotor.setVoltage(0);
-            }
-        }
+        // if (this.getLifterAngleRadians() == 0.0) {
+        //     this.lifterMotor.setVoltage(0);
+        // } else {
+        //     if (Math.abs(this.getLifterAngleRadians() - this.desiredAngle.in(Radians)) > 0.2) {
+        //         this.lifterMotor.setVoltage( this.lifterMotorFeedforward.calculate(this.desiredAngle.in(Radians),2)
+        //             + this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Radians))
+        //         );
+        //     } else {
+        //         this.lifterMotor.setVoltage(0);
+        //     }
+        // }
         
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
         Logger.recordOutput("Intake/Speed", this.getIntakeSpeed());

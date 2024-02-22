@@ -184,6 +184,9 @@ public final class Constants {
         public static final Constraints kLifterConstraints = new Constraints(2, 2);
         public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.0, 0.0, 0.0, kLifterConstraints);
         public static final double kLifterFeedForward = 5;
+        public static final double kMaxLifterSpeed = 0.5;
+        public static final double kLifterUpSpeed = 0.15;
+        public static final double kLifterDownSpeed = -0.15;
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);
