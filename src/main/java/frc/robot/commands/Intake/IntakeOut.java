@@ -18,15 +18,15 @@ public class IntakeOut extends Command {
   public void initialize() {
     timer.reset();
     timer.start();
-
-    intake.giveToShooter();
   }
 
   /**
    * EXECURE IS NOT USED BECAUSE IT IS MAPPED TO A WHILE TRUE TRIGGER
    */
   @Override
-  public void execute() {}
+  public void execute() {
+      intake.giveToShooter();
+  }
 
   @Override
   public void end(boolean interrupted) {

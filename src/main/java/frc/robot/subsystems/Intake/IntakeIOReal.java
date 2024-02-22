@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
 
 import org.littletonrobotics.junction.Logger;
+
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -17,6 +19,7 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import lib.team3526.constants.PIDFConstants;
@@ -31,6 +34,8 @@ public class IntakeIOReal implements IntakeIO {
     private final LazyCANSparkMax intakeMotor;
     private final SparkPIDController intakeMotorPID;
     private final RelativeEncoder intakeMotorEncoder;
+
+    ColorSensorV3 colorSensor;
 
     private boolean hasPiece = false;
     private double setRollerSpeed = 0.0;
@@ -49,6 +54,8 @@ public class IntakeIOReal implements IntakeIO {
         this.intakeMotorPID = this.intakeMotor.getPIDController();
         PIDFConstants.applyToSparkPIDController(intakeMotorPID, Constants.Intake.kIntakePIDConstants);
         this.intakeMotorEncoder = this.intakeMotor.getEncoder();
+
+        this.colorSensor = new ColorSensorV3(Port.kOnboard);
     }
 
 ///////////////////////////// ROLLERS /////////////////////////////
@@ -127,24 +134,23 @@ public class IntakeIOReal implements IntakeIO {
 
     public void periodic() {
         if (this.getLifterAngleRadians() == 0.0) {
-            this.lifterMotor.setVoltage(0);
+            this.lifterMotor.set(0);
         } else {
+            //this.lifterMotorFeedforward.calculate(this.desiredAngle.in(Radians),2)
             if (Math.abs(this.getLifterAngleRadians() - this.desiredAngle.in(Radians)) > 0.2) {
-                this.lifterMotor.setVoltage( this.lifterMotorFeedforward.calculate(this.desiredAngle.in(Radians),2)
-                    + this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Radians))
-                );
+                this.lifterMotor.set(this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Radians)));
             } else {
-                this.lifterMotor.setVoltage(0);
+                this.lifterMotor.set(0);
             }
         }
         
+        Logger.recordOutput("Intake/SensorProximity", this.colorSensor.getProximity());
         Logger.recordOutput("Intake/Current", this.intakeMotor.getOutputCurrent());
         Logger.recordOutput("Intake/Speed", this.getIntakeSpeed());
-        Logger.recordOutput("Intake/LifterAngle", this.getLifterAngleRadians());
+        Logger.recordOutput("Intake/LifterAngle", Math.toDegrees(this.getLifterAngleRadians()));
         Logger.recordOutput("Intake/Lifter", this.lifterMotor.getAppliedOutput());
         Logger.recordOutput("Intake/SetAngle", this.desiredAngle.in(Degrees));
         Logger.recordOutput("Intake/SetRollerSpeed", this.setRollerSpeed);
-        Logger.recordOutput("Intake/PIDOutput", this.lifterMotorPID.calculate(this.getLifterAngleRadians(), this.desiredAngle.in(Degrees)));
 
 
         SmartDashboard.putData(this.lifterMotorPID);

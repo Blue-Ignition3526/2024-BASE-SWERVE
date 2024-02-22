@@ -12,8 +12,10 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
+import frc.robot.commands.Intake.LifterFloor;
 import frc.robot.commands.Intake.LifterShooter;
-import frc.robot.commands.Shooter.OnReleaseShoot;
+import frc.robot.commands.Shooter.BasicShoot;
+import frc.robot.commands.Shooter.ShootOnRelease;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
@@ -94,7 +96,9 @@ public class RobotContainer {
 
     }
 
-    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.CUBIC);
+    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
+
+    SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
 
     configureBindings();
   }
@@ -110,24 +114,29 @@ public class RobotContainer {
       )
     );
 
-    this.m_driverControllerCustom.leftTrigger().whileTrue(new DriveSwerve(
+    /* this.m_driverControllerCustom.leftTrigger().whileTrue(new DriveSwerve(
         m_swerveDrive,
         () -> 0.7,
         () -> 0.0,
         () -> 0.0,
         () -> false
-    ));
+    )); */
 
     
     this.m_driverControllerCustom.leftButton().toggleOnTrue(new IntakeIn(m_intake));
     this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_intake));
 
-    this.m_driverControllerCustom.rightTrigger().whileTrue(new OnReleaseShoot(m_shooter, m_intake));
+    this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter));
+    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_intake));
 
-    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_leftClimber, () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()));
-    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_rightClimber, () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_leftClimber, () -> true));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_rightClimber, () -> true));
+
+    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_leftClimber, () -> false));
+    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_rightClimber, () -> false));
 
     this.m_driverControllerCustom.povUp().whileTrue(new LifterShooter(m_intake));
+    this.m_driverControllerCustom.povDown().whileTrue(new LifterFloor(m_intake));
   }
 
   public Command getAutonomousCommand() {
