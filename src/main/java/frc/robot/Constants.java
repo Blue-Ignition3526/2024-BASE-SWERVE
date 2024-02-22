@@ -19,6 +19,7 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.utils.CTRECANDevice;
 import lib.team3526.utils.SwerveModuleOptions;

@@ -110,6 +110,20 @@ public class Intake extends SubsystemBase {
     io.setIntakeBrake();
   }
 
+  /**
+   * Stops the lifter
+   */
+  public void stopLifter() {
+    io.stopLifter();
+  }
+
+  /**
+   * Set the speed of the intake motor
+   */
+  public void setLifterSpeed(double speed) {
+    io.setLifterSpeed(speed);
+  }
+
   @Override
   public void periodic() {
     io.periodic();
