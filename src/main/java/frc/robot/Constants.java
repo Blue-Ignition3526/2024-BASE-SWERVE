@@ -169,6 +169,8 @@ public final class Constants {
         public static final double kGiveToShooterSpeed = -1000.0;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
         public static final double kMaxLifterSpeed = 0.5;
+        public static final double kLifterDownSpeed = -0.15;
+        public static final double kLifterUpSpeed = 0.15;
 
         // Lifter encoder 
         public static final int kLifterEncoderPort = 0;
