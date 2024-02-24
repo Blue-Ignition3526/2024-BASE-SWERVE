@@ -4,8 +4,12 @@ import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
@@ -63,6 +67,8 @@ public class RobotContainer {
   private final Climber m_rightClimber;
   private final PoseEstimatorSubsystem m_poseEstimator;
 
+  private Command autonomous;
+
   public RobotContainer() {
     if (Robot.isReal()) {
       // Create all real swerve modules and initialize
@@ -104,7 +110,7 @@ public class RobotContainer {
       Logger.recordMetadata("Robot", "Sim");
     }
 
-    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
+    this.m_driverControllerCustom = new CustomController(0, DriverStation.getJoystickIsXbox(0) ? CustomController.CustomControllerType.XBOX : CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
 
     // Register the named commands for autonomous
     NamedCommands.registerCommands(new HashMap<String, Command>() {{
@@ -166,6 +172,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.buildAuto("LeftPositionShootLeftNote");
+    return AutoBuilder.buildAuto("RightPositionRightNote");
   }
 }

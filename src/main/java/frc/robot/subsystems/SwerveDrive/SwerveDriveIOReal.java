@@ -74,7 +74,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
                 Constants.SwerveDrive.Autonomous.kRotatePIDConstants,
                 Constants.SwerveDrive.Autonomous.kMaxSpeedMetersPerSecond.in(MetersPerSecond),
                 Constants.SwerveDrive.PhysicalModel.kWheelBase.in(Meters) / 2,
-                new ReplanningConfig()
+                new ReplanningConfig(true, true)
             ),
             () -> {
                 if (DriverStation.getAlliance().isPresent()) return DriverStation.getAlliance().get() == Alliance.Red;
@@ -234,6 +234,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     public void periodic() {
         // Update inertia acculumator
         rotationalInertiaAccumulator.update(this.getHeading().getRadians());
+
+        this.odometry.update(getHeading(), getModulePositions());
 
         // Record outputs
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());

@@ -128,7 +128,7 @@ public final class Constants {
 
         //! AUTONOMOUS 
         public static final class Autonomous {
-            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(0.1, 0.0, 0.0);
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(0.00000000005, 0.0, 0.0);
             public static final PIDConstants kRotatePIDConstants = new PIDConstants(0.1, 0.0, 0.0);
             public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
         }

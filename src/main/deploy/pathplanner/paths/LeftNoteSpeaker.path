@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.385090872214725,
-        "y": 7.00053558193641
+        "x": 2.495622129362409,
+        "y": 6.984884892982465
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.588271083518912,
-        "y": 6.667299774671107
+        "x": 1.684161913778373,
+        "y": 6.595423372664927
       },
       "isLocked": false,
       "linkedName": "LeftNote"
@@ -30,7 +30,48 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "BasicShoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOut"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "LifterUp",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "LifterUp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
