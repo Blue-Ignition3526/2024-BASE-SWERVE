@@ -1,6 +1,9 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -15,24 +18,31 @@ import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
+import frc.robot.subsystems.Climber.ClimberIOSim;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
+import frc.robot.subsystems.Gyro.GyroIOSim;
 import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 import frc.robot.subsystems.IntakeLifter.IntakeLifterIOReal;
+import frc.robot.subsystems.IntakeLifter.IntakeLifterIOSim;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOReal;
+import frc.robot.subsystems.IntakeRollers.IntakeRollersIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
+import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
 import frc.robot.subsystems.Vision.LimelightIO;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
+import java.util.HashMap;
 
 public class RobotContainer {
 
@@ -82,21 +92,36 @@ public class RobotContainer {
       this.m_backRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
 
       // Create the simulated swerve drive and initialize
-      this.m_gyro = new Gyro(null);
+      this.m_gyro = new Gyro(new GyroIOSim());
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
-      this.m_intake = new IntakeLifter(null);
-      this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
-      this.m_shooter = new Shooter(null);
-      this.m_leftClimber = new Climber(null);
-      this.m_rightClimber = new Climber(null);
+      this.m_intake = new IntakeLifter(new IntakeLifterIOSim());
+      this.m_Rollers = new IntakeRollers(new IntakeRollersIOSim());
+      this.m_shooter = new Shooter(new ShooterIOSim());
+      this.m_leftClimber = new Climber(new ClimberIOSim());
+      this.m_rightClimber = new Climber(new ClimberIOSim());
       this.m_poseEstimator = null;
 
       Logger.recordMetadata("Robot", "Sim");
-
     }
 
     this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
 
+    // Register the named commands for autonomous
+    NamedCommands.registerCommands(new HashMap<String, Command>() {{
+      put("IntakeIn", new RunForCommand(new IntakeIn(m_Rollers), 1));
+      put("IntakeOut", new RunForCommand(new IntakeOut(m_Rollers), 0.25));
+
+      put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter), 2));
+
+      put("LifterUp", new RunForCommand(new LifterUp(m_intake), 1));
+      put("LifterDown", new RunForCommand(new LifterDown(m_intake), 1));
+
+      put("ClimbUp", new RunForCommand(new Climb(m_rightClimber, () -> true), 1));
+      put("ClimbDown", new RunForCommand(new Climb(m_leftClimber, () -> false), 1));
+
+      put("Wait", new WaitCommand(1));
+    }});
+ 
     SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
 
     configureBindings();
@@ -141,6 +166,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new WaitCommand(1);
+    return AutoBuilder.buildAuto("LeftPositionShootLeftNote");
   }
 }

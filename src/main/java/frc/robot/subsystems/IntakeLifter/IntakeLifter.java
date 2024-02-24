@@ -5,10 +5,10 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeLifter extends SubsystemBase {
-  private final IntakeIO io;
-  private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private final IntakeLifterIO io;
+  private final IntakeLifterIOInputsAutoLogged inputs = new IntakeLifterIOInputsAutoLogged();
 
-  public IntakeLifter(IntakeIO io) {
+  public IntakeLifter(IntakeLifterIO io) {
     this.io = io;
   }
 

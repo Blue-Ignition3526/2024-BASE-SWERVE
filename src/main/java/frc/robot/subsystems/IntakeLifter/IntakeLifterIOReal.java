@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import lib.team3526.control.LazyCANSparkMax;
 
-public class IntakeLifterIOReal implements IntakeIO {
+public class IntakeLifterIOReal implements IntakeLifterIO {
     private final LazyCANSparkMax lifterMotor;
     private final ProfiledPIDController lifterMotorPID;
     private final DutyCycleEncoder lifterEncoder;
@@ -59,7 +59,7 @@ public class IntakeLifterIOReal implements IntakeIO {
         SmartDashboard.putData(this.lifterMotorPID);
     }
 
-    public void updateInputs(IntakeIOInputs inputs) {
+    public void updateInputs(IntakeLifterIOInputs inputs) {
         inputs.lifterAngle = this.getLifterAngleRadians();
     }
 }

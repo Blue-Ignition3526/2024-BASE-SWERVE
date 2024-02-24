@@ -6,9 +6,9 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 
-public interface IntakeIO {
+public interface IntakeLifterIO {
     @AutoLog
-    class IntakeIOInputs {
+    class IntakeLifterIOInputs {
         double lifterAngle;
         Measure<Angle> desiredAngle;
     }
@@ -18,6 +18,6 @@ public interface IntakeIO {
     public double getLifterAngleRadians();
     public void stopLifter();
 
-    public void updateInputs(IntakeIOInputs inputs);
+    public void updateInputs(IntakeLifterIOInputs inputs);
     public default void periodic() {};
 }
