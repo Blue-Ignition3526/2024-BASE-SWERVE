@@ -15,7 +15,6 @@ public class LifterAmp extends Command {
   /** Creates a new IntakeGround. */
   public LifterAmp(IntakeLifter intake) {
     this.intake = intake;
-    
     addRequirements(intake);
   }
 

@@ -11,17 +11,14 @@ import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class ShootOnRelease extends Command {
-
   Shooter m_Shooter;
-  IntakeLifter m_Intake;
   IntakeRollers m_Rollers;
   Timer m_timer = new Timer();
 
   public ShootOnRelease(Shooter shooter, IntakeLifter intake, IntakeRollers rollers) {
     this.m_Shooter = shooter;
-    this.m_Intake = intake;
     this.m_Rollers = rollers;
-    addRequirements(shooter, intake, rollers);
+    addRequirements(shooter, rollers);
   }
 
   @Override
@@ -46,7 +43,8 @@ public class ShootOnRelease extends Command {
   public boolean isFinished() {
     if (this.m_timer.get()>1.0) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 }
