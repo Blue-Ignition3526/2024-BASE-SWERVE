@@ -6,19 +6,22 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class ShootOnRelease extends Command {
 
   Shooter m_Shooter;
-  Intake m_Intake;
+  IntakeLifter m_Intake;
+  IntakeRollers m_Rollers;
   Timer m_timer = new Timer();
 
-  public ShootOnRelease(Shooter shooter, Intake intake) {
+  public ShootOnRelease(Shooter shooter, IntakeLifter intake, IntakeRollers rollers) {
     this.m_Shooter = shooter;
     this.m_Intake = intake;
-    addRequirements(shooter, intake);
+    this.m_Rollers = rollers;
+    addRequirements(shooter, intake, rollers);
   }
 
   @Override
@@ -30,13 +33,13 @@ public class ShootOnRelease extends Command {
   @Override
   public void execute() {
     this.m_Shooter.set(-1);
-    this.m_Intake.giveToShooter();
+    this.m_Rollers.giveToShooter();
   }
 
   @Override
   public void end(boolean interrupted) {
     this.m_Shooter.stop();
-    this.m_Intake.stopIntake();
+    this.m_Rollers.stopRollers();
   }
 
   @Override

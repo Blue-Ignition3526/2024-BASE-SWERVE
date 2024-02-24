@@ -1,38 +1,32 @@
 package frc.robot.commands.Intake;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 
 public class IntakeIn extends Command {
-  private Timer timer = new Timer();
-  private Intake intake;
+  private IntakeRollers rollers;
 
-  public IntakeIn(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeIn(IntakeRollers rollers) {
+    this.rollers = rollers;
+    addRequirements(rollers);
   }
   
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
-
-    intake.setIntakeIn();
   }
   
   @Override
   public void execute() {
+    rollers.setRollersIn();
   }
   
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
+    rollers.stopRollers();
   }
   
   @Override
   public boolean isFinished() {
-    return false;
+    return rollers.hasPiece();
   }
 }

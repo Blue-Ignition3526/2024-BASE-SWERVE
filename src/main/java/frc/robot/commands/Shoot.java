@@ -7,18 +7,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class Shoot extends Command {
   Shooter shooter;
-  Intake intake;
+  IntakeRollers rollers;
   private Timer timer = new Timer();
 
   /** Creates a new Shoot. */
-  public Shoot(Shooter shooter, Intake intake) {
+  public Shoot(Shooter shooter, IntakeRollers intake) {
     this.shooter = shooter;
-    this.intake = intake;
+    this.rollers = intake;
     addRequirements(shooter, intake);
   }
 
@@ -40,7 +41,7 @@ public class Shoot extends Command {
   public void end(boolean interrupted) {
     if (!interrupted) {
       while (timer.get() < 1) {
-        this.intake.stopIntake();
+        this.rollers.stopRollers();
         this.shooter.set(-0.7);
       }
       

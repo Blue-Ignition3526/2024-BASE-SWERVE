@@ -6,13 +6,13 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 
 public class LifterShooter extends Command {
-  Intake intake;
+  IntakeLifter intake;
 
   /** Creates a new IntakeShooter. */
-  public LifterShooter(Intake intake) {
+  public LifterShooter(IntakeLifter intake) {
     this.intake = intake;
     addRequirements(intake);
   }

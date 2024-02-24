@@ -7,13 +7,13 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 
 public class LifterFloor extends Command {
-  Intake intake;
+  IntakeLifter intake;
 
   /** Creates a new IntakeGround. */
-  public LifterFloor(Intake intake) {
+  public LifterFloor(IntakeLifter intake) {
     this.intake = intake;
     
     addRequirements(intake);

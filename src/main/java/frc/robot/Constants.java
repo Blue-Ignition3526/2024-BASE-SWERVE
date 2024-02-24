@@ -160,25 +160,27 @@ public final class Constants {
         public static final double kIntakeRollersGearRatio = 5.0/1.0;
 
         // Speeds
-        public static final double kIntakeOutSpeed = -1250.0;
+        public static final double kIntakeOutSpeed = -0.5;
         public static final Measure<Velocity<Angle>> kIntakeOutSpeedRpm = RPM.of(kIntakeOutSpeed*kIntakeRollersGearRatio);
-        public static final double kIntakeInSpeed = 1000.0;
+        public static final double kIntakeInSpeed = 0.4;
         public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
-        public static final double kIntakeHoldSpeed = 50.0;
+        public static final double kIntakeHoldSpeed = 0.05;
         public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
-        public static final double kGiveToShooterSpeed = -1000.0;
+        public static final double kGiveToShooterSpeed = -0.5;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
         public static final double kMaxLifterSpeed = 0.5;
-        public static final double kLifterDownSpeed = -0.15;
-        public static final double kLifterUpSpeed = 0.15;
+        public static final double kLifterDownSpeed = -0.25;
+        public static final double kLifterUpSpeed = 0.25;
 
         // Lifter encoder 
         public static final int kLifterEncoderPort = 0;
-        public static final double kLifterEncoderOffset = 0.3626;
+        public static final double kLifterEncoderOffset = 0.367;
 
         // Intake times
         public static final double kMaxOuttakeTime = 3;
         public static final double kMaxIntakeTime = 6;
+
+        public static final int kLimitSwitchPort = 1;
         
     ///////////////////////////////////////////////// LIFTER /////////////////////////////////////////////////
         
@@ -231,7 +233,7 @@ public final class Constants {
         public static final double kClimberHoldSpeed = kClimberDownSpeed / 2;
 
         // Climber motor rpm conversion
-        public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 / Centimeters.of(31).in(Centimeters);
+        public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 * Centimeters.of(31).in(Centimeters);
 
         // Max current (Used for reseting the climber)
         public static final double kMaxCurrent = 35;

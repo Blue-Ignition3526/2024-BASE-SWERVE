@@ -1,22 +1,15 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
-import frc.robot.commands.Intake.LifterAmp;
-import frc.robot.commands.Intake.LifterFloor;
-import frc.robot.commands.Intake.LifterShooter;
+import frc.robot.commands.Intake.LifterDown;
+import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
-import frc.robot.commands.Shooter.ShootOnRelease;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
@@ -24,8 +17,10 @@ import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
-import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
+import frc.robot.subsystems.IntakeLifter.IntakeLifterIOReal;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
+import frc.robot.subsystems.IntakeRollers.IntakeRollersIOReal;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
@@ -51,7 +46,8 @@ public class RobotContainer {
   
   private final SwerveDrive m_swerveDrive;
   private final Gyro m_gyro;
-  private final Intake m_intake;
+  private final IntakeLifter m_intake;
+  private final IntakeRollers m_Rollers;
   private final Shooter m_shooter;
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
@@ -68,7 +64,8 @@ public class RobotContainer {
       // Create the real swerve drive and initialize
       this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroDevice));
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
-      this.m_intake =  new Intake(new IntakeIOReal());
+      this.m_intake =  new IntakeLifter(new IntakeLifterIOReal());
+      this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
@@ -87,7 +84,8 @@ public class RobotContainer {
       // Create the simulated swerve drive and initialize
       this.m_gyro = new Gyro(null);
       this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
-      this.m_intake = new Intake(null);
+      this.m_intake = new IntakeLifter(null);
+      this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
       this.m_shooter = new Shooter(null);
       this.m_leftClimber = new Climber(null);
       this.m_rightClimber = new Climber(null);
@@ -124,20 +122,22 @@ public class RobotContainer {
     )); */
 
     
-    this.m_driverControllerCustom.leftButton().toggleOnTrue(new IntakeIn(m_intake));
-    this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_intake));
+    this.m_driverControllerCustom.leftButton().toggleOnTrue(new IntakeIn(m_Rollers));
+    this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_Rollers));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter));
-    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_intake));
+    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
 
-    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_leftClimber, () -> true));
-    this.m_driverControllerCustom.rightBumper().whileTrue(new Climb(m_rightClimber, () -> true));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new LifterUp(m_intake));
 
-    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_leftClimber, () -> false));
-    this.m_driverControllerCustom.leftBumper().whileTrue(new Climb(m_rightClimber, () -> false));
+    this.m_driverControllerCustom.leftBumper().whileTrue(new LifterDown(m_intake));
 
-    this.m_driverControllerCustom.povUp().whileTrue(new LifterShooter(m_intake));
-    this.m_driverControllerCustom.povDown().whileTrue(new LifterFloor(m_intake));
+    this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_rightClimber, () -> true));
+    this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_leftClimber, () -> true));
+
+
+    this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_rightClimber, () -> false));
+    this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_leftClimber, () -> false));
   }
 
   public Command getAutonomousCommand() {

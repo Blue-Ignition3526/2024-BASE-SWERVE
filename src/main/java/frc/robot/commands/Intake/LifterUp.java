@@ -6,12 +6,12 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 
 public class LifterUp extends Command {
-  Intake intake;
+  IntakeLifter intake;
 
-  public LifterUp(Intake intake) {
+  public LifterUp(IntakeLifter intake) {
     this.intake = intake;
     addRequirements(intake);
   }
@@ -35,6 +35,10 @@ public class LifterUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if (Math.toDegrees(intake.getLifterAngleRadians())>180) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

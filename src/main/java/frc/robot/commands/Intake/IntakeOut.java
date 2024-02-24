@@ -2,16 +2,15 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 
 public class IntakeOut extends Command {
   private Timer timer = new Timer();
-  private Intake intake;
+  private IntakeRollers rollers;
 
-  public IntakeOut(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeOut(IntakeRollers rollers) {
+    this.rollers = rollers;
+    addRequirements(rollers);
   }
 
   @Override
@@ -20,17 +19,14 @@ public class IntakeOut extends Command {
     timer.start();
   }
 
-  /**
-   * EXECURE IS NOT USED BECAUSE IT IS MAPPED TO A WHILE TRUE TRIGGER
-   */
   @Override
   public void execute() {
-      intake.giveToShooter();
+    rollers.giveToShooter();
   }
 
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
+    rollers.stopRollers();
   }
 
   @Override

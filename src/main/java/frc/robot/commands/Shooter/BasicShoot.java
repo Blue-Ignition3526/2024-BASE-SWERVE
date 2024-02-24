@@ -23,7 +23,7 @@ public class BasicShoot extends Command {
 
   @Override
   public void execute() {
-    this.m_shooter.set(-0.7);
+    this.m_shooter.set(-1);
   }
 
   @Override

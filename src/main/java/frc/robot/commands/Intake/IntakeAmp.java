@@ -2,16 +2,15 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 
 public class IntakeAmp extends Command {
   private Timer timer = new Timer();
-  private Intake intake;
+  private IntakeRollers rollers;
 
-  public IntakeAmp(Intake intake) {
-    this.intake = intake;
-    addRequirements(intake);
+  public IntakeAmp(IntakeRollers rollers) {
+    this.rollers = rollers;
+    addRequirements(rollers);
   }
   
   @Override
@@ -19,16 +18,16 @@ public class IntakeAmp extends Command {
     timer.reset();
     timer.start();
 
-    intake.setIntakeOut();
   }
   
   @Override
   public void execute() {
+    rollers.setRollersOut();
   }
   
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
+    rollers.stopRollers();
   }
   
   @Override
