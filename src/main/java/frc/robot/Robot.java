@@ -38,11 +38,11 @@ public class Robot extends LoggedRobot {
     Logger.addDataReceiver(new NT4Publisher());
   
     // Log to usb
-    try {
-      Logger.addDataReceiver(new WPILOGWriter());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    // try {
+    //   Logger.addDataReceiver(new WPILOGWriter());
+    // } catch (Exception e) {
+    //   e.printStackTrace();
+    // }
     
     Logger.registerURCL(URCL.startExternal());
     Logger.start();

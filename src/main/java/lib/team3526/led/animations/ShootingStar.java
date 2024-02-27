@@ -1,7 +1,7 @@
 package lib.team3526.led.animations;
 
 import edu.wpi.first.wpilibj.Timer;
-import lib.team3526.led.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class ShootingStar implements LEDAnimationBase {
     int r;

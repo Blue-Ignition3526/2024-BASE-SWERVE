@@ -242,7 +242,7 @@ public final class Constants {
 
     //! LEDS
     public static final class LEDs {
-        public static final LEDOptions kRightClimberOptions = new LEDOptions(0, 10);
-        public static final LEDOptions kLeftClimberOptions = new LEDOptions(1, 10);
+        // public static final LEDOptions kRightClimberOptions = new LEDOptions(0, 10);
+        // public static final LEDOptions kLeftClimberOptions = new LEDOptions(1, 10);
     }
 }

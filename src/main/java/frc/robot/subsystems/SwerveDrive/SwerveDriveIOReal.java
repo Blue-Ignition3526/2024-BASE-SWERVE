@@ -271,9 +271,10 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
             poseEstimator.addVisionMeasurement(cam.getEstimatedPose(), cam.getTimestampSeconds());
         }
 
-        if (LimelightHelpers.getLatestResults(cams[0].getName()).targetingResults.targets_Fiducials.length >= 2){
-            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 99999999));
-        }
+        try {
+            LimelightResults results = LimelightHelpers.getLatestResults(cams[0].getName());
+            if (results.targetingResults.targets_Fiducials.length >= 2) poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 99999999));
+        } catch (Exception e) {}
 
         Logger.recordOutput("PoseEstimator/EstimatedPose", poseEstimator.getEstimatedPosition());
 

@@ -76,16 +76,16 @@ public class RobotContainer {
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
   // private final PoseEstimatorSubsystem m_poseEstimator;
-  // private final LED m_led = new LED(new LEDOptions(0, 10));
+  // private final LED m_led = new LED(new LEDOptions(0, 20));
 
   SendableChooser<Command> autonomousChooser;
   SendableChooser<Command> basicAutonomousChooser;
 
-  private final AddressableLEDStrip m_led = new AddressableLEDStrip(0, new AddressableLEDSegment[] {
-    new AddressableLEDSegment(0, 10).setAnimation(new Breathe(0, 0, 255, 1)::provider),
-    new AddressableLEDSegment(11, 15).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
-    new AddressableLEDSegment(16, 20).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
-  });
+  // private final AddressableLEDStrip m_led = new AddressableLEDStrip(0, new AddressableLEDSegment[] {
+  //   new AddressableLEDSegment(0, 10).setAnimation(new Breathe(0, 0, 255, 1)::provider),
+  //   new AddressableLEDSegment(11, 15).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
+  //   new AddressableLEDSegment(16, 20).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
+  // });
 
   private Command autonomous;
 
