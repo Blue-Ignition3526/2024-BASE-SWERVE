@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Shooter.BasicShoot;
+import frc.robot.commands.SwerveDrive.DriveFor;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
@@ -16,13 +17,14 @@ import lib.team3526.commands.RunForCommand;
 
 public class BasicAutos {
     public static final Command leaveCommunity(SwerveDrive swerveDrive) {
-        return new RunForCommand(new DriveSwerve(
+        return new DriveFor(
             swerveDrive,
-            () -> 0.3,
-            () -> 0.0,
-            () -> 0.0,
-            () -> false
-        ), 3);
+            () -> 0.,
+            () -> 0.1,
+            () -> 0.,
+            () -> true,
+            1
+        );
     }
 
     public static final Command shoot(Shooter shooter, IntakeRollers rollers) {

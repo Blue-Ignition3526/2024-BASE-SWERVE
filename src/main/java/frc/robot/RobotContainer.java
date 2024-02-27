@@ -76,7 +76,7 @@ public class RobotContainer {
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
   // private final PoseEstimatorSubsystem m_poseEstimator;
-  // private final LED m_led = new LED(new LEDOptions(0, 20));
+  private final LED m_led = new LED(new LEDOptions(0, 20));
 
   SendableChooser<Command> autonomousChooser;
   SendableChooser<Command> basicAutonomousChooser;
@@ -169,7 +169,7 @@ public class RobotContainer {
     SmartDashboard.putData("Basic Autonomous", basicAutonomousChooser);
     this.basicAutonomousChooser = basicAutonomousChooser;
 
-    // m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
+    m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
 
     configureBindings();
   }
