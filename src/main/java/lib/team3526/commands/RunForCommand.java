@@ -22,12 +22,13 @@ public class RunForCommand extends Command {
 
   @Override
   public void execute() {
-    while (timer.get() < duration) command.schedule();
+    if (timer.get() < duration) command.execute();
+    else command.end(false);
   }
 
   @Override
   public void end(boolean interrupted) {
-    command.end(interrupted);
+    command.end(true);
   }
 
   @Override

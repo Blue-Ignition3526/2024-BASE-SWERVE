@@ -1,4 +1,4 @@
-package lib.team3526.utils;
+package lib.team3526.led;
 
 public class LEDOptions {
     int channel;

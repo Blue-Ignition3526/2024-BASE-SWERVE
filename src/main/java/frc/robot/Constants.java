@@ -21,8 +21,8 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
+import lib.team3526.led.LEDOptions;
 import lib.team3526.utils.CTRECANDevice;
-import lib.team3526.utils.LEDOptions;
 import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;

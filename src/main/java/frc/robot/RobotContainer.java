@@ -7,10 +7,13 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.BasicAutos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
@@ -44,8 +47,11 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
+import lib.team3526.led.AddressableLEDSegment;
+import lib.team3526.led.AddressableLEDStrip;
+import lib.team3526.led.LEDOptions;
 import lib.team3526.led.animations.Breathe;
-import lib.team3526.utils.LEDOptions;
+import lib.team3526.led.animations.ShootingStar;
 import frc.robot.subsystems.Vision.LimelightIO;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
@@ -70,7 +76,16 @@ public class RobotContainer {
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
   // private final PoseEstimatorSubsystem m_poseEstimator;
-  private final LED m_led = new LED(new LEDOptions(0, 10));
+  // private final LED m_led = new LED(new LEDOptions(0, 10));
+
+  SendableChooser<Command> autonomousChooser;
+  SendableChooser<Command> basicAutonomousChooser;
+
+  private final AddressableLEDStrip m_led = new AddressableLEDStrip(0, new AddressableLEDSegment[] {
+    new AddressableLEDSegment(0, 10).setAnimation(new Breathe(0, 0, 255, 1)::provider),
+    new AddressableLEDSegment(11, 15).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
+    new AddressableLEDSegment(16, 20).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
+  });
 
   private Command autonomous;
 
@@ -142,7 +157,19 @@ public class RobotContainer {
     SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
     SmartDashboard.putData(new ResetPose(m_swerveDrive));
 
-    m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
+    SendableChooser<Command> autonomousChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Autonomous", autonomousChooser);
+    this.autonomousChooser = autonomousChooser;
+
+    SendableChooser<Command> basicAutonomousChooser = new SendableChooser<Command>();
+    basicAutonomousChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+    basicAutonomousChooser.addOption("Shoot", BasicAutos.shoot(m_shooter, m_Rollers));
+    basicAutonomousChooser.addOption("Leave Community", BasicAutos.leaveCommunity(m_swerveDrive));
+    basicAutonomousChooser.addOption("Shoot and Leave", BasicAutos.shootAndLeave(m_swerveDrive, m_shooter, m_Rollers));
+    SmartDashboard.putData("Basic Autonomous", basicAutonomousChooser);
+    this.basicAutonomousChooser = basicAutonomousChooser;
+
+    // m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
 
     configureBindings();
   }
@@ -153,7 +180,7 @@ public class RobotContainer {
         m_swerveDrive,
         () -> this.m_driverControllerCustom.getLeftY(),
         () -> -this.m_driverControllerCustom.getLeftX(),
-        () -> -this.m_driverControllerCustom.getRightX(),
+        () -> this.m_driverControllerCustom.getRightX(),
         () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()
       )
     );
@@ -186,6 +213,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("MiddleNoteSpeaker"));
-  }
+    return this.basicAutonomousChooser.getSelected();
+  };
 }

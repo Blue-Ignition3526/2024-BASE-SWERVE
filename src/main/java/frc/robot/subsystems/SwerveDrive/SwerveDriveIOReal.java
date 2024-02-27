@@ -175,19 +175,19 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     public SwerveModuleState[] getRealModuleStates() {
         return new SwerveModuleState[]{
-            frontLeft.getRealState(),
             frontRight.getRealState(),
-            backLeft.getRealState(),
-            backRight.getRealState()
+            frontLeft.getRealState(),
+            backRight.getRealState(),
+            backLeft.getRealState()
         };
     }
 
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[]{
-            frontLeft.getPosition(),
             frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
+            frontLeft.getPosition(),
+            backRight.getPosition(),
+            backLeft.getPosition()
         };
     }
 

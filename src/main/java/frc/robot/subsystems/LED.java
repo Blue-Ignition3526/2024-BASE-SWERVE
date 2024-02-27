@@ -9,12 +9,13 @@ import java.util.function.Consumer;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.team3526.utils.LEDOptions;
+import lib.team3526.led.LEDOptions;
 
 public class LED extends SubsystemBase {
   public AddressableLED leds;
   public AddressableLEDBuffer data;
   private Consumer<AddressableLEDBuffer> animation = null;
+  private boolean isPlayingAnimation = false;
 
   public LED(LEDOptions options) {
     this.leds = new AddressableLED(options.getChannel());
@@ -26,15 +27,20 @@ public class LED extends SubsystemBase {
 
   public void setDefaultAnimation(Consumer<AddressableLEDBuffer> animation) {
     this.animation = animation;
+    this.isPlayingAnimation = true;
   }
 
   public void stopDefaultAnimation() {
-    this.animation = null;
+    this.isPlayingAnimation = false;
+  }
+
+  public void resumeDefaultAnimation() {
+    this.isPlayingAnimation = true;
   }
 
   @Override
   public void periodic() {
-    if (this.animation != null) this.animation.accept(data);
+    if (this.animation != null && isPlayingAnimation) this.animation.accept(data);
     this.leds.setData(data);
   }
 }

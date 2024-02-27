@@ -3,7 +3,7 @@ package lib.team3526.led.animations;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 
-public class Breathe {
+public class Breathe implements LEDAnimationBase {
     int r;
     int g;
     int b;
