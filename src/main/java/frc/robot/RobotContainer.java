@@ -136,7 +136,7 @@ public class RobotContainer {
     // boolean isXbox = DriverStation.getJoystickIsXbox(0);
     boolean isXbox = true;
     SmartDashboard.putBoolean("Controller/IsXbox", isXbox);
-    this.m_driverControllerCustom = new CustomController(0, isXbox ? CustomController.CustomControllerType.XBOX : CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
+    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
 
     // Register the named commands for autonomous
     NamedCommands.registerCommands(new HashMap<String, Command>() {{
