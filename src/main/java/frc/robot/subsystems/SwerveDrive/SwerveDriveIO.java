@@ -25,6 +25,8 @@ public interface SwerveDriveIO {
 
     public SwerveDriveOdometry getOdometry();
 
+    public void resetPose();
+
     public SwerveModuleState[] getModuleStates();
     public SwerveModuleState[] getRealModuleStates();
     public SwerveModulePosition[] getModulePositions();

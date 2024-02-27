@@ -22,6 +22,7 @@ import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
 import lib.team3526.utils.CTRECANDevice;
+import lib.team3526.utils.LEDOptions;
 import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
@@ -40,7 +41,7 @@ public final class Constants {
             public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond));
 
             //! MAX ROTATIONAL SPEED (and acceleration)
-            public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(3 * (2 * Math.PI));
+            public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(2.5 * (2 * Math.PI));
             public static final Measure<Velocity<Velocity<Angle>>> kMaxAngularAcceleration = RadiansPerSecond.per(Second).of(kMaxAngularSpeed.in(RadiansPerSecond));
 
             // Drive wheel diameter
@@ -91,7 +92,7 @@ public final class Constants {
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
                 .setTurningMotorID(21)
-                .setDriveMotorInverted(true)
+                .setDriveMotorInverted(false)
                 .setTurningMotorInverted(false)
                 .setName("Front Left");
 
@@ -101,7 +102,7 @@ public final class Constants {
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
                 .setTurningMotorID(23)
-                .setDriveMotorInverted(true)
+                .setDriveMotorInverted(false)
                 .setTurningMotorInverted(false)
                 .setName("Front Right");
 
@@ -111,7 +112,7 @@ public final class Constants {
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
                 .setTurningMotorID(25)
-                .setDriveMotorInverted(true)
+                .setDriveMotorInverted(false)
                 .setTurningMotorInverted(false)
                 .setName("Back Left");
 
@@ -121,7 +122,7 @@ public final class Constants {
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
                 .setTurningMotorID(27)
-                .setDriveMotorInverted(true)
+                .setDriveMotorInverted(false)
                 .setTurningMotorInverted(false)
                 .setName("Back Right");
         }
@@ -136,7 +137,7 @@ public final class Constants {
 
     //! FIELD
     public static final class Field {
-        public static final Pose2d kInitialPoseMeters = new Pose2d(new Translation2d(0, 0), new Rotation2d(0, 0));
+        public static final Pose2d kInitialPoseMeters = new Pose2d(new Translation2d(1, 2), new Rotation2d(0, 0));
     }
 
     //! VISION
@@ -237,5 +238,11 @@ public final class Constants {
 
         // Max current (Used for reseting the climber)
         public static final double kMaxCurrent = 35;
+    }
+
+    //! LEDS
+    public static final class LEDs {
+        public static final LEDOptions kRightClimberOptions = new LEDOptions(0, 10);
+        public static final LEDOptions kLeftClimberOptions = new LEDOptions(1, 10);
     }
 }

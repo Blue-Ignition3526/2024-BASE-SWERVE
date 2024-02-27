@@ -18,7 +18,9 @@ import frc.robot.commands.Intake.LifterDown;
 import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
+import frc.robot.commands.SwerveDrive.ResetPose;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
@@ -42,6 +44,8 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
+import lib.team3526.led.animations.Breathe;
+import lib.team3526.utils.LEDOptions;
 import frc.robot.subsystems.Vision.LimelightIO;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
@@ -65,7 +69,8 @@ public class RobotContainer {
   private final Shooter m_shooter;
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
-  private final PoseEstimatorSubsystem m_poseEstimator;
+  // private final PoseEstimatorSubsystem m_poseEstimator;
+  private final LED m_led = new LED(new LEDOptions(0, 10));
 
   private Command autonomous;
 
@@ -79,15 +84,18 @@ public class RobotContainer {
 
       // Create the real swerve drive and initialize
       this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroDevice));
-      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
+      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro, new Vision[] 
+      {
+        new Vision(new LimelightIO("limelight"))
+      }));
       this.m_intake =  new IntakeLifter(new IntakeLifterIOReal());
       this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
-      this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
-        new Vision(new LimelightIO("limelight"))
-      }, m_swerveDrive, m_gyro);
+      // this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
+      //   new Vision(new LimelightIO("limelight"))
+      // }, m_swerveDrive, m_gyro);
 
       Logger.recordMetadata("Robot", "Real");
     } else {
@@ -105,12 +113,15 @@ public class RobotContainer {
       this.m_shooter = new Shooter(new ShooterIOSim());
       this.m_leftClimber = new Climber(new ClimberIOSim());
       this.m_rightClimber = new Climber(new ClimberIOSim());
-      this.m_poseEstimator = null;
+      // this.m_poseEstimator = null;
 
       Logger.recordMetadata("Robot", "Sim");
     }
 
-    this.m_driverControllerCustom = new CustomController(0, DriverStation.getJoystickIsXbox(0) ? CustomController.CustomControllerType.XBOX : CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
+    // boolean isXbox = DriverStation.getJoystickIsXbox(0);
+    boolean isXbox = true;
+    SmartDashboard.putBoolean("Controller/IsXbox", isXbox);
+    this.m_driverControllerCustom = new CustomController(0, isXbox ? CustomController.CustomControllerType.XBOX : CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
 
     // Register the named commands for autonomous
     NamedCommands.registerCommands(new HashMap<String, Command>() {{
@@ -129,6 +140,9 @@ public class RobotContainer {
     }});
  
     SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
+    SmartDashboard.putData(new ResetPose(m_swerveDrive));
+
+    m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
 
     configureBindings();
   }
@@ -172,6 +186,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.buildAuto("RightPositionRightNote");
+    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("MiddleNoteSpeaker"));
   }
 }

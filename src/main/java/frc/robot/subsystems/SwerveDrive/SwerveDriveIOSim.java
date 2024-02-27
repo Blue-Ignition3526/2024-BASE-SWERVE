@@ -262,4 +262,10 @@ public class SwerveDriveIOSim implements SwerveDriveIO {
         
         Logger.recordOutput("SwerveDrive/SwerveModuleStates", this.getModuleStates());
     }
+
+    @Override
+    public void resetPose() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resetPose'");
+    }
 }

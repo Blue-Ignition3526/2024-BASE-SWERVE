@@ -4,7 +4,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -15,8 +17,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
+import frc.robot.subsystems.Vision.Vision;
 import lib.team3526.math.RotationalInertiaAccumulator;
 
 import static edu.wpi.first.units.Units.Meters;
@@ -32,6 +37,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     Gyro gyro;
 
+    SwerveDrivePoseEstimator poseEstimator;
+    Vision[] cams;
     SwerveDriveOdometry odometry;
 
     boolean drivingRobotRelative = false;
@@ -42,12 +49,15 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     RotationalInertiaAccumulator rotationalInertiaAccumulator = new RotationalInertiaAccumulator(Constants.SwerveDrive.PhysicalModel.kRobotMassKg);
 
-    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
+    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro, Vision[] cams) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
         this.gyro = gyro;
+        this.cams = cams;
+
+        poseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveDrive.PhysicalModel.kDriveKinematics, gyro.getRotation2d(), getModulePositions(), Constants.Field.kInitialPoseMeters);
 
         this.odometry = new SwerveDriveOdometry(
             Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
@@ -66,7 +76,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     public void configureAutoBuilder(SwerveDrive swerveDrive) {
         AutoBuilder.configureHolonomic(
             this::getPose,
-            this::resetOdometry,
+            this::resetVisionOdometry,
             this::getRobotRelativeChassisSpeeds,
             this::driveRobotRelative,
             new HolonomicPathFollowerConfig(
@@ -93,7 +103,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        // return odometry.getPoseMeters();
+        return getEstimatedPose();
     }
 
     public ChassisSpeeds getRobotRelativeChassisSpeeds() {
@@ -104,10 +115,33 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         }
     }
 
+    public Pose2d getEstimatedPose() {
+        return poseEstimator.getEstimatedPosition();
+    }
+
+
+    //* https://github.com/STMARobotics/frc-7028-2023/blob/5916bb426b97f10e17d9dfd5ec6c3b6fda49a7ce/src/main/java/frc/robot/subsystems/PoseEstimatorSubsystem.java
+    /**
+     * Resets the current pose to the specified pose. This should ONLY be called
+     * when the robot's position on the field is known, like at the beginning of
+     * a match.
+     * @param newPose new pose
+     */
+    public void resetVisionOdometry(Pose2d newPose) {
+        poseEstimator.resetPosition(
+        gyro.getRotation2d(),
+        getModulePositions(),
+        newPose);
+    }
+
+    public void resetPose(){
+        resetVisionOdometry(Constants.Field.kInitialPoseMeters);
+    }
+
     public SwerveDriveOdometry getOdometry() {
         try {
             odometry.update(
-                getHeading(),
+                Rotation2d.fromRadians(getHeading().getRadians() + Math.PI),
                 new SwerveModulePosition[]{
                     frontLeft.getPosition(),
                     frontRight.getPosition(),
@@ -236,6 +270,17 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         rotationalInertiaAccumulator.update(this.getHeading().getRadians());
 
         this.odometry.update(getHeading(), getModulePositions());
+        poseEstimator.update(gyro.getRotation2d(), getModulePositions());
+        
+        for (Vision cam : cams) {
+            poseEstimator.addVisionMeasurement(cam.getEstimatedPose(), cam.getTimestampSeconds());
+        }
+
+        if (LimelightHelpers.getLatestResults(cams[0].getName()).targetingResults.targets_Fiducials.length >= 2){
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 99999999));
+        }
+
+        Logger.recordOutput("PoseEstimator/EstimatedPose", poseEstimator.getEstimatedPosition());
 
         // Record outputs
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());

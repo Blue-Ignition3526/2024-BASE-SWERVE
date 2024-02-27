@@ -67,6 +67,10 @@ public class SwerveDrive extends SubsystemBase {
     io.stop();
   }
 
+  public void resetPose(){
+    io.resetPose();
+  }
+
   /**
    * Drive the robot at a given robot relative speed.
    * @param speeds

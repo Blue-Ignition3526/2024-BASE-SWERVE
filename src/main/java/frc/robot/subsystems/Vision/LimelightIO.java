@@ -13,11 +13,11 @@ public class LimelightIO implements VisionIO {
     }
 
     public Pose2d getEstimatedPose() {
-        return LimelightHelpers.getBotPose3d(name).toPose2d();
+        return LimelightHelpers.getBotPose2d_wpiBlue(name);
     }
 
     public double getTimestampSeconds() {
-        return LimelightHelpers.getLatency_Pipeline(name);
+        return LimelightHelpers.getLatency_Pipeline(name) + LimelightHelpers.getLatency_Capture(name);
     }
 
     public void updateInputs(VisionIOInputs inputs) {
