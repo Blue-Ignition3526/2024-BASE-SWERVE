@@ -156,12 +156,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public void resetOdometry(Pose2d pose) {
-        odometry.resetPosition(this.getHeading(), new SwerveModulePosition[]{
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        }, pose);
+        odometry.resetPosition(this.getHeading(), getModulePositions(), pose);
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -175,19 +170,19 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     public SwerveModuleState[] getRealModuleStates() {
         return new SwerveModuleState[]{
-            frontRight.getRealState(),
             frontLeft.getRealState(),
-            backRight.getRealState(),
-            backLeft.getRealState()
+            frontRight.getRealState(),
+            backLeft.getRealState(),
+            backRight.getRealState()
         };
     }
 
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[]{
-            frontRight.getPosition(),
             frontLeft.getPosition(),
-            backRight.getPosition(),
-            backLeft.getPosition()
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
         };
     }
 

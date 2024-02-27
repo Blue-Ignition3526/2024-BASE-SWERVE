@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftPositionLeftNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftNoteSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddlePositionMiddleNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleNoteSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddlePositionRightNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightNoteSpeaker"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

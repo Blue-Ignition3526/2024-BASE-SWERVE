@@ -2,8 +2,6 @@ package lib.team3526.led;
 
 import java.util.function.Consumer;
 
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-
 public class AddressableLEDSegment {
     private int start;
     private int end;

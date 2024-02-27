@@ -1,7 +1,7 @@
 package lib.team3526.led.animations;
 
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import lib.team3526.led.AddressableLEDBuffer;
 
 public class ShootingStar implements LEDAnimationBase {
     int r;
@@ -24,11 +24,6 @@ public class ShootingStar implements LEDAnimationBase {
 
         for (int i = 0; i < data.getLength(); i++) {
             if (i == trailStart) data.setRGB(i, r, g, b);
-            else if (i < trailStart) {
-                int trailIndex = trailStart - i;
-                if (trailIndex < trailLength) data.setRGB(i, r / trailIndex, g / trailIndex, b / trailIndex);
-                else data.setRGB(i, 0, 0, 0);
-            } else data.setRGB(i, 0, 0, 0);
         }
     }
 }

@@ -1,6 +1,6 @@
 package lib.team3526.led.animations;
 
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import lib.team3526.led.AddressableLEDBuffer;
 
 public interface LEDAnimationBase {
     public void provider(AddressableLEDBuffer data);
