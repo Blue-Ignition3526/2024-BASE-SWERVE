@@ -21,7 +21,10 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
-import lib.team3526.led.LEDOptions;
+import lib.team3526.led.animations.BreatheAnimation;
+import lib.team3526.led.animations.ProgressAnimation;
+import lib.team3526.led.animations.ShootingStarAnimation;
+import lib.team3526.led.framework.HyperLEDAnimation;
 import lib.team3526.utils.CTRECANDevice;
 import lib.team3526.utils.SwerveModuleOptions;
 
@@ -226,23 +229,27 @@ public final class Constants {
         // Climber motor config
         public static final int kLeftClimberMotorID = 33;
         public static final int kRightClimberMotorID = 32;
-        // public static final PIDFConstants kClimberPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         // Climber speed
         public static final double kClimberUpSpeed = 0.75;
         public static final double kClimberDownSpeed = -0.5;
         public static final double kClimberHoldSpeed = kClimberDownSpeed / 2;
 
-        // Climber motor rpm conversion
-        public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 * Centimeters.of(31).in(Centimeters);
+        // Climber motor encoder conversion
+        public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 * 31;
 
         // Max current (Used for reseting the climber)
         public static final double kMaxCurrent = 35;
-    }
 
-    //! LEDS
-    public static final class LEDs {
-        // public static final LEDOptions kRightClimberOptions = new LEDOptions(0, 10);
-        // public static final LEDOptions kLeftClimberOptions = new LEDOptions(1, 10);
+        // Climber encoder
+        public static final double kMinExtension = 1;
+        public static final double kMaxExtension = 31;
+    }
+    
+    //! LED
+    public static final class LED {
+        public static final BreatheAnimation breatheAnimation = new BreatheAnimation(0, 0, 255, 1);
+        public static final ShootingStarAnimation shootingAnimation = new ShootingStarAnimation(255, 165, 0, 2, 0.25);
+        public static final ProgressAnimation climbingAnimation = new ProgressAnimation(0, 255, 0);
     }
 }

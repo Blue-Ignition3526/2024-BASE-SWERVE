@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package lib.team3526.led;
+package lib.team3526.led.framework;
 
 import edu.wpi.first.hal.AddressableLEDJNI;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -17,7 +17,7 @@ import edu.wpi.first.hal.PWMJNI;
  * <p>Only 1 LED driver is currently supported by the roboRIO. However, multiple LED strips can be
  * connected in series and controlled from the single driver.
  */
-public class AddressableLED implements AutoCloseable {
+public class HyperAddressableLED implements AutoCloseable {
   private final int m_pwmHandle;
   private final int m_handle;
 
@@ -26,7 +26,7 @@ public class AddressableLED implements AutoCloseable {
    *
    * @param port the output port to use (Must be a PWM header, not on MXP)
    */
-  public AddressableLED(int port) {
+  public HyperAddressableLED(int port) {
     m_pwmHandle = PWMJNI.initializePWMPort(HAL.getPort((byte) port));
     m_handle = AddressableLEDJNI.initialize(m_pwmHandle);
     HAL.report(tResourceType.kResourceType_AddressableLEDs, port + 1);
@@ -63,8 +63,8 @@ public class AddressableLED implements AutoCloseable {
    *
    * @param buffer the buffer to write
    */
-  public void setData(AddressableLEDBuffer buffer) {
-    AddressableLEDJNI.setData(m_handle, buffer.buf);
+  public void setData(HyperAddressableLEDBuffer buffer) {
+    AddressableLEDJNI.setData(m_handle, buffer.buffer);
   }
 
   /**

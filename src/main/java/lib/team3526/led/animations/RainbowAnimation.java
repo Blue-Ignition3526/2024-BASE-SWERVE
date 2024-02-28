@@ -1,16 +1,17 @@
 package lib.team3526.led.animations;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import lib.team3526.led.framework.HyperAddressableLEDBuffer;
+import lib.team3526.led.framework.HyperLEDAnimation;
 
-public class Rainbow implements LEDAnimationBase {
+public class RainbowAnimation extends HyperLEDAnimation {
     double duration;
 
-    public Rainbow(double duration) {
+    public RainbowAnimation(double duration) {
         this.duration = duration;
     }
 
-    public void provider(AddressableLEDBuffer data) {
+    public void provider(HyperAddressableLEDBuffer data) {
         double timeFraction = (Timer.getFPGATimestamp() % duration) / duration;
         for (int i = 0; i < data.getLength(); i++) data.setHSV(i, (int)(timeFraction * 255), 255, 255);
     }

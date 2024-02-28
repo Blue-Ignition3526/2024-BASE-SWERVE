@@ -1,22 +1,23 @@
 package lib.team3526.led.animations;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import lib.team3526.led.framework.HyperAddressableLEDBuffer;
+import lib.team3526.led.framework.HyperLEDAnimation;
 
-public class Breathe implements LEDAnimationBase {
+public class BreatheAnimation extends HyperLEDAnimation {
     int r;
     int g;
     int b;
     double duration;
 
-    public Breathe(int r, int g, int b, double duration) {
+    public BreatheAnimation(int r, int g, int b, double duration) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.duration = duration;
     }
 
-    public void provider(AddressableLEDBuffer data) {
+    public void provider(HyperAddressableLEDBuffer data) {
         double timeFraction = 1 - (Timer.getFPGATimestamp() % duration);
         for (int i = 0; i < data.getLength(); i++) data.setRGB(
             i,

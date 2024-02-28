@@ -1,18 +1,18 @@
-package lib.team3526.led;
+package lib.team3526.led.framework;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
-public class AddressableLEDBuffer {
-  public byte[] buf;
+public class HyperAddressableLEDBuffer {
+  public byte[] buffer;
 
   /**
    * Constructs a new LED buffer with the specified length.
    *
    * @param length The length of the buffer in pixels
    */
-  public AddressableLEDBuffer(int length) {
-    buf = new byte[length * 4];
+  public HyperAddressableLEDBuffer(int length) {
+    buffer = new byte[length * 4];
   }
 
   /**
@@ -24,11 +24,31 @@ public class AddressableLEDBuffer {
    * @param b the b value [0-255]
    */
   public void setRGB(int index, int r, int g, int b) {
-    buf[index * 4] = (byte) b;
-    buf[(index * 4) + 1] = (byte) g;
-    buf[(index * 4) + 2] = (byte) r;
-    buf[(index * 4) + 3] = 0;
+    buffer[index * 4] = (byte) b;
+    buffer[(index * 4) + 1] = (byte) g;
+    buffer[(index * 4) + 2] = (byte) r;
+    buffer[(index * 4) + 3] = 0;
   }
+
+  /**
+   * Sets a specific led in the buffer.
+   *
+   * @param index the index to write
+   * @param r the r value [0-255]
+   * @param g the g value [0-255]
+   * @param b the b value [0-255]
+   * @param brightness the brightness value [0-255]
+   */
+  public void setRGB(int index, int r, int g, int b, int brightness) {
+    setRGB(
+        index,
+        (r * brightness) / 255,
+        (g * brightness) / 255,
+        (b * brightness) / 255
+    );
+  }
+
+  
 
   /**
    * Sets a specific led in the buffer.
@@ -116,7 +136,7 @@ public class AddressableLEDBuffer {
    * @return the buffer length
    */
   public int getLength() {
-    return buf.length / 4;
+    return buffer.length / 4;
   }
 
   /**
@@ -127,7 +147,7 @@ public class AddressableLEDBuffer {
    */
   public Color8Bit getLED8Bit(int index) {
     return new Color8Bit(
-        buf[index * 4 + 2] & 0xFF, buf[index * 4 + 1] & 0xFF, buf[index * 4] & 0xFF);
+        buffer[index * 4 + 2] & 0xFF, buffer[index * 4 + 1] & 0xFF, buffer[index * 4] & 0xFF);
   }
 
   /**
@@ -138,8 +158,25 @@ public class AddressableLEDBuffer {
    */
   public Color getLED(int index) {
     return new Color(
-        (buf[index * 4 + 2] & 0xFF) / 255.0,
-        (buf[index * 4 + 1] & 0xFF) / 255.0,
-        (buf[index * 4] & 0xFF) / 255.0);
+        (buffer[index * 4 + 2] & 0xFF) / 255.0,
+        (buffer[index * 4 + 1] & 0xFF) / 255.0,
+        (buffer[index * 4] & 0xFF) / 255.0);
+  }
+
+  /**
+   * Copies the (this) buffer to the specified buffer.
+   * @param dest The buffer to copy to
+   * @param offset Starting offset in the destination buffer
+   */
+  public void copy(HyperAddressableLEDBuffer dest, int offset) {
+    System.arraycopy(buffer, 0, dest.buffer, offset * 4, buffer.length);
+  }
+
+  /**
+   * Copies the (this) buffer to the specified buffer.
+   * @param dest The buffer to copy to
+   */
+  public void copy(HyperAddressableLEDBuffer dest) {
+    copy(dest, 0);
   }
 }

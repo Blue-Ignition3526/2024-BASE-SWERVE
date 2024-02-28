@@ -24,7 +24,6 @@ import frc.robot.commands.SwerveDrive.DriveFor;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ResetPose;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
-import frc.robot.subsystems.LED;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
@@ -48,12 +47,10 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
-import lib.team3526.led.AddressableLEDSegment;
-import lib.team3526.led.AddressableLEDStrip;
-import lib.team3526.led.LEDOptions;
-import lib.team3526.led.animations.Breathe;
-import lib.team3526.led.animations.Rainbow;
-import lib.team3526.led.animations.ShootingStar;
+import lib.team3526.led.animations.BreatheAnimation;
+import lib.team3526.led.animations.ShootingStarAnimation;
+import lib.team3526.led.framework.HyperAddressableLEDSegment;
+import lib.team3526.led.framework.HyperAddressableLEDStrip;
 import frc.robot.subsystems.Vision.LimelightIO;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
@@ -78,16 +75,15 @@ public class RobotContainer {
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
   // private final PoseEstimatorSubsystem m_poseEstimator;
-  private final LED m_led = new LED(new LEDOptions(0, 20));
+  // private final LED m_led = new LED(new LEDOptions(0, 20));
+
+  public static final HyperAddressableLEDSegment m_climberLeds = new HyperAddressableLEDSegment(10);
+  public static final HyperAddressableLEDSegment m_leftShooterLeds = new HyperAddressableLEDSegment(5);
+  public static final HyperAddressableLEDSegment m_rightShooterLeds = new HyperAddressableLEDSegment(5);
+  public static final HyperAddressableLEDStrip m_leds = new HyperAddressableLEDStrip(0, m_climberLeds, m_leftShooterLeds, m_rightShooterLeds);
 
   SendableChooser<Command> autonomousChooser;
   SendableChooser<Command> basicAutonomousChooser;
-
-  // private final AddressableLEDStrip m_led = new AddressableLEDStrip(0, new AddressableLEDSegment[] {
-  //   new AddressableLEDSegment(0, 10).setAnimation(new Breathe(0, 0, 255, 1)::provider),
-  //   new AddressableLEDSegment(11, 15).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
-  //   new AddressableLEDSegment(16, 20).setAnimation(new ShootingStar(0, 255, 0, 3, 0.5)::provider),
-  // });
 
   private Command autonomous;
 
@@ -171,9 +167,9 @@ public class RobotContainer {
     SmartDashboard.putData("Basic Autonomous", basicAutonomousChooser);
     this.basicAutonomousChooser = basicAutonomousChooser;
 
-    m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
-    // m_led.setDefaultAnimation(new Rainbow(5)::provider);
-    // m_led.setDefaultAnimation(new ShootingStar(0, 0, 255, 3, 2)::provider);
+    m_climberLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
+    m_leftShooterLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
+    m_rightShooterLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
 
     configureBindings();
   }
@@ -217,6 +213,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("MiddleNoteSpeaker"));
+    return basicAutonomousChooser.getSelected();
   };
 }

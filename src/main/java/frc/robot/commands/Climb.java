@@ -4,9 +4,12 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
+import static edu.wpi.first.units.Units.Centimeters;
 
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber.Climber;
 
 public class Climb extends Command {
@@ -30,6 +33,14 @@ public class Climb extends Command {
     this.up = upSupplier.get();
     if (this.up) climber.setClimberDown();
     else climber.setClimberUp();
+    
+    double extension = climber.getExtension().in(Centimeters);
+    if (extension < Constants.Climber.kMinExtension) RobotContainer.m_climberLeds.resumeDefaultAnimation();
+    else {
+      Constants.LED.climbingAnimation.setProgress(extension / Constants.Climber.kMaxExtension);
+      RobotContainer.m_climberLeds.setAnimation(Constants.LED.climbingAnimation::provider);
+      RobotContainer.m_climberLeds.resumeAnimation();
+    };
   }
 
   // Called once the command ends or is interrupted.
