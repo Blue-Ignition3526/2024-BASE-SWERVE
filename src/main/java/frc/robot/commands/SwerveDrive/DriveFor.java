@@ -79,6 +79,6 @@ public class DriveFor extends Command {
 
   @Override
   public boolean isFinished() {
-    return timer.get() <= duration;
+    return timer.get() >= duration;
   }
 }

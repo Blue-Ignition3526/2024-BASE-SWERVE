@@ -19,19 +19,19 @@ public class BasicAutos {
     public static final Command leaveCommunity(SwerveDrive swerveDrive) {
         return new DriveFor(
             swerveDrive,
+            () -> 0.2,
             () -> 0.,
-            () -> 0.1,
             () -> 0.,
             () -> true,
-            1
+            3
         );
     }
 
     public static final Command shoot(Shooter shooter, IntakeRollers rollers) {
         return new ParallelCommandGroup(
-            new RunForCommand(new BasicShoot(shooter), 1),
+            new RunForCommand(new BasicShoot(shooter), 2),
             new SequentialCommandGroup(
-                new WaitCommand(0.5),
+                new WaitCommand(1),
                 new RunForCommand(new IntakeOut(rollers), 0.5)
             )
         );

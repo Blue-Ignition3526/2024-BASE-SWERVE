@@ -103,8 +103,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public Pose2d getPose() {
-        // return odometry.getPoseMeters();
-        return getEstimatedPose();
+        return odometry.getPoseMeters();
+        // return getEstimatedPose();
     }
 
     public ChassisSpeeds getRobotRelativeChassisSpeeds() {
@@ -135,23 +135,24 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public void resetPose(){
-        resetVisionOdometry(Constants.Field.kInitialPoseMeters);
+        this.odometry.update(getHeading(), getModulePositions());
+        // resetVisionOdometry(Constants.Field.kInitialPoseMeters);
     }
 
     public SwerveDriveOdometry getOdometry() {
-        try {
-            odometry.update(
-                Rotation2d.fromRadians(getHeading().getRadians() + Math.PI),
-                new SwerveModulePosition[]{
-                    frontLeft.getPosition(),
-                    frontRight.getPosition(),
-                    backLeft.getPosition(),
-                    backRight.getPosition()
-                }
-            );
-        } catch (Exception e) {
-            System.out.println("Error updating odometry: " + e);
-        }
+        // try {
+        //     odometry.update(
+        //         Rotation2d.fromRadians(getHeading().getRadians() + Math.PI),
+        //         new SwerveModulePosition[]{
+        //             frontLeft.getPosition(),
+        //             frontRight.getPosition(),
+        //             backLeft.getPosition(),
+        //             backRight.getPosition()
+        //         }
+        //     );
+        // } catch (Exception e) {
+        //     System.out.println("Error updating odometry: " + e);
+        // }
         return odometry;
     }
 
@@ -179,10 +180,10 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[]{
-            frontLeft.getPosition(),
             frontRight.getPosition(),
+            frontLeft.getPosition(),
+            backRight.getPosition(),
             backLeft.getPosition(),
-            backRight.getPosition()
         };
     }
 

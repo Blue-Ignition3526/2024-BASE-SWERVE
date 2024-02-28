@@ -24,6 +24,7 @@ public class ShootingStar implements LEDAnimationBase {
 
         for (int i = 0; i < data.getLength(); i++) {
             if (i == trailStart) data.setRGB(i, r, g, b);
+            
         }
     }
 }

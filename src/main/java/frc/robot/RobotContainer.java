@@ -20,6 +20,7 @@ import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterDown;
 import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
+import frc.robot.commands.SwerveDrive.DriveFor;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ResetPose;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
@@ -51,6 +52,7 @@ import lib.team3526.led.AddressableLEDSegment;
 import lib.team3526.led.AddressableLEDStrip;
 import lib.team3526.led.LEDOptions;
 import lib.team3526.led.animations.Breathe;
+import lib.team3526.led.animations.Rainbow;
 import lib.team3526.led.animations.ShootingStar;
 import frc.robot.subsystems.Vision.LimelightIO;
 import frc.robot.subsystems.Vision.Vision;
@@ -170,6 +172,8 @@ public class RobotContainer {
     this.basicAutonomousChooser = basicAutonomousChooser;
 
     m_led.setDefaultAnimation(new Breathe(0, 0, 255, 1)::provider);
+    // m_led.setDefaultAnimation(new Rainbow(5)::provider);
+    // m_led.setDefaultAnimation(new ShootingStar(0, 0, 255, 3, 2)::provider);
 
     configureBindings();
   }
@@ -178,8 +182,8 @@ public class RobotContainer {
     // Set the default command for the swerve drive
     this.m_swerveDrive.setDefaultCommand(new DriveSwerve(
         m_swerveDrive,
-        () -> this.m_driverControllerCustom.getLeftY(),
-        () -> -this.m_driverControllerCustom.getLeftX(),
+        () -> -this.m_driverControllerCustom.getLeftY(),
+        () -> this.m_driverControllerCustom.getLeftX(),
         () -> this.m_driverControllerCustom.getRightX(),
         () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()
       )
@@ -213,6 +217,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return this.basicAutonomousChooser.getSelected();
+    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("MiddleNoteSpeaker"));
   };
 }
