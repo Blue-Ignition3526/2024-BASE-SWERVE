@@ -242,7 +242,7 @@ public final class Constants {
         public static final double kMaxCurrent = 35;
 
         // Climber encoder
-        public static final double kMinExtension = 1;
+        public static final double kLedExtensionThreshold = 1;
         public static final double kMaxExtension = 31;
     }
     
