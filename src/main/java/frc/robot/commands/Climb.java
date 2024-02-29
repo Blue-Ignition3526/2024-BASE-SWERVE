@@ -35,7 +35,7 @@ public class Climb extends Command {
     else climber.setClimberUp();
     
     double extension = climber.getExtension().in(Centimeters);
-    if (extension < Constants.Climber.kMinExtension) RobotContainer.m_climberLeds.resumeDefaultAnimation();
+    if (extension < Constants.Climber.kLedExtensionThreshold) RobotContainer.m_climberLeds.resumeDefaultAnimation();
     else {
       Constants.LED.climbingAnimation.setProgress(extension / Constants.Climber.kMaxExtension);
       RobotContainer.m_climberLeds.setAnimation(Constants.LED.climbingAnimation::provider);

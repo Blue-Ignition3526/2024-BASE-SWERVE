@@ -28,15 +28,13 @@ public class BasicShoot extends Command {
   @Override
   public void execute() {
     this.m_shooter.set(-1);
-    Logger.recordOutput("Shooter/IsShooting", true);
     RobotContainer.m_leftShooterLeds.setAnimation(Constants.LED.shootingAnimation::provider);
     RobotContainer.m_rightShooterLeds.setAnimation(Constants.LED.shootingAnimation::provider);
   }
 
   @Override
   public void end(boolean interrupted) {
-    this.m_shooter.set(0);
-    Logger.recordOutput("Shooter/IsShooting", false);
+    this.m_shooter.stop();
     RobotContainer.m_leftShooterLeds.stopAnimation();
     RobotContainer.m_rightShooterLeds.stopAnimation();
   }

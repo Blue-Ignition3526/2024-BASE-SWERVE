@@ -5,16 +5,16 @@ import lib.team3526.led.framework.HyperAddressableLEDBuffer;
 import lib.team3526.led.framework.HyperLEDAnimation;
 
 public class ShootingStarAnimation extends HyperLEDAnimation {
-    int r;
-    int g;
-    int b;
+    int h;
+    int s;
+    int v;
     int trailLength;
     double duration;
 
-    public ShootingStarAnimation(int r, int g, int b, int trailLength, double duration) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
+    public ShootingStarAnimation(int h, int s, int v, int trailLength, double duration) {
+        this.h = h;
+        this.s = s;
+        this.v = v;
         this.trailLength = trailLength;
         this.duration = duration;
     }
@@ -29,7 +29,7 @@ public class ShootingStarAnimation extends HyperLEDAnimation {
         for (int i = 0; i < data.getLength(); i++) {
             int distance = Math.abs(i - trailStart);
             int brightness = 255 - (int)(255 * (distance / (double)trailLength));
-            data.setRGB(i, r, g, b, brightness);
+            data.setHSV(i, h, s, brightness);
         }
     }
 }

@@ -2,6 +2,8 @@ package frc.robot.subsystems.Shooter;
 
 import static edu.wpi.first.units.Units.RPM;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
@@ -28,6 +30,8 @@ public class ShooterIOReal implements ShooterIO {
 
     Measure<Velocity<Angle>> leftTargetRpm = RPM.zero();
     Measure<Velocity<Angle>> rightTargetRpm = RPM.zero();
+
+    boolean state;
 
     public ShooterIOReal() {
         this.leftMotor = new LazyCANSparkMax(Constants.Shooter.kLeftShooterMotorID, MotorType.kBrushless);
@@ -64,6 +68,7 @@ public class ShooterIOReal implements ShooterIO {
     }
 
     public void set(double speed) {
+        this.state = true;
         set(speed, speed);
     }
 
@@ -107,6 +112,7 @@ public class ShooterIOReal implements ShooterIO {
     }
 
     public void stop() {
+        this.state = false;
         set(0);
     }
 
@@ -117,5 +123,9 @@ public class ShooterIOReal implements ShooterIO {
         inputs.rightPercentage = getRightMotorPercentage();
         inputs.rightRpm = getRightMotorRpm();
         inputs.rightTargetRpm = rightTargetRpm.magnitude();
+    }
+
+    public void periodic() {
+        Logger.recordOutput("Shooter/IsShooting", state);
     }
 }
