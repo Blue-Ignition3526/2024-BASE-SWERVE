@@ -191,15 +191,15 @@ public final class Constants {
         // Lifter motor config
         public static final int kLifterMotorID = 37;
         public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 0, 0.0);
-        public static final Constraints kLifterConstraints = new Constraints(2, 2);
-        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.02, 0.0, 0.0, kLifterConstraints);
+        public static final Constraints kLifterConstraints = new Constraints(30, 34);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(0.2, 0.0, 0.0, kLifterConstraints);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);
             public static final Measure<Angle> kLifterMinHeight = Radians.of(0);
 
             public static final Measure<Angle> kShooterAngle = Radians.of(0);
-            public static final Measure<Angle> kAmplifierAngle = Radians.of(1.2);
+            public static final Measure<Angle> kAmplifierAngle = Degrees.of(170);
             public static final Measure<Angle> kGroundAngle = Radians.of(2.9);
         }
     }

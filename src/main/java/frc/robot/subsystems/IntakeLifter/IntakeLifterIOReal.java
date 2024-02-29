@@ -1,6 +1,7 @@
 package frc.robot.subsystems.IntakeLifter;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -51,6 +52,10 @@ public class IntakeLifterIOReal implements IntakeLifterIO {
     }
 
     public void periodic() {
+        this.lifterMotor.setVoltage(
+            this.lifterMotorPID.calculate(getLifterAngleRadians(), this.desiredAngle.in(Radians))
+        );
+
         Logger.recordOutput("Intake/LifterAngle", Math.toDegrees(this.getLifterAngleRadians()));
         Logger.recordOutput("Intake/Lifter", this.lifterMotor.getAppliedOutput());
         Logger.recordOutput("Intake/SetAngle", this.desiredAngle.in(Degrees));
