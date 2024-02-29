@@ -17,7 +17,9 @@ import frc.robot.commands.BasicAutos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
+import frc.robot.commands.Intake.LifterAmp;
 import frc.robot.commands.Intake.LifterDown;
+import frc.robot.commands.Intake.LifterFloor;
 import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
 import frc.robot.commands.SwerveDrive.DriveFor;
@@ -210,6 +212,9 @@ public class RobotContainer {
 
     this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_rightClimber, () -> false));
     this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_leftClimber, () -> false));
+
+    this.m_driverControllerCustom.povLeft().whileTrue(new LifterFloor(m_intake));
+    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(m_intake));
   }
 
   public Command getAutonomousCommand() {
