@@ -15,6 +15,7 @@ import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
 import frc.robot.commands.Intake.LifterDown;
 import frc.robot.commands.Intake.LifterFloor;
+import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
@@ -174,7 +175,7 @@ public class RobotContainer {
         () -> -this.m_driverControllerCustom.getLeftY(),
         () -> this.m_driverControllerCustom.getLeftX(),
         () -> this.m_driverControllerCustom.getRightX(),
-        () -> !this.m_driverControllerCustom.bottomButton().getAsBoolean()
+        () -> !this.m_driverControllerCustom.topButton().getAsBoolean()
       )
     );
 
@@ -187,15 +188,14 @@ public class RobotContainer {
     )); */
 
     
-    this.m_driverControllerCustom.leftButton().toggleOnTrue(new IntakeIn(m_Rollers));
+    this.m_driverControllerCustom.bottomButton().toggleOnTrue(new IntakeIn(m_Rollers));
     this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_Rollers));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter));
     this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
 
-    this.m_driverControllerCustom.rightBumper().whileTrue(new LifterUp(m_intake));
-
-    this.m_driverControllerCustom.leftBumper().whileTrue(new LifterDown(m_intake));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(m_intake));
+    this.m_driverControllerCustom.leftBumper().whileTrue(new LifterShooter(m_intake));
 
     this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_rightClimber, () -> true));
     this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_leftClimber, () -> true));
@@ -204,7 +204,6 @@ public class RobotContainer {
     this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_rightClimber, () -> false));
     this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_leftClimber, () -> false));
 
-    this.m_driverControllerCustom.povLeft().whileTrue(new LifterFloor(m_intake));
     this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(m_intake));
   }
 
