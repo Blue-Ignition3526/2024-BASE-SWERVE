@@ -22,7 +22,7 @@ public class IntakeAmp extends Command {
   
   @Override
   public void execute() {
-    rollers.setRollersOut();
+    rollers.giveToShooter();
   }
   
   @Override

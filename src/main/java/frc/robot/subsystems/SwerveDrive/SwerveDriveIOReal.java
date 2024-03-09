@@ -21,7 +21,6 @@ import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
-import frc.robot.subsystems.Vision.Vision;
 import lib.team3526.math.RotationalInertiaAccumulator;
 
 import static edu.wpi.first.units.Units.Meters;
@@ -37,8 +36,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     Gyro gyro;
 
-    SwerveDrivePoseEstimator poseEstimator;
-    Vision[] cams;
+    // SwerveDrivePoseEstimator poseEstimator;
     SwerveDriveOdometry odometry;
 
     boolean drivingRobotRelative = false;
@@ -49,15 +47,14 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     RotationalInertiaAccumulator rotationalInertiaAccumulator = new RotationalInertiaAccumulator(Constants.SwerveDrive.PhysicalModel.kRobotMassKg);
 
-    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro, Vision[] cams) {
+    public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
         this.gyro = gyro;
-        this.cams = cams;
 
-        poseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveDrive.PhysicalModel.kDriveKinematics, gyro.getRotation2d(), getModulePositions(), Constants.Field.kInitialPoseMeters);
+        // poseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveDrive.PhysicalModel.kDriveKinematics, gyro.getRotation2d(), getModulePositions(), Constants.Field.kInitialPoseMeters);
 
         this.odometry = new SwerveDriveOdometry(
             Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
@@ -76,7 +73,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     public void configureAutoBuilder(SwerveDrive swerveDrive) {
         AutoBuilder.configureHolonomic(
             this::getPose,
-            this::resetVisionOdometry,
+            this::resetOdometry,
             this::getRobotRelativeChassisSpeeds,
             this::driveRobotRelative,
             new HolonomicPathFollowerConfig(
@@ -116,7 +113,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public Pose2d getEstimatedPose() {
-        return poseEstimator.getEstimatedPosition();
+        return odometry.getPoseMeters();//poseEstimator.getEstimatedPosition();
     }
 
 
@@ -127,12 +124,12 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
      * a match.
      * @param newPose new pose
      */
-    public void resetVisionOdometry(Pose2d newPose) {
+    /* public void resetVisionOdometry(Pose2d newPose) {
         poseEstimator.resetPosition(
         gyro.getRotation2d(),
         getModulePositions(),
         newPose);
-    }
+    } */
 
     public void resetPose(){
         this.odometry.update(getHeading(), getModulePositions());
@@ -180,10 +177,10 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[]{
-            frontRight.getPosition(),
             frontLeft.getPosition(),
-            backRight.getPosition(),
+            frontRight.getPosition(),
             backLeft.getPosition(),
+            backRight.getPosition()
         };
     }
 
@@ -266,18 +263,9 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         rotationalInertiaAccumulator.update(this.getHeading().getRadians());
 
         this.odometry.update(getHeading(), getModulePositions());
-        poseEstimator.update(gyro.getRotation2d(), getModulePositions());
-        
-        for (Vision cam : cams) {
-            poseEstimator.addVisionMeasurement(cam.getEstimatedPose(), cam.getTimestampSeconds());
-        }
+        //poseEstimator.update(gyro.getRotation2d(), getModulePositions());
 
-        try {
-            LimelightResults results = LimelightHelpers.getLatestResults(cams[0].getName());
-            if (results.targetingResults.targets_Fiducials.length >= 2) poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 99999999));
-        } catch (Exception e) {}
-
-        Logger.recordOutput("PoseEstimator/EstimatedPose", poseEstimator.getEstimatedPosition());
+        //Logger.recordOutput("PoseEstimator/EstimatedPose", poseEstimator.getEstimatedPosition());
 
         // Record outputs
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());

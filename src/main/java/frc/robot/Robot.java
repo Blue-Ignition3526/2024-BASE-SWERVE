@@ -7,8 +7,8 @@ package frc.robot;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.littletonrobotics.urcl.URCL;
+
+import com.ctre.phoenix6.SignalLogger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -44,8 +44,12 @@ public class Robot extends LoggedRobot {
     //   e.printStackTrace();
     // }
     
-    Logger.registerURCL(URCL.startExternal());
+    //Logger.registerURCL(URCL.startExternal());
     Logger.start();
+
+    //! DISABLE PHOENIX LOGGING
+    SignalLogger.stop();
+    SignalLogger.enableAutoLogging(false);
   }
 
   /**

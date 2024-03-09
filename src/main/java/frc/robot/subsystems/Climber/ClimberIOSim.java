@@ -9,7 +9,7 @@ public class ClimberIOSim implements ClimberIO {
     double extension = 0;
 
     public Measure<Distance> getExtension() { return Centimeters.of(this.extension); }
-    public double getCurrent() { return 0; }
+    public double getCurrent() { return 0.; }
     public void resetEncoder() {}
 
     public void set(double speed) {};

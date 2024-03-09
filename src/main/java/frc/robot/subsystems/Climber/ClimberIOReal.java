@@ -21,7 +21,8 @@ public class ClimberIOReal implements ClimberIO {
         this.name = name;
         this.climberMotor = new LazyCANSparkMax(motorID, MotorType.kBrushless);
         this.climberEncoder = this.climberMotor.getEncoder();
-        this.climberEncoder.setPositionConversionFactor(Constants.Climber.kClimber_RotationToCentimeters);
+        //this.climberEncoder.setPositionConversionFactor(Constants.Climber.kClimber_RotationToCentimeters);
+        //this.climberEncoder.setInverted(true);
     }
 
     public void set(double speed) {
@@ -48,10 +49,6 @@ public class ClimberIOReal implements ClimberIO {
         return Centimeters.of(this.climberEncoder.getPosition());
     }
 
-    public double getCurrent() {
-        return climberMotor.getOutputCurrent();
-    }
-
     public void resetEncoder() {
         climberEncoder.setPosition(0);
     }
@@ -61,9 +58,7 @@ public class ClimberIOReal implements ClimberIO {
         inputs.current = climberMotor.getOutputCurrent();
     }
 
-    @Override
-    public void periodic() {
-        Logger.recordOutput("Climber/" + name + "/Current", getCurrent());
-        Logger.recordOutput("Climber/" + name + "/Extension", getExtension());
+    public double getCurrent() {
+        return climberMotor.getOutputCurrent();
     }
 }

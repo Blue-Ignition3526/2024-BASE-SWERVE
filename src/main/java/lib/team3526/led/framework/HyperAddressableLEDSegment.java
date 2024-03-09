@@ -78,6 +78,8 @@ public class HyperAddressableLEDSegment {
     }
 
     public HyperAddressableLEDSegment setRGB(int r, int g, int b) {
+        stopAnimation();
+        stopDefaultAnimation();
         for (int i = 0; i < length; i++) buffer.setRGB(i + offset, r, g, b);
         return this;
     }

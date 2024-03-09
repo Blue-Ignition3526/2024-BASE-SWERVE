@@ -30,18 +30,24 @@ import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix.led.CANdle;
 import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
     public static final class SwerveDrive {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
+        // Active track pid constants
+        public static final double kActiveTrackP = 0.01;
+        public static final double kActiveTrackD = 0;
+        public static final double kActiveTrackI = 0;
+
         public static final double kJoystickDeadband = 0.1;
         //! Physical model of the robot
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
-            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(5);
-            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(kMaxSpeed.in(MetersPerSecond));
+            public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(4);
+            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(4);
 
             //! MAX ROTATIONAL SPEED (and acceleration)
             public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(2.5 * (2 * Math.PI));
@@ -68,10 +74,10 @@ public final class Constants {
     
             // Create a kinematics instance with the positions of the swerve modules
             public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
-                new Translation2d(kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2),
-                new Translation2d(-kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2),
-                new Translation2d(-kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2)
+                new Translation2d(kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2), // Front left
+                new Translation2d(kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2), // Front Right
+                new Translation2d(-kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2), // Back Left
+                new Translation2d(-kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2) // Back Right
             );
 
             // Rotation lock PIDF Constants
@@ -170,7 +176,7 @@ public final class Constants {
         public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeHoldSpeed = 0.05;
         public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
-        public static final double kGiveToShooterSpeed = -0.5;
+        public static final double kGiveToShooterSpeed = -0.6;
         public static final Measure<Velocity<Angle>> kGiveToShooterSpeedRpm = RPM.of(kGiveToShooterSpeed*kIntakeRollersGearRatio);
         public static final double kMaxLifterSpeed = 0.5;
         public static final double kLifterDownSpeed = -0.25;
@@ -191,16 +197,16 @@ public final class Constants {
         // Lifter motor config
         public static final int kLifterMotorID = 37;
         public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 0, 0.0);
-        public static final Constraints kLifterConstraints = new Constraints(30, 38);
-        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(1.2, 0.0, 0.0, kLifterConstraints);
+        public static final Constraints kLifterConstraints = new Constraints(38, 46);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(1.9, 0.0, 0.0, kLifterConstraints);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);
             public static final Measure<Angle> kLifterMinHeight = Radians.of(0);
 
             public static final Measure<Angle> kShooterAngle = Radians.of(0);
-            public static final Measure<Angle> kAmplifierAngle = Degrees.of(85);
-            public static final Measure<Angle> kGroundAngle = Degrees.of(170);
+            public static final Measure<Angle> kAmplifierAngle = Degrees.of(81);
+            public static final Measure<Angle> kGroundAngle = Degrees.of(175);
         }
     }
 
@@ -239,7 +245,7 @@ public final class Constants {
         public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 * 31;
 
         // Max current (Used for reseting the climber)
-        public static final double kMaxCurrent = 35;
+        public static final double kFullDeextensionCurrentThreshold = 35;
 
         // Climber encoder
         public static final double kLedExtensionThreshold = 1;
@@ -248,7 +254,7 @@ public final class Constants {
     
     //! LED
     public static final class LED {
-        public static final BreatheAnimation breatheAnimation = new BreatheAnimation(0, 0, 255, 1);
+        public static final BreatheAnimation breatheAnimation = new BreatheAnimation(0, 0, 255, 0.75);
         public static final ShootingStarAnimation shootingAnimation = new ShootingStarAnimation(255, 165, 0, 2, 0.25);
         public static final ProgressAnimation climbingAnimation = new ProgressAnimation(0, 255, 0);
     }

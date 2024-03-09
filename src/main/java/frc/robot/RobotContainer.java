@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.BasicAutos;
 import frc.robot.commands.Climb;
+import frc.robot.commands.Intake.IntakeAmp;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
@@ -19,7 +20,6 @@ import frc.robot.commands.Intake.LifterShooter;
 import frc.robot.commands.Intake.LifterUp;
 import frc.robot.commands.Shooter.BasicShoot;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
-import frc.robot.commands.SwerveDrive.ResetPose;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
@@ -45,8 +45,6 @@ import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
 import lib.team3526.led.framework.HyperAddressableLEDSegment;
 import lib.team3526.led.framework.HyperAddressableLEDStrip;
-import frc.robot.subsystems.Vision.LimelightIO;
-import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
 import java.util.HashMap;
@@ -79,7 +77,6 @@ public class RobotContainer {
   SendableChooser<Command> autonomousChooser;
   SendableChooser<Command> basicAutonomousChooser;
 
-  private Command autonomous;
 
   public RobotContainer() {
     if (Robot.isReal()) {
@@ -91,10 +88,7 @@ public class RobotContainer {
 
       // Create the real swerve drive and initialize
       this.m_gyro = new Gyro(new GyroIOPigeon(Constants.SwerveDrive.kGyroDevice));
-      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro, new Vision[] 
-      {
-        new Vision(new LimelightIO("limelight"))
-      }));
+      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOReal(m_frontLeft, m_frontRight, m_backLeft, m_backRight, m_gyro));
       this.m_intake =  new IntakeLifter(new IntakeLifterIOReal());
       this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
@@ -128,14 +122,14 @@ public class RobotContainer {
     // boolean isXbox = DriverStation.getJoystickIsXbox(0);
     boolean isXbox = true;
     SmartDashboard.putBoolean("Controller/IsXbox", isXbox);
-    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
+    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.XBOX, CustomController.CustomJoystickCurve.LINEAR);
 
     // Register the named commands for autonomous
     NamedCommands.registerCommands(new HashMap<String, Command>() {{
       put("IntakeIn", new RunForCommand(new IntakeIn(m_Rollers), 1));
       put("IntakeOut", new RunForCommand(new IntakeOut(m_Rollers), 0.25));
 
-      put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter), 2));
+      put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter, m_Rollers), 2));
 
       put("LifterUp", new RunForCommand(new LifterUp(m_intake), 1));
       put("LifterDown", new RunForCommand(new LifterDown(m_intake), 1));
@@ -147,7 +141,7 @@ public class RobotContainer {
     }});
  
     SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
-    SmartDashboard.putData(new ResetPose(m_swerveDrive));
+    
 
     SendableChooser<Command> autonomousChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Autonomous", autonomousChooser);
@@ -161,10 +155,6 @@ public class RobotContainer {
     SmartDashboard.putData("Basic Autonomous", basicAutonomousChooser);
     this.basicAutonomousChooser = basicAutonomousChooser;
 
-    m_climberLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
-    m_leftShooterLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
-    m_rightShooterLeds.setDefaultAnimation(Constants.LED.breatheAnimation::provider);
-
     configureBindings();
   }
 
@@ -175,7 +165,8 @@ public class RobotContainer {
         () -> -this.m_driverControllerCustom.getLeftY(),
         () -> this.m_driverControllerCustom.getLeftX(),
         () -> this.m_driverControllerCustom.getRightX(),
-        () -> !this.m_driverControllerCustom.topButton().getAsBoolean()
+        () -> !this.m_driverControllerCustom.topButton().getAsBoolean(),
+        () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
       )
     );
 
@@ -189,9 +180,8 @@ public class RobotContainer {
 
     
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new IntakeIn(m_Rollers));
-    this.m_driverControllerCustom.topButton().whileTrue(new IntakeOut(m_Rollers));
 
-    this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter));
+    this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter, m_Rollers));
     this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
 
     this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(m_intake));
@@ -205,6 +195,7 @@ public class RobotContainer {
     this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_leftClimber, () -> false));
 
     this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(m_intake));
+    this.m_driverControllerCustom.povLeft().whileTrue(new IntakeAmp(m_Rollers));
   }
 
   public Command getAutonomousCommand() {

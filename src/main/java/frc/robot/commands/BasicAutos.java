@@ -29,7 +29,7 @@ public class BasicAutos {
 
     public static final Command shoot(Shooter shooter, IntakeRollers rollers) {
         return new ParallelCommandGroup(
-            new RunForCommand(new BasicShoot(shooter), 2),
+            new RunForCommand(new BasicShoot(shooter, rollers), 2),
             new SequentialCommandGroup(
                 new WaitCommand(1),
                 new RunForCommand(new IntakeOut(rollers), 0.5)

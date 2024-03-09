@@ -6,16 +6,18 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class BasicShoot extends Command {
 
   Shooter m_shooter;
+  IntakeRollers rollers;
   private Timer timer = new Timer();
 
-  public BasicShoot(Shooter shooter) {
+  public BasicShoot(Shooter shooter, IntakeRollers rollers) {
     this.m_shooter = shooter;
+    this.rollers = rollers;
     addRequirements(shooter);
   }
 
@@ -28,15 +30,12 @@ public class BasicShoot extends Command {
   @Override
   public void execute() {
     this.m_shooter.set(-1);
-    RobotContainer.m_leftShooterLeds.setAnimation(Constants.LED.shootingAnimation::provider);
-    RobotContainer.m_rightShooterLeds.setAnimation(Constants.LED.shootingAnimation::provider);
+    
   }
 
   @Override
   public void end(boolean interrupted) {
     this.m_shooter.stop();
-    RobotContainer.m_leftShooterLeds.stopAnimation();
-    RobotContainer.m_rightShooterLeds.stopAnimation();
   }
 
   @Override
