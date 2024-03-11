@@ -36,27 +36,24 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
 
     Gyro gyro;
 
-    // SwerveDrivePoseEstimator poseEstimator;
-    SwerveDriveOdometry odometry;
+    SwerveDrivePoseEstimator odometry;
 
     boolean drivingRobotRelative = false;
     ChassisSpeeds speeds = new ChassisSpeeds();
-    double headingTarget = 0;
 
-    // PIDController headingController = Constants.SwerveDrive.PhysicalModel.kHeadingControllerPIDConstants.toPIDController();
 
     RotationalInertiaAccumulator rotationalInertiaAccumulator = new RotationalInertiaAccumulator(Constants.SwerveDrive.PhysicalModel.kRobotMassKg);
 
     public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
+
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
+
         this.gyro = gyro;
 
-        // poseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveDrive.PhysicalModel.kDriveKinematics, gyro.getRotation2d(), getModulePositions(), Constants.Field.kInitialPoseMeters);
-
-        this.odometry = new SwerveDriveOdometry(
+        this.odometry = new SwerveDrivePoseEstimator(
             Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
             this.getHeading(),
             new SwerveModulePosition[]{
@@ -64,7 +61,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
                 frontRight.getPosition(),
                 backLeft.getPosition(),
                 backRight.getPosition()
-            }
+            },
+            Constants.Field.kInitialPoseMeters
         );
 
         this.gyro.reset();
@@ -92,7 +90,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        return gyro.getHeading();
     }
 
     public void zeroHeading() {
@@ -100,73 +98,47 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
-        // return getEstimatedPose();
+        return odometry.getEstimatedPosition();
     }
 
-    public ChassisSpeeds getRobotRelativeChassisSpeeds() {
-        if (this.drivingRobotRelative) {
-            return this.speeds;
-        } else {
-            return ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getHeading());
-        }
-    }
-
-    public Pose2d getEstimatedPose() {
-        return odometry.getPoseMeters();//poseEstimator.getEstimatedPosition();
-    }
-
-
-    //* https://github.com/STMARobotics/frc-7028-2023/blob/5916bb426b97f10e17d9dfd5ec6c3b6fda49a7ce/src/main/java/frc/robot/subsystems/PoseEstimatorSubsystem.java
     /**
-     * Resets the current pose to the specified pose. This should ONLY be called
-     * when the robot's position on the field is known, like at the beginning of
-     * a match.
-     * @param newPose new pose
+     * Reset the pose of the robot to (0, 0)
      */
-    /* public void resetVisionOdometry(Pose2d newPose) {
-        poseEstimator.resetPosition(
-        gyro.getRotation2d(),
-        getModulePositions(),
-        newPose);
-    } */
-
-    public void resetPose(){
-        this.odometry.update(getHeading(), getModulePositions());
-        // resetVisionOdometry(Constants.Field.kInitialPoseMeters);
+    public void resetPose() {
+        resetOdometry(new Pose2d());
     }
 
-    public SwerveDriveOdometry getOdometry() {
-        // try {
-        //     odometry.update(
-        //         Rotation2d.fromRadians(getHeading().getRadians() + Math.PI),
-        //         new SwerveModulePosition[]{
-        //             frontLeft.getPosition(),
-        //             frontRight.getPosition(),
-        //             backLeft.getPosition(),
-        //             backRight.getPosition()
-        //         }
-        //     );
-        // } catch (Exception e) {
-        //     System.out.println("Error updating odometry: " + e);
-        // }
-        return odometry;
-    }
-
+    /**
+     * Reset the pose of the robot to the provided pose
+     * @param pose
+     */
     public void resetOdometry(Pose2d pose) {
         odometry.resetPosition(this.getHeading(), getModulePositions(), pose);
     }
 
-    public SwerveModuleState[] getModuleStates() {
+    public ChassisSpeeds getRobotRelativeChassisSpeeds() {
+        if (this.drivingRobotRelative) return this.speeds;
+        else return ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getHeading());
+    }
+
+    /**
+     * Get the target module states
+     * @return
+     */
+    public SwerveModuleState[] getModuleTargetStates() {
         return new SwerveModuleState[]{
-            frontLeft.getState(),
-            frontRight.getState(),
-            backLeft.getState(),
-            backRight.getState()
+            frontLeft.getTargetState(),
+            frontRight.getTargetState(),
+            backLeft.getTargetState(),
+            backRight.getTargetState()
         };
     }
 
-    public SwerveModuleState[] getRealModuleStates() {
+    /**
+     * Get the real module states
+     * @return
+     */
+    public SwerveModuleState[] getModuleRealStates() {
         return new SwerveModuleState[]{
             frontLeft.getRealState(),
             frontRight.getRealState(),
@@ -175,49 +147,87 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         };
     }
 
+    /**
+     * Get the current module positions
+     * @return
+     */
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[]{
             frontLeft.getPosition(),
             frontRight.getPosition(),
+
             backLeft.getPosition(),
-            backRight.getPosition()
+            backRight.getPosition(),
         };
     }
 
+   /**
+     * Set the module states
+     * @param states
+     */
     public void setModuleStates(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond));
-        frontLeft.setState(states[0]);
-        frontRight.setState(states[1]);
-        backLeft.setState(states[2]);
-        backRight.setState(states[3]);
+        frontLeft.setTargetState(states[0]);
+        frontRight.setTargetState(states[1]);
+        backLeft.setTargetState(states[2]);
+        backRight.setTargetState(states[3]);
     }
 
+    /**
+     * Drive the robot with the provided speeds <b>(ROBOT RELATIVE)></b>
+     * @param xSpeed
+     * @param ySpeed
+     * @param rotSpeed
+     */
     public void drive(ChassisSpeeds speeds) {
         this.speeds = speeds;
         SwerveModuleState[] m_moduleStates = Constants.SwerveDrive.PhysicalModel.kDriveKinematics.toSwerveModuleStates(speeds);
         this.setModuleStates(m_moduleStates);
     }
 
+    /**
+     * Drive the robot with the provided speeds <b>(ROBOT RELATIVE)</b>
+     * @param xSpeed
+     * @param ySpeed
+     * @param rotSpeed
+     */
     public void driveFieldRelative(double xSpeed, double ySpeed, double rotSpeed) {
         this.drivingRobotRelative = false;
         this.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, this.getHeading()));
     }
 
+    /**
+     * Drive the robot with the provided speeds <b>(FIELD RELATIVE)</b>
+     * @param speeds
+     */
     public void driveFieldRelative(ChassisSpeeds speeds) {
         this.drivingRobotRelative = false;
         this.drive(speeds);
     }
 
+    /**
+     * Drive the robot with the provided speeds <b>(ROBOT RELATIVE)</b>
+     * @param xSpeed
+     * @param ySpeed
+     * @param rotSpeed
+     */
     public void driveRobotRelative(double xSpeed, double ySpeed, double rotSpeed) {
         this.drivingRobotRelative = true;
         this.drive(new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
     }
 
+    /**
+     * Drive the robot with the provided speeds <b>(ROBOT RELATIVE)</b>
+     * @param speeds
+     */
     public void driveRobotRelative(ChassisSpeeds speeds) {
         this.drivingRobotRelative = true;
         this.drive(speeds);
     }
 
+    /**
+     * Stop the robot (sets all motors to 0)
+     */
     public void stop() {
         this.frontLeft.stop();
         this.frontRight.stop();
@@ -225,13 +235,19 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.backRight.stop();
     }
 
+    /**
+     * Angle all wheels to point inwards in an X pattern
+     */
     public void xFormation() {
-        this.frontLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
-        this.frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
-        this.backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
-        this.backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
+        this.frontLeft.setTargetState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
+        this.frontRight.setTargetState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
+        this.backLeft.setTargetState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)), true);
+        this.backRight.setTargetState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), true);
     }
 
+    /**
+     * Reset the turning encoders of all swerve modules
+     */
     public void resetTurningEncoders() {
         this.frontLeft.resetTurningEncoder();
         this.frontRight.resetTurningEncoder();
@@ -239,6 +255,9 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.backRight.resetTurningEncoder();
     }
 
+    /**
+     * Reset the drive encoders of all swerve modules
+     */
     public void resetDriveEncoders() {
         this.frontLeft.resetDriveEncoder();
         this.frontRight.resetDriveEncoder();
@@ -246,28 +265,23 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.backRight.resetDriveEncoder();
     }
 
+    /**
+     * Reset all encoders of all swerve modules
+     */
     public void resetEncoders() {
         this.resetTurningEncoders();
         this.resetDriveEncoders();
-    }
-
-    public void updateInputs(SwerveDriveIOInputs inputs) {
-        inputs.heading = this.getHeading().getDegrees();
-        inputs.rotSpeed = speeds.omegaRadiansPerSecond;
-        inputs.xSpeed = speeds.vxMetersPerSecond;
-        inputs.ySpeed = speeds.vyMetersPerSecond;
     }
 
     public void periodic() {
         // Update inertia acculumator
         rotationalInertiaAccumulator.update(this.getHeading().getRadians());
 
+        // Update odometry
         this.odometry.update(getHeading(), getModulePositions());
-        //poseEstimator.update(gyro.getRotation2d(), getModulePositions());
+        //this.odometry.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue(Constants.Vision.kLimelightName), LimelightHelpers.getLatency_Capture(Constants.Vision.kLimelightName) + LimelightHelpers.getLatency_Pipeline(Constants.Vision.kLimelightName));
 
-        //Logger.recordOutput("PoseEstimator/EstimatedPose", poseEstimator.getEstimatedPosition());
-
-        // Record outputs
+        // Log data
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());
         Logger.recordOutput("SwerveDrive/RobotHeadingDeg", this.getHeading().getDegrees());
 
@@ -278,6 +292,7 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         Logger.recordOutput("SwerveDrive/RobotRelative", this.drivingRobotRelative);
         Logger.recordOutput("SwerveDrive/RobotSpeeds", this.getRobotRelativeChassisSpeeds());
         
-        Logger.recordOutput("SwerveDrive/SwerveModuleStates", this.getModuleStates());
+        Logger.recordOutput("SwerveDrive/ModuleRealStates", this.getModuleRealStates());
+        Logger.recordOutput("SwerveDrive/ModuleTargetStates", this.getModuleTargetStates());
     }
 }

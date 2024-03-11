@@ -36,7 +36,7 @@ public interface GyroIO {
     double getAccelerationY();
     double getAccelerationZ();
 
-    Rotation2d getRotation2d();
+    Rotation2d getHeading();
 
     void reset();
 

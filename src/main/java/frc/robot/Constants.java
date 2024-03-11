@@ -2,6 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,15 +15,18 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
+import lib.team3526.constants.CTRECANDevice;
 import lib.team3526.constants.PIDFConstants;
+import lib.team3526.constants.SwerveModuleOptions;
 import lib.team3526.led.LEDStrip;
-import lib.team3526.utils.CTRECANDevice;
-import lib.team3526.utils.SwerveModuleOptions;
+import lib.team3526.utils.SwerveChassis;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -66,20 +73,19 @@ public final class Constants {
             public static final Measure<Distance> kWheelBase = Inches.of(22.64);
     
             // Create a kinematics instance with the positions of the swerve modules
-            public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2), // Front left
-                new Translation2d(kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2), // Front Right
-                new Translation2d(-kWheelBase.in(Meters) / 2, kTrackWidth.in(Meters) / 2), // Back Left
-                new Translation2d(-kWheelBase.in(Meters) / 2, -kTrackWidth.in(Meters) / 2) // Back Right
-            );
+            public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(SwerveChassis.sizeToModulePositions(kTrackWidth.in(Meters), kWheelBase.in(Meters)));
 
             // Rotation lock PIDF Constants
             public static final PIDFConstants kHeadingControllerPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
             // Rotational inertia constants
             public static final double kRobotMassKg = 46;
+
+            // Standard deviations
+            public static final Matrix<N3, N1> stateStdDevs = VecBuilder.fill(0, 0, 0);
         }
 
+        //! Swerve modules configuration
         //! Swerve modules configuration
         public static final class SwerveModules {
             //! PID
@@ -88,51 +94,40 @@ public final class Constants {
             //! Global offset
             public static final Measure<Angle> kGlobalOffset = Degrees.of(0);
 
+            //! Swerve modules options
             public static final SwerveModuleOptions kFrontLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
-                .setAbsoluteEncoderInverted(true)
+                .setAbsoluteEncoderInverted(false)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(11, "*"))
                 .setDriveMotorID(22)
                 .setTurningMotorID(21)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(false)
                 .setName("Front Left");
 
             public static final SwerveModuleOptions kFrontRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
-                .setAbsoluteEncoderInverted(true)
+                .setAbsoluteEncoderInverted(false)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(12, "*"))
                 .setDriveMotorID(24)
                 .setTurningMotorID(23)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(false)
                 .setName("Front Right");
 
             public static final SwerveModuleOptions kBackLeftOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
-                .setAbsoluteEncoderInverted(true)
+                .setAbsoluteEncoderInverted(false)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(13, "*"))
                 .setDriveMotorID(26)
                 .setTurningMotorID(25)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(false)
                 .setName("Back Left");
 
             public static final SwerveModuleOptions kBackRightOptions = new SwerveModuleOptions()
-                .setOffsetDeg(0)
-                .setAbsoluteEncoderInverted(true)
+                .setAbsoluteEncoderInverted(false)
                 .setAbsoluteEncoderCANDevice(new CTRECANDevice(14, "*"))
                 .setDriveMotorID(28)
                 .setTurningMotorID(27)
-                .setDriveMotorInverted(false)
-                .setTurningMotorInverted(false)
                 .setName("Back Right");
         }
 
-        //! AUTONOMOUS 
+        //! AUTONOMOUS
         public static final class Autonomous {
-            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(0.00000000005, 0.0, 0.0);
-            public static final PIDConstants kRotatePIDConstants = new PIDConstants(0.1, 0.0, 0.0);
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
+            public static final PIDConstants kRotatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
             public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
         }
     }
@@ -144,6 +139,7 @@ public final class Constants {
 
     //! VISION
     public static final class Vision {
+        public static final String kLimelightName = "limelight";
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0.5, 0.5, 0.3), new Rotation3d(0, -2, 0));
     }
@@ -213,8 +209,7 @@ public final class Constants {
         public static final double kShooterGearRatio = 1.0/1.0;
 
         // Shooter speeds
-        public static final double kShooterSpeakerSpeed = 1;
-        public static final Measure<Velocity<Angle>> kTakeFromHumanPlayer = RPM.of(-5);
+        public static final double kShooterSpeakerSpeed = -1;
 
         // Shooter motor time
         public static final double kMaxShootTime = 4;
@@ -244,6 +239,9 @@ public final class Constants {
 
     public static final class CANdle {
         public static final int kCANdleID = 0;
+
+        public static final CTRECANDevice kCANdle = new CTRECANDevice(41, "*");
+
 
         public static final LEDStripType kLEDStripType = LEDStripType.GRB;
         public static final double kLEDBrightness = 0.5;

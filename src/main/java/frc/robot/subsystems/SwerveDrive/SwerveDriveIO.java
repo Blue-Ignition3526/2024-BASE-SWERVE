@@ -2,11 +2,9 @@ package frc.robot.subsystems.SwerveDrive;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
@@ -20,35 +18,39 @@ public interface SwerveDriveIO {
         double rotSpeed;
     }
 
+    public void configureAutoBuilder(SwerveDrive swerveDrive);
+
     public Rotation2d getHeading();
     public void zeroHeading();
 
-    public SwerveDriveOdometry getOdometry();
-
     public void resetPose();
+    public Pose2d getPose();
+    public void resetOdometry(Pose2d pose);
 
-    public SwerveModuleState[] getModuleStates();
-    public SwerveModuleState[] getRealModuleStates();
+    public ChassisSpeeds getRobotRelativeChassisSpeeds();
+
+    public SwerveModuleState[] getModuleTargetStates();
+    public SwerveModuleState[] getModuleRealStates();
     public SwerveModulePosition[] getModulePositions();
 
-    public void stop();
-
+    public void setModuleStates(SwerveModuleState[] states);
+    
     public void drive(ChassisSpeeds speeds);
-
+    
     public void driveFieldRelative(double xSpeed, double ySpeed, double rotSpeed);
     public void driveFieldRelative(ChassisSpeeds speeds);
 
     public void driveRobotRelative(double xSpeed, double ySpeed, double rotSpeed);
     public void driveRobotRelative(ChassisSpeeds speeds);
 
-    public void configureAutoBuilder(SwerveDrive swerveDrive);
+    public void stop();
 
     public void xFormation();
 
-    public default void resetTurningEncoders() {};
-    public default void resetDriveEncoders() {};
-    public default void resetEncoders() {};
+    public  void resetTurningEncoders();
+    public  void resetDriveEncoders();
+    public void resetEncoders();
 
-    public void updateInputs(SwerveDriveIOInputs inputs);
+    public default void updateInputs(SwerveDriveIOInputs inputs) {};
     public default void periodic() {}
 }

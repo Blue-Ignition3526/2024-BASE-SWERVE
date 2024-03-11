@@ -34,7 +34,7 @@ public class PickUpPiece extends Command {
   public void end(boolean interrupted) {
     this.lifter.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
     this.rollers.stop();
-    this.leds.setLeds("00ff00");
+    this.leds.setLeds("#00ff00");
   }
 
   @Override

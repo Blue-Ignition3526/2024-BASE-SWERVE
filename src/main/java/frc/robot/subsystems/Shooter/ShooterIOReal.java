@@ -19,9 +19,8 @@ public class ShooterIOReal implements ShooterIO {
 
     public ShooterIOReal() {
         this.leftMotor = new LazyCANSparkMax(Constants.Shooter.kLeftShooterMotorID, MotorType.kBrushless);
-        
         this.rightMotor = new LazyCANSparkMax(Constants.Shooter.kRightShooterMotorID, MotorType.kBrushless);
-            this.rightMotor.setInverted(true);
+            this.rightMotor.setInverted(false);
 
         this.leftEncoder = leftMotor.getEncoder();
         this.rightEncoder = rightMotor.getEncoder();

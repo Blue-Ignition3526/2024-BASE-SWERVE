@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.BasicAutos;
 import frc.robot.commands.Climb;
+import frc.robot.commands.DefaultLedState;
 import frc.robot.commands.Climbers.ClimbersDown;
 import frc.robot.commands.Climbers.ClimbersUp;
 import frc.robot.commands.Intake.IntakeIn;
@@ -43,9 +44,7 @@ import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
 import frc.robot.subsystems.SwerveDrive.SwerveDriveIOReal;
-import frc.robot.subsystems.SwerveDrive.SwerveDriveIOSim;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
-import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
@@ -91,9 +90,11 @@ public class RobotContainer {
       this.m_Rollers = new IntakeRollers(new IntakeRollersIOReal());
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
-      this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
+      this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.
+      kRightClimberMotorID, "RightClimber"));
 
-      this.m_leds = new Leds(new LedsIOReal(69));
+      this.m_leds = new Leds(new LedsIOReal(Constants.CANdle.kCANdle));
+      this.m_leds.turnOff();
 
       // this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
       //   new Vision(new LimelightIO("limelight"))
@@ -102,14 +103,14 @@ public class RobotContainer {
       Logger.recordMetadata("Robot", "Real");
     } else {
       // Create all simulated swerve modules and initialize
-      this.m_frontLeft = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kFrontLeftOptions));
-      this.m_frontRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kFrontRightOptions));
-      this.m_backLeft = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackLeftOptions));
-      this.m_backRight = new SwerveModule(new SwerveModuleIOSim(Constants.SwerveDrive.SwerveModules.kBackRightOptions));
+      this.m_frontLeft = null;
+      this.m_frontRight = null;
+      this.m_backLeft = null;
+      this.m_backRight = null;
 
       // Create the simulated swerve drive and initialize
       this.m_gyro = new Gyro(new GyroIOSim());
-      this.m_swerveDrive = new SwerveDrive(new SwerveDriveIOSim(m_frontLeft, m_frontRight, m_backLeft, m_backRight));
+      this.m_swerveDrive = null;
       this.m_intake = new IntakeLifter(new IntakeLifterIOSim());
       this.m_Rollers = new IntakeRollers(new IntakeRollersIOSim());
       this.m_shooter = new Shooter(new ShooterIOSim());
@@ -170,6 +171,8 @@ public class RobotContainer {
         () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
       )
     );
+
+    this.m_leds.setDefaultCommand(new DefaultLedState(m_leds));
 
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_Rollers, this.m_intake, this.m_leds));
 

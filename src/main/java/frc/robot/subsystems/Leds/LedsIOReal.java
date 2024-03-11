@@ -1,3 +1,7 @@
+//! se hizo commit limpio :)
+//
+
+
 package frc.robot.subsystems.Leds;
 
 import com.ctre.phoenix.led.CANdle;
@@ -5,6 +9,7 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import frc.robot.Constants;
+import lib.team3526.constants.CTRECANDevice;
 import lib.team3526.led.LEDStrip;
 
 public class LedsIOReal implements LedsIO{
@@ -12,8 +17,8 @@ public class LedsIOReal implements LedsIO{
     private final CANdle leds;
     private final CANdleConfiguration config;
 
-    public LedsIOReal(int canId) {
-        this.leds = new CANdle(canId);
+    public LedsIOReal(CTRECANDevice device) {
+        this.leds = new CANdle(device.getDeviceID(), device.getCanbus());
         this.config = new CANdleConfiguration();
         this.config.stripType = Constants.CANdle.kLEDStripType;
         this.config.brightnessScalar = Constants.CANdle.kLEDBrightness;

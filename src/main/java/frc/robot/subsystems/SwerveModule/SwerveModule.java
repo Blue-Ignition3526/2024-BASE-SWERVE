@@ -4,6 +4,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveModule extends SubsystemBase {
@@ -18,56 +20,9 @@ public class SwerveModule extends SubsystemBase {
     this.io = io;
   }
 
-  /**
-   * Sets the state of the swerve module (Speed and angle).
-   * (Updates the motors with PID)
-   * @param state SwerveModuleState
-   */
-  public void setState(SwerveModuleState state) {
-    io.setState(state);
+  public Measure<Angle> getAbsoluteEncoderPosition() {
+    return io.getAbsoluteEncoderPosition();
   }
-
-  /**
-   * Sets the state of the swerve module (Speed and angle) (forcefully or not).
-   * (Updates the motors with PID)
-   * @param state SwerveModuleState
-   * @param force boolean
-   */
-  public void setState(SwerveModuleState state, boolean force) {
-    io.setState(state, force);
-  }
-
-  /**
-   * Stops the swerve module.
-   */
-  public void stop() {
-    io.stop();
-  }
-
-  /**
-   * Gets the position of the swerve module on the field.
-   * @return SwerveModulePosition position
-   */
-  public SwerveModulePosition getPosition() {
-    return io.getPosition();
-  }
-
-  /**
-   * Gets the **REAL** state of the swerve module (real Speed and angle).
-   * @return SwerveModuleState real state
-   */
-  public SwerveModuleState getRealState() {
-    return io.getRealState();
-  }
-
-  /**
-   * Gets the target state of the swerve module (Speed and angle).
-   * @return SwerveModuleState target state 
-   */
-  public SwerveModuleState getState() {
-    return io.getState();
-  }
-
   /**
    * Resets the turn encoder (APPLIES ABSOLUTE ENCODER POSITION)
    */
@@ -89,13 +44,68 @@ public class SwerveModule extends SubsystemBase {
     io.resetEncoders();
   }
 
+  public Measure<Angle> getAngle() {
+    return io.getAngle();
+  }
+
+  /**
+   * Sets the state of the swerve module (Speed and angle).
+   * (Updates the motors with PID)
+   * @param state SwerveModuleState
+   */
+  public void setTargetState(SwerveModuleState state) {
+    io.setTargetState(state);
+  }
+
+  /**
+   * Sets the state of the swerve module (Speed and angle) (forcefully or not).
+   * (Updates the motors with PID)
+   * @param state SwerveModuleState
+   * @param force boolean
+   */
+  public void setTargetState(SwerveModuleState state, boolean force) {
+    io.setTargetState(state, force);
+  }
+   /**
+   * Stops the swerve module.
+   */
+  public void stop() {
+    io.stop();
+  }
+  /**
+   * Gets the **REAL** state of the swerve module (real Speed and angle).
+   * @return SwerveModuleState real state
+   */
+  public SwerveModuleState getRealState() {
+    return io.getRealState();
+  }
+
+  /**
+   * Gets the target state of the swerve module (Speed and angle).
+   * @return SwerveModuleState target state 
+   */
+  public SwerveModuleState getTargetState() {
+    return io.getTargetState();
+  }
+  /**
+   * Gets the position of the swerve module on the field.
+   * @return SwerveModulePosition position
+   */
+  public SwerveModulePosition getPosition() {
+    return io.getPosition();
+  }
+  
+  public String getName() {
+    return io.getName();
+  }
+
   @Override
   public void periodic() {
     io.periodic();
     io.updateInputs(inputs);
 
     Logger.recordOutput("SwerveDrive/" + io.getName() + "/RealState", io.getRealState());
-    Logger.recordOutput("SwerveDrive/" + io.getName() + "/TargetState", io.getState());
+    Logger.recordOutput("SwerveDrive/" + io.getName() + "/TargetState", io.getTargetState());
     Logger.recordOutput("SwerveDrive/" + io.getName() + "/Position", io.getPosition());
   }
 }

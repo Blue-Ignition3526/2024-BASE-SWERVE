@@ -1,9 +1,7 @@
 package frc.robot.subsystems.SwerveModule;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,38 +9,53 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import lib.team3526.constants.PIDFConstants;
+import lib.team3526.constants.SwerveModuleOptions;
 import lib.team3526.control.LazyCANSparkMax;
-import lib.team3526.utils.SwerveModuleOptions;
+import lib.team3526.control.LazySparkPID;
 
 import static edu.wpi.first.units.Units.*;
 
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveModuleIOReal implements SwerveModuleIO {
-    private SwerveModuleOptions options;
+    //! Options for the module
+    public final SwerveModuleOptions options;
 
+    //! Motors
     private final LazyCANSparkMax driveMotor;
-    private final CANSparkMax turningMotor;
+    private final LazyCANSparkMax turningMotor;
 
+    //! Encoders
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turningEncoder;
 
-    private final SparkPIDController turningPID;
+    //! PID Controller for turning
+    private final LazySparkPID turningPID;
 
+    //! Absolute encoder
     private final CANcoder absoluteEncoder;
 
-    private SwerveModuleState state = new SwerveModuleState();
+    //! Target state
+    private SwerveModuleState targetState = new SwerveModuleState();
 
+    //! Name of the module
+    private final String name;
+
+    /**
+     * Create a new swerve module with the provided options
+     * @param options
+     */
     public SwerveModuleIOReal(SwerveModuleOptions options) {
         // Store the options
         this.options = options;
 
         // Create the motors
         this.driveMotor = new LazyCANSparkMax(options.driveMotorID, MotorType.kBrushless);
-        this.turningMotor = new CANSparkMax(options.turningMotorID, MotorType.kBrushless);
+        this.turningMotor = new LazyCANSparkMax(options.turningMotorID, MotorType.kBrushless);
+
+        this.turningMotor.setInverted(options.turningMotorInverted);
 
         // Get and configure the encoders
         this.driveEncoder = this.driveMotor.getEncoder();
@@ -54,51 +67,74 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         this.turningEncoder.setPositionConversionFactor(Constants.SwerveDrive.PhysicalModel.kTurningEncoder_RotationToRadian); 
         this.turningEncoder.setVelocityConversionFactor(Constants.SwerveDrive.PhysicalModel.kTurningEncoder_RPMToRadianPerSecond);
 
-        this.turningPID = this.turningMotor.getPIDController();
-        PIDFConstants.applyToSparkPIDController(this.turningPID, Constants.SwerveDrive.SwerveModules.kTurningPIDConstants);
-        this.turningPID.setPositionPIDWrappingMinInput(0);
-        this.turningPID.setPositionPIDWrappingMaxInput(2 * Math.PI);
-        this.turningPID.setPositionPIDWrappingEnabled(true);
+        this.turningPID = new LazySparkPID(this.turningMotor.getPIDController());
+        PIDFConstants.applyToSparkPIDController(this.turningPID.controller, Constants.SwerveDrive.SwerveModules.kTurningPIDConstants);
+        this.turningPID.controller.setPositionPIDWrappingMinInput(0);
+        this.turningPID.controller.setPositionPIDWrappingMaxInput(2 * Math.PI);
+        this.turningPID.controller.setPositionPIDWrappingEnabled(true);
 
         // Configure the absolute encoder
-        this.absoluteEncoder = new CANcoder(options.getAbsoluteEncoderCANDevice().getDeviceID(), options.getAbsoluteEncoderCANDevice().getCanbus());
-        // this.absoluteEncoder.getConfigurator().apply(
-        //     new MagnetSensorConfigs()
-        //         //! VAN EN PHOENIX
-        //         //.withMagnetOffset((this.options.getOffsetRad() + Constants.SwerveDrive.SwerveModules.kGlobalOffset.in(Radians))  / (2 * Math.PI))
-        //         .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
-        // );
+        this.absoluteEncoder = new CANcoder(options.absoluteEncoderDevice.getDeviceID(), options.absoluteEncoderDevice.getCanbus());
+
+        this.name = options.name;
 
         // Reset the encoders
         resetEncoders();
+        
     }
 
+    /**
+     * Get the absolute encoder turn position
+     * @return
+     */
     public Measure<Angle> getAbsoluteEncoderPosition() {
-        return Radians.of((absoluteEncoder.getAbsolutePosition().refresh().getValue() * 2 * Math.PI) % (2 * Math.PI) * (this.options.absoluteEncoderInverted ? -1.0 : 1.0));
+        return Radians.of((absoluteEncoder.getAbsolutePosition().refresh().getValue() * 2 * Math.PI) * (this.options.absoluteEncoderInverted ? -1.0 : 1.0));
     }
 
+    /**
+     * Reset the drive encoder (set the position to 0)
+     */
     public void resetDriveEncoder() {
         this.driveEncoder.setPosition(0);
     }
 
+    /**
+     * Reset the turning encoder (set the position to the absolute encoder's position)
+     */
     public void resetTurningEncoder() {
         this.turningEncoder.setPosition(getAbsoluteEncoderPosition().in(Radians));
     }
     
+    /**
+     * Reset the drive and turning encoders
+     */
     public void resetEncoders() {
         resetDriveEncoder();
         resetTurningEncoder();
     }
 
+    /**
+     * Get the current angle of the module
+     * @return
+     */
     public Measure<Angle> getAngle() {
         return Radians.of(this.turningEncoder.getPosition() % (2 * Math.PI));
     }
 
-    public void setState(SwerveModuleState state) {
-        setState(state, false);
+    /**
+     * Set the target state of the module
+     * @param state The target state
+     */
+    public void setTargetState(SwerveModuleState state) {
+        setTargetState(state, false);
     }
 
-    public void setState(SwerveModuleState state, boolean force) {
+    /**
+     * Set the target state of the module
+     * @param state The target state
+     * @param force If true, the module will ignore the current speed and turn to the target angle
+     */
+    public void setTargetState(SwerveModuleState state, boolean force) {
         if (Math.abs(state.speedMetersPerSecond) < 0.001 || force) {
             stop();
             return;
@@ -106,21 +142,32 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
 
         state = SwerveModuleState.optimize(state, Rotation2d.fromRadians(getAngle().in(Radians)));
 
-        this.state = state;
+        this.targetState = state;
 
         driveMotor.set(state.speedMetersPerSecond / Constants.SwerveDrive.PhysicalModel.kMaxSpeed.in(MetersPerSecond));
         turningPID.setReference(state.angle.getRadians(), ControlType.kPosition);
     }
 
+    /**
+     * Stop the module (set the speed of the motors to 0)
+     */
     public void stop() {
         driveMotor.set(0);
         turningMotor.set(0);
     }
 
-    public SwerveModuleState getState() {
-        return this.state;
+    /**
+     * Get the target state of the module
+     * @return
+     */
+    public SwerveModuleState getTargetState() {
+        return this.targetState;
     }
 
+    /**
+     * Get the real state of the module
+     * @return
+     */
     public SwerveModuleState getRealState() {
         return new SwerveModuleState(
             this.driveEncoder.getVelocity(),
@@ -128,6 +175,10 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
         );
     }
 
+    /**
+     * Get the position of the module
+     * @return
+     */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             this.driveEncoder.getPosition(),
@@ -136,29 +187,13 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
     }
 
     public String getName() {
-        return this.options.name;
+        return this.name;
     }
 
-    public void updateInputs(SwerveModuleIOInputs inputs) {
-        inputs.angle = this.getAngle().in(Radians);
-        inputs.speed = this.driveEncoder.getVelocity();
-
-        inputs.targetAngle = this.state.angle.getRadians();
-        inputs.targetSpeed = this.state.speedMetersPerSecond;
-
-        inputs.distance = this.driveEncoder.getPosition();
-    }
-
-    double lastResetTime = Timer.getFPGATimestamp();
     public void periodic() {
-        if (Timer.getFPGATimestamp() - lastResetTime > 1.0) {
-            // resetTurningEncoder();
-            lastResetTime = Timer.getFPGATimestamp();
-        }
-
-        Logger.recordOutput("SwerveDrive/" + this.getName() + "/MotEncoderDeg", this.getAngle().in(Degrees));
-        Logger.recordOutput("SwerveDrive/" + this.getName() + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
-        Logger.recordOutput("SwerveDrive/" + this.getName() + "/RealState", this.getRealState());
-        Logger.recordOutput("SwerveDrive/" + this.getName() + "/TargetState", this.getState());
+        Logger.recordOutput("SwerveDrive/" + this.options.name + "/MotEncoderDeg", this.getAngle().in(Degrees));
+        Logger.recordOutput("SwerveDrive/" + this.options.name + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));
+        Logger.recordOutput("SwerveDrive/" + this.options.name + "/RealState", this.getRealState());
+        Logger.recordOutput("SwerveDrive/" + this.options.name + "/TargetState", this.getTargetState());
     }
 }

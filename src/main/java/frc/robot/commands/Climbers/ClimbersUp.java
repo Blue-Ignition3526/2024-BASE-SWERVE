@@ -24,7 +24,10 @@ public class ClimbersUp extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    this.leftClimber.stop();
+    this.rightClimber.stop();
+  }
 
   @Override
   public boolean isFinished() {

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.SwerveDrive;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -27,29 +28,40 @@ public class SwerveDrive extends SubsystemBase {
   public Rotation2d getHeading() {
     return io.getHeading();
   }
-
   /**
-   * Get the odometry object.
-   * @return The odometry object.
+   * Zero the heading (yaw measurement) of the gyroscope.
    */
-  public SwerveDriveOdometry getOdometry() {
-    return io.getOdometry();
+  public void zeroHeading() {
+    io.zeroHeading();
   }
 
+  public void resetPose(){
+    io.resetPose();
+  }
+  public void getPose(){
+    io.getPose();
+  }
+  public void resetOdometry(Pose2d pose){
+    io.resetOdometry(pose);
+  }
+
+  public ChassisSpeeds getRobotRelativeChassisSpeeds(){
+    return io.getRobotRelativeChassisSpeeds();
+  }
   /**
    * Get all the modules' states.
    * @return The modules' states.
    */
-  public SwerveModuleState[] getModuleStates() {
-    return io.getModuleStates();
+  public SwerveModuleState[] getModuleTargetStates() {
+    return io.getModuleTargetStates();
   }
 
   /**
    * Get all the modules' real states.
    * @return The modules' real states.
    */
-  public SwerveModuleState[] getRealModuleStates() {
-    return io.getRealModuleStates();
+  public SwerveModuleState[] getModuleRealStates() {
+    return io.getModuleRealStates();
   }
 
   /**
@@ -60,17 +72,10 @@ public class SwerveDrive extends SubsystemBase {
     return io.getModulePositions();
   }
 
-  /**
-   * Stop all modules
-   */
-  public void stop() {
-    io.stop();
+  public void setModuleStates(SwerveModuleState[] states){
+    io.setModuleStates(states);
   }
-
-  public void resetPose(){
-    io.resetPose();
-  }
-
+  
   /**
    * Drive the robot at a given robot relative speed.
    * @param speeds
@@ -78,7 +83,6 @@ public class SwerveDrive extends SubsystemBase {
   public void drive(ChassisSpeeds speeds) {
     io.drive(speeds);
   }
-
   /**
    * Drive the robot at a given field relative speed.
    * @param xSpeed The speed that the robot should drive in the x direction.
@@ -96,7 +100,6 @@ public class SwerveDrive extends SubsystemBase {
   public void driveFieldRelative(ChassisSpeeds speeds) {
     io.driveFieldRelative(speeds);
   }
-
   /**
    * Drive the robot at a given robot relative speed.
    * @param xSpeed The speed that the robot should drive in the x direction.
@@ -114,7 +117,12 @@ public class SwerveDrive extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds speeds) {
     io.driveRobotRelative(speeds);
   }
-
+  /**
+   * Stop all modules
+   */
+  public void stop() {
+    io.stop();
+  }
   /**
    * Set the swerve module states to an X pattern.
    * Makes the robot hard to move
@@ -124,12 +132,6 @@ public class SwerveDrive extends SubsystemBase {
     io.xFormation();
   }
 
-  /**
-   * Zero the heading (yaw measurement) of the gyroscope.
-   */
-  public void zeroHeading() {
-    io.zeroHeading();
-  }
 
   /**
    * Resets the turning encoders of all the modules.

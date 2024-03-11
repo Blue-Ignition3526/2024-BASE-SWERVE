@@ -59,7 +59,7 @@ public class GyroIOSim implements GyroIO {
     }
 
     @Override
-    public Rotation2d getRotation2d() {
+    public Rotation2d getHeading() {
         // TODO: Implement method stub
         return new Rotation2d();
     }

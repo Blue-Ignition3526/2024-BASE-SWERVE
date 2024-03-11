@@ -116,7 +116,7 @@ public class CustomController {
             case PS4:
                 return Math.pow(ps4Controller.getLeftX(), this.curve)+0.0;
             case PS5:
-                return Math.pow(ps5Controller.getLeftX(), this.curve)+0.0;
+                return -Math.pow(ps5Controller.getLeftX(), this.curve)+0.0;
             default:
                 throw new IllegalArgumentException("Invalid Controller Type");
         }
@@ -133,7 +133,7 @@ public class CustomController {
             case PS4:
                 return Math.pow(ps4Controller.getRightX(), this.curve)+0.0;
             case PS5:
-                return Math.pow(ps5Controller.getRightX(), this.curve)+0.0;
+                return -Math.pow(ps5Controller.getRightX(), this.curve)+0.0;
             default:
                 throw new IllegalArgumentException("Invalid Controller Type");
         }

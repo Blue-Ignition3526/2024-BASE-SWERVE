@@ -92,8 +92,8 @@ public class Gyro extends SubsystemBase {
     return io.getAccelerationZ();
   }
 
-  public Rotation2d getRotation2d() {
-    return io.getRotation2d();
+  public Rotation2d getHeading() {
+    return io.getHeading();
   }
 
   /**

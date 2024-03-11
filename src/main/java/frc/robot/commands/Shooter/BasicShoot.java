@@ -2,8 +2,6 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
