@@ -13,7 +13,6 @@ public interface IntakeLifterIO {
         Measure<Angle> desiredAngle;
     }
 
-    public void setLifterSpeed(double speed);
     public void setLifterAngle(Measure<Angle> angleDeg);
     public double getLifterAngleRadians();
     public void stopLifter();

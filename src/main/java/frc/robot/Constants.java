@@ -3,9 +3,7 @@ package frc.robot;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -13,24 +11,19 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.team3526.constants.PIDFConstants;
-import lib.team3526.led.animations.BreatheAnimation;
-import lib.team3526.led.animations.ProgressAnimation;
-import lib.team3526.led.animations.ShootingStarAnimation;
-import lib.team3526.led.framework.HyperLEDAnimation;
+import lib.team3526.led.LEDStrip;
 import lib.team3526.utils.CTRECANDevice;
 import lib.team3526.utils.SwerveModuleOptions;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
@@ -215,15 +208,12 @@ public final class Constants {
         // Shooter motor config
         public static final int kLeftShooterMotorID = 30;
         public static final int kRightShooterMotorID = 31;
-        public static final PIDFConstants kShooterPIDConstants = new PIDFConstants(0.0, 0.0, 0.0);
 
-        // Shooter speed
-        public static final double kShooterSpeed = 5000;
         // Shooter motor rpm conversion
         public static final double kShooterGearRatio = 1.0/1.0;
 
         // Shooter speeds
-        public static final Measure<Velocity<Angle>> kShooterSpeakerSpeed = RPM.of(kShooterSpeed*kShooterGearRatio);
+        public static final double kShooterSpeakerSpeed = 1;
         public static final Measure<Velocity<Angle>> kTakeFromHumanPlayer = RPM.of(-5);
 
         // Shooter motor time
@@ -251,11 +241,14 @@ public final class Constants {
         public static final double kLedExtensionThreshold = 1;
         public static final double kMaxExtension = 31;
     }
-    
-    //! LED
-    public static final class LED {
-        public static final BreatheAnimation breatheAnimation = new BreatheAnimation(0, 0, 255, 0.75);
-        public static final ShootingStarAnimation shootingAnimation = new ShootingStarAnimation(255, 165, 0, 2, 0.25);
-        public static final ProgressAnimation climbingAnimation = new ProgressAnimation(0, 255, 0);
+
+    public static final class CANdle {
+        public static final int kCANdleID = 0;
+
+        public static final LEDStripType kLEDStripType = LEDStripType.GRB;
+        public static final double kLEDBrightness = 0.5;
+
+        public static final LEDStrip kLeftClimber = new LEDStrip(0, 7);
+        public static final LEDStrip kRightClimber = new LEDStrip(8, 15);
     }
 }

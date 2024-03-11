@@ -54,7 +54,7 @@ public class IntakeRollersIOReal implements IntakeRollersIO {
         this.setRollersSpeed(Constants.Intake.kIntakeHoldSpeed);
     }
 
-    public void stopRollers() {
+    public void stop() {
         this.setRollersSpeed(0);
         this.rollersMotorPID.setReference(0, ControlType.kVelocity);
         this.setRollerSpeed = 0.0;

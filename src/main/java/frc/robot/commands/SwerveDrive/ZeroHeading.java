@@ -16,7 +16,7 @@ public class ZeroHeading extends Command {
 
   @Override
   public void execute() {
-    swerveDrive.zeroHeading();
+    this.swerveDrive.zeroHeading();
   }
 
   @Override

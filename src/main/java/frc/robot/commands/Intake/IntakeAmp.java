@@ -15,19 +15,19 @@ public class IntakeAmp extends Command {
   
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
+    this.timer.reset();
+    this.timer.start();
 
   }
   
   @Override
   public void execute() {
-    rollers.giveToShooter();
+    this.rollers.giveToShooter();
   }
   
   @Override
   public void end(boolean interrupted) {
-    rollers.stopRollers();
+    this.rollers.stop();
   }
   
   @Override

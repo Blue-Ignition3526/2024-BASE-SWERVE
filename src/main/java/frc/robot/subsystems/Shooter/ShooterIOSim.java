@@ -1,9 +1,5 @@
 package frc.robot.subsystems.Shooter;
 
-import edu.wpi.first.units.Angle;
-import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Velocity;
-
 public class ShooterIOSim implements ShooterIO {
     public void setLeftMotor(double speed) {}
     public void setRightMotor(double speed) {}
@@ -11,11 +7,6 @@ public class ShooterIOSim implements ShooterIO {
     public void set(double speed) {}
 
     public void shootSpeaker() {}
-
-    public void setLeftMotorRpm(Measure<Velocity<Angle>> rpm) {}
-    public void setRightMotorRpm(Measure<Velocity<Angle>> rpm) {}
-    public void setRpm(Measure<Velocity<Angle>> leftRpm, Measure<Velocity<Angle>> rightRpm) {}
-    public void setRpm(Measure<Velocity<Angle>> rpm) {}
 
     public void stop() {}
 

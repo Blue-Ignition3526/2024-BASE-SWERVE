@@ -13,7 +13,7 @@ public class IntakeRollersIOSim implements IntakeRollersIO {
     public void setRollersSpeedRpm(Measure<Velocity<Angle>> rpm) {}
 
     public void setRollersHold() {}
-    public void stopRollers() {}
+    public void stop() {}
 
     public void setRollersCoast() {}
     public void setRollersBrake() {}

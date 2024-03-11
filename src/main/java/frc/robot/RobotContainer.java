@@ -10,15 +10,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.BasicAutos;
 import frc.robot.commands.Climb;
-import frc.robot.commands.Intake.IntakeAmp;
+import frc.robot.commands.Climbers.ClimbersDown;
+import frc.robot.commands.Climbers.ClimbersUp;
 import frc.robot.commands.Intake.IntakeIn;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Intake.LifterAmp;
-import frc.robot.commands.Intake.LifterDown;
 import frc.robot.commands.Intake.LifterFloor;
 import frc.robot.commands.Intake.LifterShooter;
-import frc.robot.commands.Intake.LifterUp;
+import frc.robot.commands.Intake.PickUpPiece;
+import frc.robot.commands.Intake.ShootAmp;
 import frc.robot.commands.Shooter.BasicShoot;
+import frc.robot.commands.Shooter.Shoot;
+import frc.robot.commands.Shooter.SpinShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
 import frc.robot.subsystems.Climber.Climber;
@@ -33,6 +36,8 @@ import frc.robot.subsystems.IntakeLifter.IntakeLifterIOSim;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOReal;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOSim;
+import frc.robot.subsystems.Leds.Leds;
+import frc.robot.subsystems.Leds.LedsIOReal;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
@@ -43,8 +48,6 @@ import frc.robot.subsystems.SwerveModule.SwerveModule;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOSim;
 import lib.team3526.commands.RunForCommand;
 import lib.team3526.driveControl.CustomController;
-import lib.team3526.led.framework.HyperAddressableLEDSegment;
-import lib.team3526.led.framework.HyperAddressableLEDStrip;
 import frc.robot.subsystems.SwerveModule.SwerveModuleIOReal;
 
 import java.util.HashMap;
@@ -66,13 +69,8 @@ public class RobotContainer {
   private final Shooter m_shooter;
   private final Climber m_leftClimber;
   private final Climber m_rightClimber;
-  // private final PoseEstimatorSubsystem m_poseEstimator;
-  // private final LED m_led = new LED(new LEDOptions(0, 20));
 
-  public static final HyperAddressableLEDSegment m_climberLeds = new HyperAddressableLEDSegment(10);
-  public static final HyperAddressableLEDSegment m_leftShooterLeds = new HyperAddressableLEDSegment(5);
-  public static final HyperAddressableLEDSegment m_rightShooterLeds = new HyperAddressableLEDSegment(5);
-  public static final HyperAddressableLEDStrip m_leds = new HyperAddressableLEDStrip(0, m_climberLeds, m_leftShooterLeds, m_rightShooterLeds);
+  private final Leds m_leds;
 
   SendableChooser<Command> autonomousChooser;
   SendableChooser<Command> basicAutonomousChooser;
@@ -94,6 +92,9 @@ public class RobotContainer {
       this.m_shooter = new Shooter(new ShooterIOReal());
       this.m_leftClimber = new Climber(new ClimberIOReal(Constants.Climber.kLeftClimberMotorID, "LeftClimber"));
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
+
+      this.m_leds = new Leds(new LedsIOReal(69));
+
       // this.m_poseEstimator = new PoseEstimatorSubsystem(new Vision[] {
       //   new Vision(new LimelightIO("limelight"))
       // }, m_swerveDrive, m_gyro);
@@ -114,6 +115,8 @@ public class RobotContainer {
       this.m_shooter = new Shooter(new ShooterIOSim());
       this.m_leftClimber = new Climber(new ClimberIOSim());
       this.m_rightClimber = new Climber(new ClimberIOSim());
+
+      this.m_leds = null;
       // this.m_poseEstimator = null;
 
       Logger.recordMetadata("Robot", "Sim");
@@ -122,7 +125,7 @@ public class RobotContainer {
     // boolean isXbox = DriverStation.getJoystickIsXbox(0);
     boolean isXbox = true;
     SmartDashboard.putBoolean("Controller/IsXbox", isXbox);
-    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.XBOX, CustomController.CustomJoystickCurve.LINEAR);
+    this.m_driverControllerCustom = new CustomController(0, CustomController.CustomControllerType.PS5, CustomController.CustomJoystickCurve.LINEAR);
 
     // Register the named commands for autonomous
     NamedCommands.registerCommands(new HashMap<String, Command>() {{
@@ -131,8 +134,6 @@ public class RobotContainer {
 
       put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter, m_Rollers), 2));
 
-      put("LifterUp", new RunForCommand(new LifterUp(m_intake), 1));
-      put("LifterDown", new RunForCommand(new LifterDown(m_intake), 1));
 
       put("ClimbUp", new RunForCommand(new Climb(m_rightClimber, () -> true), 1));
       put("ClimbDown", new RunForCommand(new Climb(m_leftClimber, () -> false), 1));
@@ -170,35 +171,23 @@ public class RobotContainer {
       )
     );
 
-    /* this.m_driverControllerCustom.leftTrigger().whileTrue(new DriveSwerve(
-        m_swerveDrive,
-        () -> 0.7,
-        () -> 0.0,
-        () -> 0.0,
-        () -> false
-    )); */
+    this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_Rollers, this.m_intake, this.m_leds));
 
-    
-    this.m_driverControllerCustom.bottomButton().toggleOnTrue(new IntakeIn(m_Rollers));
+    this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
+      this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_Rollers, this.m_leds));
 
-    this.m_driverControllerCustom.rightTrigger().whileTrue(new BasicShoot(m_shooter, m_Rollers));
-    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
+    this.m_driverControllerCustom.povLeft().toggleOnTrue(new ShootAmp(this.m_Rollers, this.m_intake, this.m_leds));
 
-    this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(m_intake));
-    this.m_driverControllerCustom.leftBumper().whileTrue(new LifterShooter(m_intake));
+    this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(this.m_intake));
+    this.m_driverControllerCustom.leftBumper().whileTrue(new LifterShooter(this.m_intake));
 
-    this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_rightClimber, () -> true));
-    this.m_driverControllerCustom.povUp().whileTrue(new Climb(m_leftClimber, () -> true));
+    this.m_driverControllerCustom.povUp().whileTrue(new ClimbersUp(this.m_leftClimber, this.m_rightClimber));
+    this.m_driverControllerCustom.povDown().whileTrue(new ClimbersDown(this.m_leftClimber, this.m_rightClimber));
 
-
-    this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_rightClimber, () -> false));
-    this.m_driverControllerCustom.povDown().whileTrue(new Climb(m_leftClimber, () -> false));
-
-    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(m_intake));
-    this.m_driverControllerCustom.povLeft().whileTrue(new IntakeAmp(m_Rollers));
+    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(this.m_intake));
   }
 
   public Command getAutonomousCommand() {
-    return basicAutonomousChooser.getSelected();
+    return this.basicAutonomousChooser.getSelected();
   };
 }

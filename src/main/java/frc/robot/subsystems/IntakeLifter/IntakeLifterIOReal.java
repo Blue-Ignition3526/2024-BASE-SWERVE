@@ -43,10 +43,6 @@ public class IntakeLifterIOReal implements IntakeLifterIO {
         return ((Math.floor(angleRadians * 1000)) / 1000);
     }
 
-    public void setLifterSpeed(double speed) {
-        this.lifterMotor.set(MathUtil.clamp(speed, -Constants.Intake.kMaxLifterSpeed, Constants.Intake.kMaxLifterSpeed));
-    }
-
     public void stopLifter() {
         this.lifterMotor.set(0);
     }

@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import java.util.function.Consumer;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -9,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeOut;
 import frc.robot.commands.Shooter.BasicShoot;
 import frc.robot.commands.SwerveDrive.DriveFor;
-import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.SwerveDrive.SwerveDrive;
