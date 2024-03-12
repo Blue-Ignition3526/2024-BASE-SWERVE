@@ -185,7 +185,7 @@ public class RobotContainer {
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
       this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_rollers, this.m_leds));
-    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
+    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(this.m_rollers));
 
     this.m_driverControllerCustom.povLeft().toggleOnTrue(new ShootAmp(this.m_rollers, this.m_intake, this.m_leds));
 
