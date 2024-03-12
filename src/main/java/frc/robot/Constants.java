@@ -243,7 +243,7 @@ public final class Constants {
 
 
         public static final LEDStripType kLEDStripType = LEDStripType.GRB;
-        public static final double kLEDBrightness = 0.5;
+        public static final double kLEDBrightness = 1;
 
         public static final LEDStrip kLeftClimber = new LEDStrip(0, 7);
         public static final LEDStrip kRightClimber = new LEDStrip(8, 15);

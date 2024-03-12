@@ -70,7 +70,7 @@ public class LedsIOReal implements LedsIO{
      */
     public void blinkLeds(String hex) {
         int[] rgb = hexToRGB(hex);
-        leds.animate(new StrobeAnimation(rgb[0], rgb[1], rgb[2]));
+        blinkLeds(rgb[0], rgb[1], rgb[2]);
     }
 
     /**

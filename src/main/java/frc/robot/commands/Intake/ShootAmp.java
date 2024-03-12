@@ -35,14 +35,11 @@ public class ShootAmp extends Command {
   public void end(boolean interrupted) {
     this.timer.reset();
     this.timer.start();
-    while(timer.get() < 0.5) {
-      this.rollers.setRollersOut();
-    }
+    while(timer.get() < 0.5) this.rollers.setRollersOut();
     this.rollers.stop();
     this.timer.stop();
     this.lifter.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
     this.leds.turnOff();
-    
   }
 
   @Override

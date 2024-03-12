@@ -20,14 +20,13 @@ public class PickUpPiece extends Command {
 
   @Override
   public void initialize() {
-
+    this.leds.blinkLeds("#fc8b00");
   }
-
+  
   @Override
   public void execute() {
     this.lifter.setLifterAngle(Constants.Intake.Physical.kGroundAngle);
     this.rollers.setRollersIn();
-    this.leds.blinkLeds("#fc8b00");
   }
 
   @Override

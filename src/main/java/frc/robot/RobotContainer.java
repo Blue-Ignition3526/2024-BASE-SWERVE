@@ -135,6 +135,8 @@ public class RobotContainer {
 
       put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter, m_Rollers), 2));
 
+      put("LifterFloor", new LifterFloor(m_intake));
+      put("LifterShooter", new LifterShooter(m_intake));
 
       put("ClimbUp", new RunForCommand(new Climb(m_rightClimber, () -> true), 1));
       put("ClimbDown", new RunForCommand(new Climb(m_leftClimber, () -> false), 1));
@@ -165,8 +167,8 @@ public class RobotContainer {
     this.m_swerveDrive.setDefaultCommand(new DriveSwerve(
         m_swerveDrive,
         () -> -this.m_driverControllerCustom.getLeftY(),
-        () -> this.m_driverControllerCustom.getLeftX(),
-        () -> this.m_driverControllerCustom.getRightX(),
+        () -> -this.m_driverControllerCustom.getLeftX(),
+        () -> -this.m_driverControllerCustom.getRightX(),
         () -> !this.m_driverControllerCustom.topButton().getAsBoolean(),
         () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
       )
