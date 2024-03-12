@@ -35,6 +35,7 @@ public class PickUpPiece extends Command {
     this.lifter.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
     this.rollers.stop();
     this.leds.blinkLeds("#00ff00");
+    LimelightLED.blinkLeds(Constants.Vision.kLimelightName);
   }
 
   @Override
