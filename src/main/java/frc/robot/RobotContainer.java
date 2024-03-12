@@ -133,15 +133,10 @@ public class RobotContainer {
       put("IntakeIn", new RunForCommand(new IntakeIn(m_Rollers), 1));
       put("IntakeOut", new RunForCommand(new IntakeOut(m_Rollers), 0.25));
 
-      put("BasicShoot", new RunForCommand(new BasicShoot(m_shooter, m_Rollers), 2));
+      put("Shoot", new RunForCommand(new Shoot(m_shooter, m_Rollers, m_leds), 0.5));
 
-      put("LifterFloor", new LifterFloor(m_intake));
-      put("LifterShooter", new LifterShooter(m_intake));
-
-      put("ClimbUp", new RunForCommand(new Climb(m_rightClimber, () -> true), 1));
-      put("ClimbDown", new RunForCommand(new Climb(m_leftClimber, () -> false), 1));
-
-      put("Wait", new WaitCommand(1));
+      put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 0.5));
+      put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 0.5));
     }});
  
     SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
@@ -193,6 +188,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return this.basicAutonomousChooser.getSelected();
+    return this.autonomousChooser.getSelected();
   };
 }
