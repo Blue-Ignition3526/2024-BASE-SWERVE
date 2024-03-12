@@ -2,6 +2,7 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Leds.Leds;
@@ -31,6 +32,7 @@ public class PickUpPiece extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    LimelightHelpers.setLEDMode_ForceBlink(Constants.Vision.kLimelightName);
     this.lifter.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
     this.rollers.stop();
     this.leds.setLeds("#00ff00");
