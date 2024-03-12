@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3132187415593366,
-        "y": 5.531293229923069
+        "x": 2.5,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.076082517871585,
-        "y": 5.531293229923069
+        "x": 2.131641329472284,
+        "y": 5.477759506502913
       },
       "isLocked": false,
       "linkedName": "MiddleNote"
     },
     {
       "anchor": {
-        "x": 1.4120428956421427,
-        "y": 5.521816553472107
+        "x": 1.5,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 1.8921533605976717,
-        "y": 5.521816553472107
+        "x": 1.75,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,51 +30,10 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 1.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "BasicShoot"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeOut"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "LifterUp",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "LifterUp"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

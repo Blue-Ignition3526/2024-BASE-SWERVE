@@ -21,12 +21,12 @@ public class SpinShooter extends Command {
   public void initialize() {
     this.timer.reset();
     this.timer.start();
+    this.leds.blinkLeds("#0000ff");
   }
 
   @Override
   public void execute() {
     this.shooter.shootSpeaker();
-    this.leds.blinkLeds("#0000ff");
   }
 
   @Override

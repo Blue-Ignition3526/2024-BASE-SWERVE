@@ -5,6 +5,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.Leds.Leds;
+import lib.team3526.utils.LimelightLED;
 
 public class PickUpPiece extends Command {
   private IntakeRollers rollers;
@@ -20,14 +21,13 @@ public class PickUpPiece extends Command {
 
   @Override
   public void initialize() {
-
+    this.leds.blinkLeds("#fc8b00");
   }
-
+  
   @Override
   public void execute() {
     this.lifter.setLifterAngle(Constants.Intake.Physical.kGroundAngle);
     this.rollers.setRollersIn();
-    this.leds.blinkLeds("#fc8b00");
   }
 
   @Override

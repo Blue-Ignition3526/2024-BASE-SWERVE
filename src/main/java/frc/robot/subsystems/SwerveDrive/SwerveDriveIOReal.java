@@ -5,16 +5,15 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -22,7 +21,6 @@ import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.SwerveModule.SwerveModule;
 import lib.team3526.math.RotationalInertiaAccumulator;
-
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
@@ -273,13 +271,45 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.resetDriveEncoders();
     }
 
+    public void visionUpdate() {
+        LimelightResults visionResults = LimelightHelpers.getLatestResults(Constants.Vision.kLimelightName);
+        Pose2d visionBotPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.Vision.kLimelightName);
+        double visionLatency = (visionResults.targetingResults.latency_capture / 1000) + (visionResults.targetingResults.latency_pipeline / 1000) + (visionResults.targetingResults.latency_jsonParse / 1000);
+        double captureTimestamp = Timer.getFPGATimestamp() - visionLatency;
+        double mainTargetArea = LimelightHelpers.getTA(Constants.Vision.kLimelightName);
+
+        if (visionResults.targetingResults.valid) {
+            double poseDifference = odometry.getEstimatedPosition().getTranslation().getDistance(visionBotPose.getTranslation());
+            if (poseDifference > Constants.Vision.kMaxPoseDifferenceMeters) System.out.println("Vision pose difference too large: " + poseDifference + "m");
+
+            double xyStdDev;
+            double rotStdDev;
+
+            if (visionResults.targetingResults.targets_Fiducials.length >= 2) {
+                xyStdDev = 0.5;
+                rotStdDev = 6;
+            } else if (mainTargetArea > 0.8 && poseDifference < 0.5) {
+                xyStdDev = 1;
+                rotStdDev = 12;
+            } else if (mainTargetArea > 0.1 && poseDifference < 0.3) {
+                xyStdDev = 2;
+                rotStdDev = 30;
+            } else return;
+
+            odometry.setVisionMeasurementStdDevs(VecBuilder.fill(xyStdDev, xyStdDev, Math.toRadians(rotStdDev)));
+            this.odometry.addVisionMeasurement(visionBotPose, captureTimestamp);
+        }
+    }
+
     public void periodic() {
         // Update inertia acculumator
         rotationalInertiaAccumulator.update(this.getHeading().getRadians());
 
         // Update odometry
         this.odometry.update(getHeading(), getModulePositions());
-        //this.odometry.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue(Constants.Vision.kLimelightName), LimelightHelpers.getLatency_Capture(Constants.Vision.kLimelightName) + LimelightHelpers.getLatency_Pipeline(Constants.Vision.kLimelightName));
+        
+        // Update vision measurements
+        this.visionUpdate();
 
         // Log data
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());

@@ -2,9 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -139,6 +137,7 @@ public final class Constants {
 
     //! VISION
     public static final class Vision {
+        public static final double kMaxPoseDifferenceMeters = 1;
         public static final String kLimelightName = "limelight";
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0.5, 0.5, 0.3), new Rotation3d(0, -2, 0));
@@ -244,7 +243,7 @@ public final class Constants {
 
 
         public static final LEDStripType kLEDStripType = LEDStripType.GRB;
-        public static final double kLEDBrightness = 0.5;
+        public static final double kLEDBrightness = 1;
 
         public static final LEDStrip kLeftClimber = new LEDStrip(0, 7);
         public static final LEDStrip kRightClimber = new LEDStrip(8, 15);
