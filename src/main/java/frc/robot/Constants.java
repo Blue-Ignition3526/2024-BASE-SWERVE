@@ -35,6 +35,11 @@ public final class Constants {
     public static final class SwerveDrive {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
+        // Visiom odometry
+        public static final boolean kUseVisionOdometry = false;
+        public static final Matrix<N3, N1> kEncoderStdDev = VecBuilder.fill(0, 0, 0);
+        public static final Matrix<N3, N1> kVisioStdDev = VecBuilder.fill(0, 0, 0);
+
         // Active track pid constants
         public static final double kActiveTrackP = 0.01;
         public static final double kActiveTrackD = 0;
@@ -124,7 +129,7 @@ public final class Constants {
 
         //! AUTONOMOUS
         public static final class Autonomous {
-            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(5.25, 0.0, 0.0);
             public static final PIDConstants kRotatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
             public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
         }
@@ -137,7 +142,7 @@ public final class Constants {
 
     //! VISION
     public static final class Vision {
-        public static final double kMaxPoseDifferenceMeters = 1;
+        public static final double kMaxPoseDifferenceMeters = 2;
         public static final String kLimelightName = "limelight";
         public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
         public static final Transform3d kCameraPose = new Transform3d(new Translation3d(0.5, 0.5, 0.3), new Rotation3d(0, -2, 0));
@@ -245,7 +250,7 @@ public final class Constants {
         public static final LEDStripType kLEDStripType = LEDStripType.GRB;
         public static final double kLEDBrightness = 1;
 
-        public static final LEDStrip kLeftClimber = new LEDStrip(0, 7);
-        public static final LEDStrip kRightClimber = new LEDStrip(8, 15);
+        public static final LEDStrip kLeftClimber = new LEDStrip(0, 9);
+        public static final LEDStrip kRightClimber = new LEDStrip(9, 18);
     }
 }

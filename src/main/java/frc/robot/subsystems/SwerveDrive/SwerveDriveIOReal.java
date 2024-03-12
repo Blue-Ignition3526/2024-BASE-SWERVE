@@ -60,7 +60,9 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
                 backLeft.getPosition(),
                 backRight.getPosition()
             },
-            Constants.Field.kInitialPoseMeters
+            Constants.Field.kInitialPoseMeters,
+            Constants.SwerveDrive.kEncoderStdDev,
+            Constants.SwerveDrive.kVisioStdDev
         );
 
         this.gyro.reset();
@@ -308,8 +310,8 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         // Update odometry
         this.odometry.update(getHeading(), getModulePositions());
         
-        // Update vision measurements
-        this.visionUpdate();
+        // Update vision measurements if cofigured
+        if (Constants.SwerveDrive.kUseVisionOdometry) this.visionUpdate();
 
         // Log data
         Logger.recordOutput("SwerveDrive/RobotHeadingRad", this.getHeading().getRadians());

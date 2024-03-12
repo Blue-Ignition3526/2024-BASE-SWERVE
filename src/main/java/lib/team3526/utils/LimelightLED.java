@@ -9,7 +9,7 @@ public class LimelightLED {
      * @param limelightName
      */
     public static final void blinkLeds(String limelightName) {
-        blinkLeds(limelightName, 0.5);
+        blinkLeds(limelightName, 1);
     }
 
     /**
@@ -18,12 +18,12 @@ public class LimelightLED {
      * @param duration
      */
     public static final void blinkLeds(String limelightName, double duration) {
-        Thread thread = new Thread(() -> {
-            LimelightHelpers.setLEDMode_ForceBlink(Constants.Vision.kLimelightName);
-            try {Thread.sleep((int)duration * 1000);} catch(Exception e) {}
-            LimelightHelpers.setLEDMode_ForceOff(Constants.Vision.kLimelightName);
-        });
-        thread.start();
-        try {thread.join();} catch(Exception e) {}
+        new Thread(() -> {
+            try {
+                LimelightHelpers.setLEDMode_ForceBlink(Constants.Vision.kLimelightName);
+                Thread.sleep((int)duration * 1000);
+                LimelightHelpers.setLEDMode_ForceOff(Constants.Vision.kLimelightName);
+            } catch(Exception e) {}
+        }).start();
     }
 }
