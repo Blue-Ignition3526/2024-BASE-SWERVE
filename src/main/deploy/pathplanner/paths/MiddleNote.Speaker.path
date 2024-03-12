@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.131641329472284,
-        "y": 5.477759506502913
+        "x": 2.1599279562195486,
+        "y": 5.4666451151084114
       },
       "isLocked": false,
       "linkedName": "MiddleNote"
@@ -20,7 +20,7 @@
         "y": 5.5
       },
       "prevControl": {
-        "x": 1.75,
+        "x": 1.8,
         "y": 5.5
       },
       "nextControl": null,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Notes",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
