@@ -179,6 +179,8 @@ public class RobotContainer {
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
       this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_Rollers, this.m_leds));
 
+    this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(m_Rollers));
+
     this.m_driverControllerCustom.povLeft().toggleOnTrue(new ShootAmp(this.m_Rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(this.m_intake));
@@ -187,7 +189,7 @@ public class RobotContainer {
     this.m_driverControllerCustom.povUp().whileTrue(new ClimbersUp(this.m_leftClimber, this.m_rightClimber));
     this.m_driverControllerCustom.povDown().whileTrue(new ClimbersDown(this.m_leftClimber, this.m_rightClimber));
 
-    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(this.m_intake));
+    this.m_driverControllerCustom.povRight().whileTrue(new BasicShoot(m_shooter, m_Rollers));
   }
 
   public Command getAutonomousCommand() {

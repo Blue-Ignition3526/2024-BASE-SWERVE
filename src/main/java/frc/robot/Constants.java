@@ -47,7 +47,7 @@ public final class Constants {
         public static final class PhysicalModel {
             //! MAX DISPLACEMENT SPEED (and acceleration)
             public static final Measure<Velocity<Distance>> kMaxSpeed = MetersPerSecond.of(4);
-            public static final Measure<Velocity<Velocity<Distance>>> kMaxAcceleration = MetersPerSecond.per(Second).of(4);
+            public static final double kMaxAcceleration = 3;
 
             //! MAX ROTATIONAL SPEED (and acceleration)
             public static final Measure<Velocity<Angle>> kMaxAngularSpeed = RadiansPerSecond.of(2.5 * (2 * Math.PI));

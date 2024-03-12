@@ -27,13 +27,15 @@ public class BasicShoot extends Command {
 
   @Override
   public void execute() {
-    this.m_shooter.set(-1);
+    this.m_shooter.set(0.2);
+    this.rollers.giveToShooter();
     
   }
 
   @Override
   public void end(boolean interrupted) {
     this.m_shooter.stop();
+    this.rollers.stop();
   }
 
   @Override
