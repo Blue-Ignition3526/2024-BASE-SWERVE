@@ -14,33 +14,31 @@ import lib.team3526.constants.PIDFConstants;
 import lib.team3526.constants.SwerveModuleOptions;
 import lib.team3526.control.LazyCANSparkMax;
 import lib.team3526.control.LazySparkPID;
-
 import static edu.wpi.first.units.Units.*;
-
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveModuleIOReal implements SwerveModuleIO {
-    //! Options for the module
+    // * Options for the module
     public final SwerveModuleOptions options;
 
-    //! Motors
+    // * Motors
     private final LazyCANSparkMax driveMotor;
     private final LazyCANSparkMax turningMotor;
 
-    //! Encoders
+    // * Encoders
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turningEncoder;
 
-    //! PID Controller for turning
+    // * PID Controller for turning
     private final LazySparkPID turningPID;
 
-    //! Absolute encoder
+    // * Absolute encoder
     private final CANcoder absoluteEncoder;
 
-    //! Target state
+    // * Target state
     private SwerveModuleState targetState = new SwerveModuleState();
 
-    //! Name of the module
+    // * Name of the module
     private final String name;
 
     /**
@@ -185,11 +183,7 @@ public class SwerveModuleIOReal implements SwerveModuleIO {
             Rotation2d.fromRadians(this.getAngle().in(Radians))
         );
     }
-
-    public String getName() {
-        return this.name;
-    }
-
+    
     public void periodic() {
         Logger.recordOutput("SwerveDrive/" + this.options.name + "/MotEncoderDeg", this.getAngle().in(Degrees));
         Logger.recordOutput("SwerveDrive/" + this.options.name + "/AbsEncoderDeg", this.getAbsoluteEncoderPosition().in(Degrees));

@@ -173,12 +173,14 @@ public class RobotContainer {
         () -> -this.m_driverControllerCustom.getLeftX(),
         () -> -this.m_driverControllerCustom.getRightX(),
         () -> !this.m_driverControllerCustom.topButton().getAsBoolean(),
-        () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
+        () -> false
       )
     );
 
+    // Set the default command for the LEDs
     this.m_leds.setDefaultCommand(new DefaultLedState(m_leds));
 
+    // Configure the button bindings
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
@@ -198,6 +200,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // PathPlanner autonomous command
     return this.autonomousChooser.getSelected();
   };
 }
