@@ -32,6 +32,10 @@ import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.pathplanner.lib.util.PIDConstants;
 
 public final class Constants {
+    public static final class Logging {
+        public static final boolean kDebug = true;
+    }
+
     public static final class SwerveDrive {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
