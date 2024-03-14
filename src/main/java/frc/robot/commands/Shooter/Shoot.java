@@ -23,13 +23,13 @@ public class Shoot extends Command {
   public void initialize() {
     this.timer.reset();
     this.timer.start();
+    this.leds.setLeds("#0000ff");
   }
 
   @Override
   public void execute() {
     this.shooter.shootSpeaker();
     this.rollers.giveToShooter();
-    this.leds.setLeds("#0000ff");
   }
 
   @Override

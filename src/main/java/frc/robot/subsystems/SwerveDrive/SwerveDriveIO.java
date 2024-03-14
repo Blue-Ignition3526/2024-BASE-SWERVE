@@ -51,6 +51,8 @@ public interface SwerveDriveIO {
     public  void resetDriveEncoders();
     public void resetEncoders();
 
+    public void setVisionPose();
+
     public default void updateInputs(SwerveDriveIOInputs inputs) {};
     public default void periodic() {}
 }

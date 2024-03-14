@@ -165,7 +165,7 @@ public final class Constants {
         // Speeds
         public static final double kIntakeOutSpeed = -0.5;
         public static final Measure<Velocity<Angle>> kIntakeOutSpeedRpm = RPM.of(kIntakeOutSpeed*kIntakeRollersGearRatio);
-        public static final double kIntakeInSpeed = 0.4;
+        public static final double kIntakeInSpeed = 0.5;
         public static final Measure<Velocity<Angle>> kIntakeInSpeedRpm = RPM.of(kIntakeInSpeed*kIntakeRollersGearRatio);
         public static final double kIntakeHoldSpeed = 0.05;
         public static final Measure<Velocity<Angle>> kIntakeHoldSpeedRpm = RPM.of(kIntakeHoldSpeed*kIntakeRollersGearRatio);
@@ -190,8 +190,8 @@ public final class Constants {
         // Lifter motor config
         public static final int kLifterMotorID = 37;
         public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 0, 0.0);
-        public static final Constraints kLifterConstraints = new Constraints(38, 46);
-        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(1.9, 0.0, 0.0, kLifterConstraints);
+        public static final Constraints kLifterConstraints = new Constraints(42, 48);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(2.8, 0.0, 0.0, kLifterConstraints);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);

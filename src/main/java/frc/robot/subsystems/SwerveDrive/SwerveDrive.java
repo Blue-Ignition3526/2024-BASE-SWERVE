@@ -153,6 +153,9 @@ public class SwerveDrive extends SubsystemBase {
     io.resetEncoders();
   }
 
+  public void setVisionPose() {
+    io.setVisionPose();
+  }
   @Override
   public void periodic() {
     io.periodic();

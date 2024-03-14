@@ -7,7 +7,6 @@ import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;

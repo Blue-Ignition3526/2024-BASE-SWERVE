@@ -6,7 +6,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DefaultLedState;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Climbers.ClimbersDown;
 import frc.robot.commands.Climbers.ClimbersUp;
 import frc.robot.commands.Intake.IntakeIn;
@@ -155,7 +155,9 @@ public class RobotContainer {
     }});
  
     // Add commands to SmartDashboard
-    SmartDashboard.putData(new ZeroHeading(m_swerveDrive));
+    SmartDashboard.putData("ZeroHeading", new ZeroHeading(m_swerveDrive));
+    SmartDashboard.putData("ResetPose", new InstantCommand(() -> m_swerveDrive.resetPose()));
+    SmartDashboard.putData("SetVisionPose", new InstantCommand(() -> m_swerveDrive.setVisionPose()));
 
     // Autonomous chooser
     this.autonomousChooser = AutoBuilder.buildAutoChooser();
@@ -176,9 +178,6 @@ public class RobotContainer {
         () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
       )
     );
-
-    this.m_leds.setDefaultCommand(new DefaultLedState(m_leds));
-
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));

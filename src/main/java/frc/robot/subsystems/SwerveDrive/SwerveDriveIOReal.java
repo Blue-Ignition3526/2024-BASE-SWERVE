@@ -101,6 +101,10 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         return odometry.getEstimatedPosition();
     }
 
+    public void setVisionPose() {
+        odometry.resetPosition(getHeading(), getModulePositions(), LimelightHelpers.getBotPose2d_wpiBlue(Constants.Vision.kLimelightName));
+    }
+
     /**
      * Reset the pose of the robot to (0, 0)
      */

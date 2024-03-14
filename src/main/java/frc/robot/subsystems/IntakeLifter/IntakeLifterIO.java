@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.AutoLog;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Velocity;
 
 public interface IntakeLifterIO {
     @AutoLog
