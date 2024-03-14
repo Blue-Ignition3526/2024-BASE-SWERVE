@@ -68,7 +68,7 @@ public final class Constants {
             public static final double kTurningMotorGearRatio = 1.0 / 12.8; // 12.8:1 Steering
 
             // Conversion factors (Drive Motor)
-            public static final double kDriveEncoder_RotationToMeter = kDriveMotorGearRatio * kWheelDiameter.in(Meters) * 2 * Math.PI;
+            public static final double kDriveEncoder_RotationToMeter = kDriveMotorGearRatio * (kWheelDiameter.in(Meters) / 2) * 2 * Math.PI;
             public static final double kDriveEncoder_RPMToMeterPerSecond = kDriveEncoder_RotationToMeter / 60.0;
 
             // Conversion factors (Turning Motor)
@@ -133,7 +133,7 @@ public final class Constants {
 
         //! AUTONOMOUS
         public static final class Autonomous {
-            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(5.25, 0.0, 0.0);
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(1.8, 0.0, 0.0);
             public static final PIDConstants kRotatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
             public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
         }
@@ -195,7 +195,7 @@ public final class Constants {
         public static final int kLifterMotorID = 37;
         public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 0, 0.0);
         public static final Constraints kLifterConstraints = new Constraints(38, 46);
-        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(1.9, 0.0, 0.0, kLifterConstraints);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(2.5, 0.0, 0.0, kLifterConstraints);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);

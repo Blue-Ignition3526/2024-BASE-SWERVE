@@ -150,8 +150,10 @@ public class RobotContainer {
 
       put("Shoot", new RunForCommand(new Shoot(m_shooter, m_rollers, m_leds), 0.5));
 
-      put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 0.5));
-      put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 0.5));
+      put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 1));
+      put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 1));
+
+      put("PickUpPiece", new RunForCommand(new PickUpPiece(m_rollers, m_intake, m_leds), 5));
     }});
  
     // Add commands to SmartDashboard

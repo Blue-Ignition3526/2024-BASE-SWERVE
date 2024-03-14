@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
+        "x": 1.65,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9480703004339825,
+        "x": 2.0980703004339825,
         "y": 4.670046978734387
       },
       "isLocked": false,
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 4.1
+        "y": 4.03
       },
       "prevControl": {
         "x": 1.5,
-        "y": 4.1
+        "y": 4.03
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,11 +30,52 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "LifterFloor",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "LifterFloor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PickUpPiece",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "PickUpPiece"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 5.0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 5.0,
-    "maxAngularVelocity": 540.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
