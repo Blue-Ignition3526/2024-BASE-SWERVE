@@ -180,8 +180,6 @@ public class RobotContainer {
       )
     );
 
-    this.m_leds.setDefaultCommand(new DefaultLedState(m_leds));
-
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
