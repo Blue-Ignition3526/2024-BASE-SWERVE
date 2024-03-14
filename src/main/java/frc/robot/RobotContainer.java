@@ -20,6 +20,7 @@ import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.SpinShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
+import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -32,8 +33,6 @@ import frc.robot.subsystems.IntakeLifter.IntakeLifterIOSim;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOReal;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOSim;
-import frc.robot.subsystems.Leds.Leds;
-import frc.robot.subsystems.Leds.LedsIOReal;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
@@ -107,7 +106,7 @@ public class RobotContainer {
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
 
       // LEDs
-      this.m_leds = new Leds(new LedsIOReal(Constants.CANdle.kCANdle));
+      this.m_leds = new Leds(Constants.CANdle.kCANdle);
       this.m_leds.turnOff();
 
       // Metadata
@@ -150,8 +149,10 @@ public class RobotContainer {
 
       put("Shoot", new RunForCommand(new Shoot(m_shooter, m_rollers, m_leds), 0.5));
 
-      put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 0.5));
-      put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 0.5));
+      put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 1));
+      put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 1));
+
+      put("PickUpPiece", new RunForCommand(new PickUpPiece(m_rollers, m_intake, m_leds), 5));
     }});
  
     // Add commands to SmartDashboard
@@ -175,13 +176,16 @@ public class RobotContainer {
         () -> -this.m_driverControllerCustom.getLeftX(),
         () -> -this.m_driverControllerCustom.getRightX(),
         () -> !this.m_driverControllerCustom.topButton().getAsBoolean(),
-        () -> this.m_driverControllerCustom.leftButton().getAsBoolean()
+        () -> false
       )
     );
+
+    this.m_leds.setDefaultCommand(new DefaultLedState(m_leds));
+
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
-      this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_rollers, this.m_leds));
+    this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_rollers, this.m_leds));
     this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(this.m_rollers));
 
     this.m_driverControllerCustom.povLeft().toggleOnTrue(new ShootAmp(this.m_rollers, this.m_intake, this.m_leds));
@@ -197,6 +201,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    // PathPlanner autonomous command
     return this.autonomousChooser.getSelected();
   };
 }

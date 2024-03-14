@@ -1,23 +1,18 @@
-//! se hizo commit limpio :)
-//
-
-
-package frc.robot.subsystems.Leds;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import lib.team3526.constants.CTRECANDevice;
 import lib.team3526.led.LEDStrip;
 
-public class LedsIOReal implements LedsIO{
-
+public class Leds extends SubsystemBase {
     private final CANdle leds;
     private final CANdleConfiguration config;
 
-    public LedsIOReal(CTRECANDevice device) {
+    public Leds(CTRECANDevice device) {
         this.leds = new CANdle(device.getDeviceID(), device.getCanbus());
         this.config = new CANdleConfiguration();
         this.config.stripType = Constants.CANdle.kLEDStripType;
@@ -122,8 +117,4 @@ public class LedsIOReal implements LedsIO{
         rgb[2] = Integer.parseInt(hex.substring(5, 7), 16);
         return rgb;
     }
-
-    public void periodic() { }
-
-    public void updateInputs(LedsIOInputs inputs) { }
 }

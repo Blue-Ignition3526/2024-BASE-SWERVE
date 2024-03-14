@@ -95,17 +95,9 @@ public class SwerveModule extends SubsystemBase {
     return io.getPosition();
   }
   
-  public String getName() {
-    return io.getName();
-  }
-
   @Override
   public void periodic() {
     io.periodic();
     io.updateInputs(inputs);
-
-    Logger.recordOutput("SwerveDrive/" + io.getName() + "/RealState", io.getRealState());
-    Logger.recordOutput("SwerveDrive/" + io.getName() + "/TargetState", io.getTargetState());
-    Logger.recordOutput("SwerveDrive/" + io.getName() + "/Position", io.getPosition());
   }
 }

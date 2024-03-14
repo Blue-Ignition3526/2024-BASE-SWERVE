@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "LifterFloor"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Speaker.LeftNote"
@@ -30,6 +36,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "LifterFloor"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Speaker.MiddleNote"
@@ -39,6 +51,12 @@
           "type": "path",
           "data": {
             "pathName": "MiddleNote.Speaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LifterFloor"
           }
         },
         {

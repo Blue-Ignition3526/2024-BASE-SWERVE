@@ -35,8 +35,6 @@ public interface SwerveModuleIO {
     SwerveModuleState getRealState();
     SwerveModulePosition getPosition();
 
-    String getName();
-
     default void updateInputs(SwerveModuleIOInputs inputs) {};
     default void periodic() {};
 }

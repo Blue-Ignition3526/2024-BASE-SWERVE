@@ -27,30 +27,36 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveDriveIOReal implements SwerveDriveIO {
+    // * Swerve Modules
     SwerveModule frontLeft;
     SwerveModule frontRight;
     SwerveModule backLeft;
     SwerveModule backRight;
 
+    // * Gyro
     Gyro gyro;
 
+    // * Odometry
     SwerveDrivePoseEstimator odometry;
 
+    // * Speed stats
     boolean drivingRobotRelative = false;
     ChassisSpeeds speeds = new ChassisSpeeds();
 
-
+    // * Rotational Inertia Accumulator
     RotationalInertiaAccumulator rotationalInertiaAccumulator = new RotationalInertiaAccumulator(Constants.SwerveDrive.PhysicalModel.kRobotMassKg);
 
     public SwerveDriveIOReal(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight, Gyro gyro) {
-
+        // Swerve Modules
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
 
+        // Gyro
         this.gyro = gyro;
 
+        // Odometry
         this.odometry = new SwerveDrivePoseEstimator(
             Constants.SwerveDrive.PhysicalModel.kDriveKinematics,
             this.getHeading(),
@@ -64,10 +70,14 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
             Constants.SwerveDrive.kEncoderStdDev,
             Constants.SwerveDrive.kVisioStdDev
         );
-
+        
+        // Reset gyro
         this.gyro.reset();
     }
 
+    /**
+     * Configure the auto builder for PathPlanner
+     */
     public void configureAutoBuilder(SwerveDrive swerveDrive) {
         AutoBuilder.configureHolonomic(
             this::getPose,
@@ -89,14 +99,24 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         );
     }
 
+    /**
+     * Get the current heading of the robot
+     */
     public Rotation2d getHeading() {
         return gyro.getHeading();
     }
 
+    /**
+     * Zero the heading of the robot
+     */
     public void zeroHeading() {
         this.gyro.reset();
     }
 
+    /**
+     * Get the current pose of the robot
+     * @return
+     */
     public Pose2d getPose() {
         return odometry.getEstimatedPosition();
     }
@@ -277,6 +297,9 @@ public class SwerveDriveIOReal implements SwerveDriveIO {
         this.resetDriveEncoders();
     }
 
+    /**
+     * Update the odometry with the latest vision measurements
+     */
     public void visionUpdate() {
         LimelightResults visionResults = LimelightHelpers.getLatestResults(Constants.Vision.kLimelightName);
         Pose2d visionBotPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.Vision.kLimelightName);

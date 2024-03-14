@@ -4,23 +4,23 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 4.1
+        "y": 4.03
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.6002032004064008,
-        "y": 4.393839333133212
+        "y": 4.323839333133213
       },
       "isLocked": false,
       "linkedName": "RightNote"
     },
     {
       "anchor": {
-        "x": 1.5,
+        "x": 1.65,
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.234557923661302,
+        "x": 2.3845579236613017,
         "y": 5.382686401736439
       },
       "nextControl": null,
@@ -30,11 +30,29 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 5.0,
-    "maxAngularVelocity": 540.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
