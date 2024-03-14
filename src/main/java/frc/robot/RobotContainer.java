@@ -20,6 +20,7 @@ import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.SpinShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
+import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -32,8 +33,6 @@ import frc.robot.subsystems.IntakeLifter.IntakeLifterIOSim;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOReal;
 import frc.robot.subsystems.IntakeRollers.IntakeRollersIOSim;
-import frc.robot.subsystems.Leds.Leds;
-import frc.robot.subsystems.Leds.LedsIOReal;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
@@ -107,7 +106,7 @@ public class RobotContainer {
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
 
       // LEDs
-      this.m_leds = new Leds(new LedsIOReal(Constants.CANdle.kCANdle));
+      this.m_leds = new Leds(Constants.CANdle.kCANdle);
       this.m_leds.turnOff();
 
       // Metadata
