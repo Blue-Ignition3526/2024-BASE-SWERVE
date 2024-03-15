@@ -17,7 +17,7 @@ public class GyroIONavX implements GyroIO {
     }
 
     public double getYaw() {
-        return gyro.getYaw() % 360;
+        return gyro.getAngle() % 360;
     }
 
     public double getRoll() {
