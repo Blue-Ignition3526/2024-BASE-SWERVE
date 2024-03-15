@@ -47,9 +47,8 @@ public class IntakeLifterIOReal implements IntakeLifterIO {
     }
 
     public void periodic() {
-        this.lifterMotor.setVoltage(
-            this.lifterMotorPID.calculate(getLifterAngleRadians(), this.desiredAngle.in(Radians))
-        );
+        //! COMMENTED TO ONÑY USE SWERVE DRIVE
+        //this.lifterMotor.setVoltage(this.lifterMotorPID.calculate(getLifterAngleRadians(), this.desiredAngle.in(Radians)));
 
         Logger.recordOutput("Intake/LifterAngle", Math.toDegrees(this.getLifterAngleRadians()));
         Logger.recordOutput("Intake/Lifter", this.lifterMotor.getAppliedOutput());
