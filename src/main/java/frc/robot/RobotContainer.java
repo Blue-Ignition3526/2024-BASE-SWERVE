@@ -26,7 +26,6 @@ import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Climber.ClimberIOSim;
 import frc.robot.subsystems.Gyro.Gyro;
 import frc.robot.subsystems.Gyro.GyroIOPigeon;
-import frc.robot.subsystems.Gyro.GyroIOSim;
 import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 import frc.robot.subsystems.IntakeLifter.IntakeLifterIOReal;
 import frc.robot.subsystems.IntakeLifter.IntakeLifterIOSim;
@@ -119,7 +118,7 @@ public class RobotContainer {
       this.m_backRight = null;
 
       // Gyroscope
-      this.m_gyro = new Gyro(new GyroIOSim());
+      this.m_gyro = new Gyro(null);
 
       // Swerve Drive
       this.m_swerveDrive = null;
@@ -202,7 +201,7 @@ public class RobotContainer {
     return this.autonomousChooser.getSelected();
   };
 
-  public Command getRobotInitCommand() {
+  public Command getTeleopInitCommand() {
     return new InstantCommand(() -> m_swerveDrive.setVisionPose());
   }
 }

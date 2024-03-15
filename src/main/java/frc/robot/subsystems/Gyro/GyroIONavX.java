@@ -64,6 +64,10 @@ public class GyroIONavX implements GyroIO {
         }).start();
     }
 
+    public void setYaw(double yawDeg) {
+        gyro.setAngleAdjustment(yawDeg - getYaw());
+    }
+
     public void updateInputs(GyroIOInputs inputs) {
         inputs.pitch = getPitch();
         inputs.yaw = getYaw();

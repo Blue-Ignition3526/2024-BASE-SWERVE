@@ -51,9 +51,13 @@ public class GyroIOPigeon implements GyroIO {
     public Rotation2d getHeading() {
         return Rotation2d.fromDegrees(getYaw());
     }
-    
+
     public void reset() {
         gyro.reset();
+    }
+
+    public void setYaw(double yawDeg) {
+        gyro.setYaw(yawDeg);
     }
 
     public void updateInputs(GyroIOInputs inputs) {

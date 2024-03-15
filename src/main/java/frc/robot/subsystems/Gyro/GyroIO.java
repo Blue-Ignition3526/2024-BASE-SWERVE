@@ -39,8 +39,10 @@ public interface GyroIO {
     Rotation2d getHeading();
 
     void reset();
+    
+    void setYaw(double yawDeg);
 
-    void updateInputs(GyroIOInputs inputs);
+    default void updateInputs(GyroIOInputs inputs) {};
 
     default void periodic() {};
 }

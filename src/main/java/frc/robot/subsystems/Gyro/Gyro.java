@@ -9,7 +9,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Gyro extends SubsystemBase {
+public class Gyro extends SubsystemBase implements GyroIO {
   GyroIO io;
   GyroIOInputsAutoLogged inputs = new GyroIOInputsAutoLogged();
 
@@ -101,6 +101,10 @@ public class Gyro extends SubsystemBase {
    */
   public void reset() {
     io.reset();
+  }
+
+  public void setYaw(double yawDeg) {
+    io.setYaw(yawDeg);
   }
 
   @Override
