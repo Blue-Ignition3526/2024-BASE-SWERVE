@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.55,
-        "y": 5.55
+        "y": 5.35
       },
       "prevControl": {
         "x": 1.8499999999999999,
-        "y": 5.55
+        "y": 5.35
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Shoot",
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -47,7 +47,7 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 1.2
+                "waitTime": 5.0
               }
             }
           ]

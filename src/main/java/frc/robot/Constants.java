@@ -133,7 +133,7 @@ public final class Constants {
 
         //! AUTONOMOUS
         public static final class Autonomous {
-            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(1.8, 0.0, 0.0);
+            public static final PIDConstants kTranslatePIDConstants = new PIDConstants(1.3, 0.5, 0.0);
             public static final PIDConstants kRotatePIDConstants = new PIDConstants(5.0, 0.0, 0.0);
             public static final Measure<Velocity<Distance>> kMaxSpeedMetersPerSecond = MetersPerSecond.of(1);
         }
@@ -194,8 +194,8 @@ public final class Constants {
         // Lifter motor config
         public static final int kLifterMotorID = 37;
         public static final ArmFeedforward kLifterFeedforward = new ArmFeedforward(0.0, 0, 0.0);
-        public static final Constraints kLifterConstraints = new Constraints(42, 48);
-        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(2.8, 0.0, 0.0, kLifterConstraints);
+        public static final Constraints kLifterConstraints = new Constraints(34, 34);
+        public static final ProfiledPIDController kLifterPIDController = new ProfiledPIDController(2.6, 0.0, 0.0, kLifterConstraints);
 
         public static final class Physical {
             public static final Measure<Angle> kLifterMaxHeight = Radians.of((37/36)*Math.PI);
