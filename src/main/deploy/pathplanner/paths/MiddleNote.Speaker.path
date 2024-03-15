@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 5.55
+        "y": 5.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1599279562195486,
-        "y": 5.4666451151084114
+        "x": 2.014155870887771,
+        "y": 5.315873600441298
       },
       "isLocked": false,
       "linkedName": "MiddleNote"
     },
     {
       "anchor": {
-        "x": 1.65,
-        "y": 5.5
+        "x": 1.5295283542266556,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 1.9499999999999997,
-        "y": 5.5
+        "x": 1.8295283542266554,
+        "y": 5.55
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,15 +33,21 @@
   "eventMarkers": [
     {
       "name": "Shoot",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.95,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
                 "name": "Shoot"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 1.0
               }
             }
           ]

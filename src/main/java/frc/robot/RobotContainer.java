@@ -147,7 +147,7 @@ public class RobotContainer {
       put("IntakeIn", new RunForCommand(new IntakeIn(m_rollers), 1));
       put("IntakeOut", new RunForCommand(new IntakeOut(m_rollers), 0.25));
 
-      put("Shoot", new RunForCommand(new Shoot(m_shooter, m_rollers, m_leds), 0.5));
+      put("Shoot", new RunForCommand(new Shoot(m_shooter, m_rollers, m_leds), 1));
 
       put("LifterFloor", new RunForCommand(new LifterFloor(m_intake), 1));
       put("LifterShooter", new RunForCommand(new LifterShooter(m_intake), 1));
@@ -156,7 +156,7 @@ public class RobotContainer {
     }});
  
     // Add commands to SmartDashboard
-    SmartDashboard.putData("ZeroHeading", new ZeroHeading(m_swerveDrive));
+    SmartDashboard.putData("ZeroHeading", new InstantCommand(() -> m_swerveDrive.zeroHeading()));
     SmartDashboard.putData("ResetPose", new InstantCommand(() -> m_swerveDrive.resetPose()));
     SmartDashboard.putData("SetVisionPose", new InstantCommand(() -> m_swerveDrive.setVisionPose()));
 
@@ -199,7 +199,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // PathPlanner autonomous command
     return this.autonomousChooser.getSelected();
   };
+
+  public Command getRobotInitCommand() {
+    return new InstantCommand(() -> m_swerveDrive.setVisionPose());
+  }
 }

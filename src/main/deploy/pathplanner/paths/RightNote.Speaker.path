@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.65,
-        "y": 5.5
+        "x": 1.5295283542266556,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 2.3845579236613017,
-        "y": 5.382686401736439
+        "x": 2.264086277887957,
+        "y": 5.432686401736439
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,13 +35,19 @@
       "name": "Shoot",
       "waypointRelativePos": 0.9,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
                 "name": "Shoot"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.5
               }
             }
           ]

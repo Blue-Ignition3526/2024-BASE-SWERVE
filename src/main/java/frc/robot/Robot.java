@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
+  private Command m_robotInitCommand;
   private RobotContainer m_robotContainer;
 
   @Override
@@ -33,6 +34,10 @@ public class Robot extends LoggedRobot {
 
     // Limelight port forwarding over USB
     for (int port = 5800; port <= 5807; port++) PortForwarder.add(port, "limelight.local", port);
+
+    // Call robot init command
+    m_robotInitCommand = m_robotContainer.getRobotInitCommand();
+    if (m_robotInitCommand != null) m_robotInitCommand.schedule();
   }
 
   @Override
@@ -51,6 +56,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    if (m_robotInitCommand != null) m_robotInitCommand.cancel();
     if (m_autonomousCommand != null) m_autonomousCommand.schedule();
   }
 
@@ -59,6 +65,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    if (m_robotInitCommand != null) m_robotInitCommand.cancel();
     if (m_autonomousCommand != null) m_autonomousCommand.cancel();
   }
 

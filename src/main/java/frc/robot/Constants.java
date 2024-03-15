@@ -40,7 +40,7 @@ public final class Constants {
         public static final CTRECANDevice kGyroDevice = new CTRECANDevice(34, "*");
 
         // Visiom odometry
-        public static final boolean kUseVisionOdometry = false;
+        public static final boolean kUseVisionOdometry = true;
         public static final Matrix<N3, N1> kEncoderStdDev = VecBuilder.fill(0, 0, 0);
         public static final Matrix<N3, N1> kVisioStdDev = VecBuilder.fill(0, 0, 0);
 
