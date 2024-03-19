@@ -8,53 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.014155870887771,
-        "y": 5.315873600441298
+        "x": 1.264368346918512,
+        "y": 4.076661971505762
       },
       "isLocked": false,
       "linkedName": "MiddleNote"
     },
     {
       "anchor": {
-        "x": 1.55,
-        "y": 5.35
+        "x": 0.75,
+        "y": 4.4
       },
       "prevControl": {
-        "x": 1.8499999999999999,
-        "y": 5.35
+        "x": 1.124437157965225,
+        "y": 4.085990717435981
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Speaker"
+      "linkedName": "Right"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.45,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 5.0
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
@@ -63,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -59.7417067745549,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Notes.Speaker",
+  "folder": "Notes.Right",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
