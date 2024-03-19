@@ -8,11 +8,11 @@ import frc.robot.Constants;
 import lib.team3526.constants.CTRECANDevice;
 import lib.team3526.led.LEDStrip;
 
-public class Leds extends SubsystemBase {
+public class LedsSubsystem extends SubsystemBase {
     private final CANdle leds;
     private final CANdleConfiguration config;
 
-    public Leds(CTRECANDevice device) {
+    public LedsSubsystem(CTRECANDevice device) {
         this.leds = new CANdle(device.getDeviceID(), device.getCanbus());
         this.config = new CANdleConfiguration();
         this.config.stripType = Constants.CANdle.kLEDStripType;

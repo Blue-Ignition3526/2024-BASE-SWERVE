@@ -5,16 +5,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeLifter.IntakeLifter;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
-import frc.robot.subsystems.Leds;
+import frc.robot.subsystems.LedsSubsystem;
 
 public class ShootAmp extends Command {
 
   private final IntakeRollers rollers;
   private final IntakeLifter lifter;
-  private final Leds leds;
+  private final LedsSubsystem leds;
   private final Timer timer = new Timer();
 
-  public ShootAmp(IntakeRollers rollers, IntakeLifter lifter, Leds leds) {
+  public ShootAmp(IntakeRollers rollers, IntakeLifter lifter, LedsSubsystem leds) {
     this.rollers = rollers;
     this.lifter = lifter;
     this.leds = leds;
@@ -23,19 +23,21 @@ public class ShootAmp extends Command {
 
   @Override
   public void initialize() {
+    this.timer.reset();
+    this.timer.start();
     this.leds.setLeds("#ad03fc");
   }
 
   @Override
   public void execute() {
-    this.lifter.setLifterAngle(Constants.Intake.Physical.kAmplifierAngle);
+    this.lifter.setLifterAngle(Constants.Intake.Physical.kAmplifierFinalAngle);
+    if (this.timer.get()>0.3) {    
+      this.rollers.setRollersSpeed(-0.43);
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    this.timer.reset();
-    this.timer.start();
-    while(timer.get() < 0.5) this.rollers.setRollersOut();
     this.rollers.stop();
     this.timer.stop();
     this.lifter.setLifterAngle(Constants.Intake.Physical.kShooterAngle);
@@ -44,6 +46,6 @@ public class ShootAmp extends Command {
 
   @Override
   public boolean isFinished() {
-    return (this.lifter.getLifterAngleRadians()>1.20);
+    return (this.timer.get()>1.0);
   }
 }

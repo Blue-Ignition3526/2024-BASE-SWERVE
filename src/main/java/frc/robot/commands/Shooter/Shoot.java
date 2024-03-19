@@ -3,16 +3,16 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeRollers.IntakeRollers;
-import frc.robot.subsystems.Leds;
+import frc.robot.subsystems.LedsSubsystem;
 import frc.robot.subsystems.Shooter.Shooter;
 
 public class Shoot extends Command {
   private final Shooter shooter;
   private final IntakeRollers rollers;
-  private final Leds leds;
+  private final LedsSubsystem leds;
   private final Timer timer = new Timer();
 
-  public Shoot(Shooter shooter, IntakeRollers rollers, Leds leds) {
+  public Shoot(Shooter shooter, IntakeRollers rollers, LedsSubsystem leds) {
     this.shooter = shooter;
     this.rollers = rollers;
     this.leds = leds;

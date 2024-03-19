@@ -20,7 +20,7 @@ import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.SpinShooter;
 import frc.robot.commands.SwerveDrive.DriveSwerve;
 import frc.robot.commands.SwerveDrive.ZeroHeading;
-import frc.robot.subsystems.Leds;
+import frc.robot.subsystems.LedsSubsystem;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIOReal;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -71,7 +71,7 @@ public class RobotContainer {
   private final Climber m_rightClimber;
 
   // * LEDs
-  private final Leds m_leds;
+  private final LedsSubsystem m_leds;
 
   // * Autonomous Chooser
   SendableChooser<Command> autonomousChooser;
@@ -105,7 +105,7 @@ public class RobotContainer {
       this.m_rightClimber = new Climber(new ClimberIOReal(Constants.Climber.kRightClimberMotorID, "RightClimber"));
 
       // LEDs
-      this.m_leds = new Leds(Constants.CANdle.kCANdle);
+      this.m_leds = new LedsSubsystem(Constants.CANdle.kCANdle);
       this.m_leds.turnOff();
 
       // Metadata
@@ -182,19 +182,18 @@ public class RobotContainer {
     this.m_driverControllerCustom.bottomButton().toggleOnTrue(new PickUpPiece(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightTrigger().whileTrue(new SpinShooter(this.m_shooter, this.m_leds));
-    this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_rollers, this.m_leds));
+      this.m_driverControllerCustom.rightTrigger().onFalse(new Shoot(this.m_shooter, this.m_rollers, this.m_leds));
+
     this.m_driverControllerCustom.leftTrigger().whileTrue(new IntakeOut(this.m_rollers));
 
-    this.m_driverControllerCustom.povLeft().toggleOnTrue(new ShootAmp(this.m_rollers, this.m_intake, this.m_leds));
+    this.m_driverControllerCustom.povLeft().whileTrue(new LifterAmp(m_intake));
+      this.m_driverControllerCustom.povLeft().onFalse(new ShootAmp(this.m_rollers, this.m_intake, this.m_leds));
 
     this.m_driverControllerCustom.rightBumper().whileTrue(new LifterFloor(this.m_intake));
     this.m_driverControllerCustom.leftBumper().whileTrue(new LifterShooter(this.m_intake));
-    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(this.m_intake));
 
     this.m_driverControllerCustom.povUp().whileTrue(new ClimbersUp(this.m_leftClimber, this.m_rightClimber));
     this.m_driverControllerCustom.povDown().whileTrue(new ClimbersDown(this.m_leftClimber, this.m_rightClimber));
-
-    this.m_driverControllerCustom.povRight().whileTrue(new LifterAmp(this.m_intake));
   }
 
   public Command getAutonomousCommand() {
