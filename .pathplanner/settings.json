@@ -4,11 +4,17 @@
   "holonomicMode": true,
   "pathFolders": [
     "Left",
-    "Notes",
+    "Notes.Right",
+    "Notes.Left",
+    "Notes.Speaker",
     "Right",
     "Speaker"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Left",
+    "Right",
+    "Speaker"
+  ],
   "defaultMaxVel": 2.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 360.0,
