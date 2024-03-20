@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 5.3
+        "y": 5.2
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.014155870887771,
-        "y": 5.315873600441298
+        "y": 5.215873600441299
       },
       "isLocked": false,
       "linkedName": "MiddleNote"
@@ -30,31 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.8,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 5.0
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 1.5,
     "maxAcceleration": 3.0,

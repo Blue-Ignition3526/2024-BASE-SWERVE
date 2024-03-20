@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.55,
-      "y": 5.35
+      "x": 0.75,
+      "y": 4.4
     },
-    "rotation": 0
+    "rotation": -58.376958983452596
   },
   "command": {
     "type": "sequential",
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Speaker.LeftNote"
+            "pathName": "Right.RightNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "LeftNote.Speaker"
+            "pathName": "RightNote.Right"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Speaker.MiddleNote"
+            "pathName": "Right.MiddleNote"
           }
         },
         {
@@ -56,30 +56,24 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "LifterFloor"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Speaker.RightNote"
+            "pathName": "Speaker.LeftNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RightNote.Speaker"
+            "pathName": "LeftNote.Speaker"
           }
         }
       ]
     }
   },
-  "folder": "Speaker",
+  "folder": "Right",
   "choreoAuto": false
 }

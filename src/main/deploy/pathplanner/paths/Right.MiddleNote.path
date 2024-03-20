@@ -17,18 +17,24 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 5.3
+        "y": 5.2
       },
       "prevControl": {
         "x": 1.0,
-        "y": 5.3
+        "y": 5.2
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "MiddleNote"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {

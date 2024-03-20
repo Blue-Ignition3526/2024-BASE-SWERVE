@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 5.3
+        "y": 5.2
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.264368346918512,
-        "y": 4.076661971505762
+        "y": 3.976661971505762
       },
       "isLocked": false,
       "linkedName": "MiddleNote"

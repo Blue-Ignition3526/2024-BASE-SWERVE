@@ -52,6 +52,12 @@
           "data": {
             "pathName": "MiddleNote.Speaker"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
         }
       ]
     }

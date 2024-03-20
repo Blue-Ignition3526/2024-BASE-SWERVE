@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.55,
-        "y": 5.35
+        "x": 1.8394189002397519,
+        "y": 5.3314867981823415
       },
       "isLocked": false,
       "linkedName": "Speaker"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.5,
-        "y": 5.3
+        "y": 5.2
       },
       "prevControl": {
-        "x": 2.0575958209637184,
-        "y": 5.3
+        "x": 2.1346446149881952,
+        "y": 5.1008417085351185
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,7 +50,7 @@
     },
     {
       "name": "PickUpPiece",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "sequential",
         "data": {
