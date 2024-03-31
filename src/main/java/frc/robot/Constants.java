@@ -242,7 +242,8 @@ public final class Constants {
         public static final double kClimber_RotationToCentimeters = 1 / 16 / 3 * 31;
 
         // Max current (Used for reseting the climber)
-        public static final double kFullDeextensionCurrentThreshold = 35;
+        public static final double kMaxCurrent = 35;
+        public static final double kMaxTimeToFullyDown = 10;
 
         // Climber encoder
         public static final double kLedExtensionThreshold = 1;
