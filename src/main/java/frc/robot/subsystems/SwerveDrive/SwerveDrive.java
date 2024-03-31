@@ -37,8 +37,8 @@ public class SwerveDrive extends SubsystemBase {
   public void resetPose(){
     io.resetPose();
   }
-  public void getPose(){
-    io.getPose();
+  public Pose2d getPose(){
+    return io.getPose();
   }
   public void resetOdometry(Pose2d pose){
     io.resetOdometry(pose);

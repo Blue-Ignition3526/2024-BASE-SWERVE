@@ -45,9 +45,7 @@ public final class Constants {
         public static final Matrix<N3, N1> kVisioStdDev = VecBuilder.fill(0, 0, 0);
 
         // Active track pid constants
-        public static final double kActiveTrackP = 0.01;
-        public static final double kActiveTrackD = 0;
-        public static final double kActiveTrackI = 0;
+        public static final PIDFConstants kActiveTrackPIDConstants = new PIDFConstants(0.1, 0.0, 0.0);
 
         public static final double kJoystickDeadband = 0.1;
         //! Physical model of the robot
@@ -141,7 +139,9 @@ public final class Constants {
 
     //! FIELD
     public static final class Field {
-        public static final Pose2d kInitialPoseMeters = new Pose2d(new Translation2d(1, 2), new Rotation2d(0, 0));
+        public static final Pose2d kInitialPoseMeters = new Pose2d(new Translation2d(1, 2), Rotation2d.fromDegrees(0));
+        public static final Pose2d kBlueSpeakerPoseMeters = new Pose2d(new Translation2d(0.4, 5.55), Rotation2d.fromDegrees(0));
+        public static final Pose2d kRedSpeakerPoseMeters = new Pose2d(new Translation2d(16.12, 5.55), Rotation2d.fromDegrees(0));
     }
 
     //! VISION
@@ -222,6 +222,9 @@ public final class Constants {
 
         // Shooter motor time
         public static final double kMaxShootTime = 4;
+
+        // Robot angle
+        public static final Rotation2d kRobotAngle = Rotation2d.fromDegrees(180); // (Back of the robot)
     }
 
     //! CLIMBER

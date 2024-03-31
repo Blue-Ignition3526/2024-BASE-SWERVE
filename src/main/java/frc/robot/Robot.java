@@ -45,9 +45,7 @@ public class Robot extends LoggedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {
-    // TODO: Add climber hold
-  }
+  public void disabledPeriodic() {}
 
   @Override
   public void autonomousInit() {
